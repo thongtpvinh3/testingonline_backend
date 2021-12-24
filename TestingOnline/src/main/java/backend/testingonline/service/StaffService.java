@@ -7,7 +7,7 @@ import backend.testingonline.model.Staff;
 
 public interface StaffService {
 	
-	Optional<Candidate> findById(int id);
 	Staff findByUsernameAndPassword(String username, String password);
 	boolean login(String username, String password);
+	Optional<Candidate> findById(int id);
 }
