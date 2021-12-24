@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Question {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	protected int id;
 	@Column

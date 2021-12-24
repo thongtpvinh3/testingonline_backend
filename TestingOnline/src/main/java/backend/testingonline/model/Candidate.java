@@ -1,24 +1,20 @@
 package backend.testingonline.model;
 
-import java.sql.Time;
-import java.util.List;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "candidate")
 public class Candidate {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
 	@Column(name = "id_test")
@@ -27,42 +23,55 @@ public class Candidate {
 	private String name;
 	@Column
 	private int level;
-	@Column
+	@Column(unique = true)
 	private String phone;
+	@Column(unique = true)
+	private String email;
 	@Column
-	private int email;
-	@Column
-	private int position;
+	private String position;
 	@Column(name = "test_time")
-	private Time testTime;
+	private Date testTime;
 	@Column(name = "english_mark")
 	private float englishMark;
-	@Column(name ="coding_mark")
+	@Column(name = "coding_mark")
 	private float codingMark;
 	@Column(name = "knowledge_mark")
 	private float knowledgeMark;
-	
-	@ManyToMany
-	private List<Test> tests;
-	
-	@ManyToMany
-	private List<Levels> levels;
-	
+
+//	@ManyToMany
+//	private List<Test> tests;
+//	
+//	@ManyToMany
+//	private List<Levels> levels;
+
 	public String getPhone() {
 		return phone;
+	}
+
+	public Candidate(String name, int level) {
+		super();
+		this.name = name;
+		this.level = level;
+	}
+	
+	public Candidate(String name, String phone, String email) {
+		super();
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
 	}
 
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
-	public List<Levels> getLevels() {
-		return levels;
-	}
-
-	public void setLevels(List<Levels> levels) {
-		this.levels = levels;
-	}
+//	public List<Levels> getLevels() {
+//		return levels;
+//	}
+//
+//	public void setLevels(List<Levels> levels) {
+//		this.levels = levels;
+//	}
 
 	public Candidate() {
 		super();
@@ -100,27 +109,27 @@ public class Candidate {
 		this.level = level;
 	}
 
-	public int getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(int email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public int getPosition() {
+	public String getPosition() {
 		return position;
 	}
 
-	public void setPosition(int position) {
+	public void setPosition(String position) {
 		this.position = position;
 	}
 
-	public Time getTestTime() {
+	public Date getTestTime() {
 		return testTime;
 	}
 
-	public void setTestTime(Time testTime) {
+	public void setTestTime(Date testTime) {
 		this.testTime = testTime;
 	}
 
@@ -148,11 +157,11 @@ public class Candidate {
 		this.knowledgeMark = knowledgeMark;
 	}
 
-	public List<Test> getTests() {
-		return tests;
-	}
-
-	public void setTests(List<Test> tests) {
-		this.tests = tests;
-	}
+//	public List<Test> getTests() {
+//		return tests;
+//	}
+//
+//	public void setTests(List<Test> tests) {
+//		this.tests = tests;
+//	}
 }
