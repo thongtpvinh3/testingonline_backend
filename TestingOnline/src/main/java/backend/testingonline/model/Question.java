@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,18 +22,18 @@ public class Question {
 	@Column
 	protected int id;
 	@Column
-	protected int type;
+	protected int type; // 0 multichoice , 1 essay
 	@Column
-	protected int subject;
+	protected int subject; // 1 english, 2 coding, 3 knowledge
 	@Column
-	protected String content;
+	protected String content; // noi dung
 	@Column
-	protected int level;
+	protected int level; // 1 Fresher, 2 Junior, 3 Senior
 	
 	@ManyToMany
 	protected List<Test> tests;
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	protected List<MultipleChoiceQuestion> multipleChoiceQuestions;
 	
 	@OneToOne

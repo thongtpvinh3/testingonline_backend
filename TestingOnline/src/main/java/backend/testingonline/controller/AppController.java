@@ -5,20 +5,41 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
+import backend.testingonline.service.TestService;
 
 @Controller
 public class AppController {
 
 	@Autowired
 	private StaffService staffService;
+	
+	@Autowired
+	private CandidateService candidateService;
+	
+	@Autowired
+	private TestService testService;
+	
+	@GetMapping("/testingonline")
+	public String toWebPage() {
+		return "homepage";
+	}
+	
+	@PostMapping("/jointest")
+	public String joinTestWithCode(@RequestParam String code,HttpServletRequest req, HttpServletResponse resp) {
+		if (candidateService.joinTestByCode(code)) {
+			HttpSession session = req.getSession();
+			session.setAttribute("test", testService.getWithCode(code));
+			return "redirect:/testpage/test";
+		}
+		return "redirect:/testingonline";
+	}
 
 	@GetMapping("/login")
 	public String toLoginView() {

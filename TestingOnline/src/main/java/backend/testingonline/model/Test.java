@@ -20,29 +20,33 @@ public class Test {
 	@Column
 	private int id;
 	@Column
-	private String type;
+	private int subject; // 1 english, 2 coding, 3 knowledge
 	@Column
 	private int level;
 	@Column
 	private Time time;
 	@Column(name = "id_question")
-	private int idQuestion;
+	private Integer idQuestion;
 	@Column
 	private String name;
+	@Column(name = "is_done")
+	private int isDone;
+	@Column(name = "code_test")
+	private String codeTest;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Candidate> candidates;
-	
-	@ManyToMany(fetch = FetchType.LAZY)
-	private List<Question> questions;
-	
-	public List<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
-	}
+//	@ManyToMany(fetch = FetchType.LAZY)
+//	private List<Candidate> candidates;
+//	
+//	@ManyToMany(fetch = FetchType.EAGER)
+//	private List<Question> questions;
+//	
+//	public List<Question> getQuestions() {
+//		return questions;
+//	}
+//
+//	public void setQuestions(List<Question> questions) {
+//		this.questions = questions;
+//	}
 
 	public Test() {
 		super();
@@ -56,12 +60,12 @@ public class Test {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public int getSubject() {
+		return subject;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setSubject(int subject) {
+		this.subject = subject;
 	}
 
 	public int getLevel() {
@@ -96,14 +100,33 @@ public class Test {
 		this.name = name;
 	}
 
-	public List<Candidate> getCandidates() {
-		return candidates;
+	public int getIsDone() {
+		return isDone;
 	}
 
-	public void setCandidates(List<Candidate> candidates) {
-		this.candidates = candidates;
+	public void setIsDone(int isDone) {
+		this.isDone = isDone;
 	}
 
+//	public List<Candidate> getCandidates() {
+//		return candidates;
+//	}
+//
+//	public void setCandidates(List<Candidate> candidates) {
+//		this.candidates = candidates;
+//	}
+
+	public String getCodeTest() {
+		return codeTest;
+	}
+
+	public void setCodeTest(String codeTest) {
+		this.codeTest = codeTest;
+	}
 	
-	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "test level: " + this.level;
+	}
 }

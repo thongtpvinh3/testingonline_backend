@@ -16,8 +16,8 @@ public class EssayQuestion extends Question {
 	@GeneratedValue
 	@Column
 	private int id;
-	@Column(name = "id_type")
-	private int idType;
+//	@Column(name = "id_type")
+//	private int idType; // ???
 	@Column
 	private String answer;
 	@Column
@@ -45,14 +45,6 @@ public class EssayQuestion extends Question {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdType() {
-		return idType;
-	}
-
-	public void setIdType(int idType) {
-		this.idType = idType;
 	}
 
 	public String getAnswer() {

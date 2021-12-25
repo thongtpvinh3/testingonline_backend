@@ -18,25 +18,25 @@ public class Candidate {
 	@Column
 	private int id;
 	@Column(name = "id_test")
-	private String idTest;
+	private String idTest; // Map bai test
 	@Column
-	private String name;
+	private String name;// Ten cua bai test
 	@Column
-	private int level;
+	private int level; // 1 Fresher, 2 Junior, 3 Senior
 	@Column(unique = true)
-	private String phone;
+	private String phone; // SDT
 	@Column(unique = true)
 	private String email;
 	@Column
-	private String position;
+	private String position;// Vi tri ???
 	@Column(name = "test_time")
-	private Date testTime;
+	private Date testTime; // Thoi gian lam bai
 	@Column(name = "english_mark")
-	private float englishMark;
+	private float englishMark; // ??
 	@Column(name = "coding_mark")
-	private float codingMark;
+	private float codingMark;// ?
 	@Column(name = "knowledge_mark")
-	private float knowledgeMark;
+	private float knowledgeMark;// ?
 
 //	@ManyToMany
 //	private List<Test> tests;

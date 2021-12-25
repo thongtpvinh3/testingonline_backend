@@ -18,11 +18,13 @@ public class MultipleChoiceQuestion extends Question {
 	@Column
 	private int id;
 	@Column(name = "istrue")
-	private int isTrue;
+	private int isTrue; // Dung ko ?
 	@Column
-	private String answer;
+	private String answer;// cac cau tra loi
 	@Column
 	private String img;
+//	@Column(name = "id_question")
+//	private int idQuestion; // map question 1 question co ? dap an
 	
 	@ManyToOne
 	@JoinColumn(name = "id_question")
@@ -71,5 +73,12 @@ public class MultipleChoiceQuestion extends Question {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	
+
+//	public int getIdQuestion() {
+//		return idQuestion;
+//	}
+//
+//	public void setIdQuestion(int idQuestion) {
+//		this.idQuestion = idQuestion;
+//	}
 }
