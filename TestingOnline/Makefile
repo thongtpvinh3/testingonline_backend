@@ -12,3 +12,6 @@ repackage:
 
 serve: 
 	java -jar target/testingonline-1.0.war
+
+build:
+	docker build -t online-test  . 
