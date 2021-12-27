@@ -21,12 +21,12 @@ public class Database {
 
 			@Override
 			public void run(String... args) throws Exception {
-//				// TODO Auto-generated method stub
-//				Staff s = new Staff(2, "thong", "thongtpvinh3", "123");
-//				Staff s2 = new Staff(3, "Hai", "haitpvinh3", "123");
-//				
-//				logger.info("insert data: " + staffRepository.save(s));
-//				logger.info("insert data: " + staffRepository.save(s2));
+				// TODO Auto-generated method stub
+				// Staff s = new Staff(2, "thong", "thongtpvinh3", "123");
+				// Staff s2 = new Staff(3, "Hai", "haitpvinh3", "123");
+				
+				// logger.info("insert data: " + staffRepository.save(s));
+				// logger.info("insert data: " + staffRepository.save(s2));
 			}
 		};
 	}
