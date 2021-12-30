@@ -157,6 +157,23 @@ public class Candidate {
 		this.knowledgeMark = knowledgeMark;
 	}
 
+	@Override
+	public String toString() {
+		return "Candidate "
+				+ "{id=" + id + ","
+				+ " idTest=" + idTest 
+				+ ", name=" + name 
+				+ ", level=" + level 
+				+ ", phone=" + phone
+				+ ", email=" + email 
+				+ ", position=" + position 
+				+ ", testTime=" + testTime 
+				+ ", englishMark=" + englishMark 
+				+ ", codingMark=" + codingMark 
+				+ ", knowledgeMark=" + knowledgeMark 
+				+ "}";
+	}
+	
 //	public List<Test> getTests() {
 //		return tests;
 //	}

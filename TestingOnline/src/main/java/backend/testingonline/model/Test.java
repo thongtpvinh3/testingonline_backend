@@ -7,7 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -16,7 +19,7 @@ import javax.persistence.Table;
 public class Test {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
 	@Column
@@ -33,24 +36,40 @@ public class Test {
 	private int isDone;
 	@Column(name = "code_test")
 	private String codeTest;
+	@Column(name = "id_candidate")
+	private int idCandidate;
 	
 //	@ManyToMany(fetch = FetchType.LAZY)
 //	private List<Candidate> candidates;
 //	
-//	@ManyToMany(fetch = FetchType.EAGER)
-//	private List<Question> questions;
-//	
-//	public List<Question> getQuestions() {
-//		return questions;
-//	}
-//
-//	public void setQuestions(List<Question> questions) {
-//		this.questions = questions;
-//	}
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "test_question",
+	joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
+	private List<Question> questions;
+	
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
 
 	public Test() {
 		super();
 	}
+	
+	public Test(int subject, int level, Integer idQuestion, String name, int isDone, String codeTest) {
+		super();
+		this.subject = subject;
+		this.level = level;
+		this.idQuestion = idQuestion;
+		this.name = name;
+		this.isDone = isDone;
+		this.codeTest = codeTest;
+	}
+
+
 
 	public int getId() {
 		return id;
@@ -124,9 +143,31 @@ public class Test {
 		this.codeTest = codeTest;
 	}
 	
+	public int getIdCandidate() {
+		return idCandidate;
+	}
+
+	public void setIdCandidate(int idCandidate) {
+		this.idCandidate = idCandidate;
+	}
+
+	public void setIdQuestion(Integer idQuestion) {
+		this.idQuestion = idQuestion;
+	}
+
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "test level: " + this.level;
+		return "Test {subject=" 
+				+ subject 
+				+ ", level=" + level 
+				+ ", time=" + time 
+				+ ", idQuestion=" + idQuestion
+				+ ", name=" + name 
+				+ ", isDone=" + isDone 
+				+ ", codeTest=" + codeTest + "}";
 	}
+	
+	
+	
+	
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Staff {
 
 	@Id // PK
-	@GeneratedValue(strategy = GenerationType.AUTO) //AI
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI
 	@Column //Cot
 	private int id;
 	@Column
@@ -114,8 +114,7 @@ public class Staff {
 				+ " name=" + name + 
 				", username=" + username + 
 				", password=" + password + 
-				", email="
-				+ email + 
+				", email=" + email + 
 				", department=" + department + 
 				", avatar=" + avatar + "}";
 	}

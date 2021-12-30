@@ -73,5 +73,18 @@ public class Levels {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	@Override
+	public String toString() {
+		return "Levels "
+				+ "[id=" + id 
+				+ ", name=" + name 
+				+ ", candidates=" + candidates 
+				+ ", questions=" + questions
+				+ ", tests=" + tests 
+				+ "]";
+	}
+	
+	
 	
 }

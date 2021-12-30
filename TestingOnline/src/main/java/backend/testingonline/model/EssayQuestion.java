@@ -3,6 +3,7 @@ package backend.testingonline.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 public class EssayQuestion extends Question {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
 //	@Column(name = "id_type")
@@ -61,6 +62,16 @@ public class EssayQuestion extends Question {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+	
+	@Override
+	public String toString() {
+		return "EssayQuestion "
+				+ "[id=" + id 
+				+ ", answer=" + answer 
+				+ ", image=" + image 
+				+ ", question=" + question 
+				+ "]";
 	}
 
 }

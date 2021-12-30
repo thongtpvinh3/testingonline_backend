@@ -74,6 +74,17 @@ public class MultipleChoiceQuestion extends Question {
 		this.answer = answer;
 	}
 
+	@Override
+	public String toString() {
+		return "MultipleChoiceQuestion "
+				+ "[id=" + id 
+				+ ", isTrue=" + isTrue 
+				+ ", answer=" + answer 
+				+ ", img=" + img
+				+ ", question=" + question 
+				+ "]";
+	}
+
 //	public int getIdQuestion() {
 //		return idQuestion;
 //	}
@@ -81,4 +92,5 @@ public class MultipleChoiceQuestion extends Question {
 //	public void setIdQuestion(int idQuestion) {
 //		this.idQuestion = idQuestion;
 //	}
+	
 }

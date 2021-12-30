@@ -32,6 +32,14 @@ public class Subject {
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Override
+	public String toString() {
+		return "Subject "
+				+ "[id=" + id 
+				+ ", name=" + name 
+				+ "]";
+	}
+	
 	
 	
 }

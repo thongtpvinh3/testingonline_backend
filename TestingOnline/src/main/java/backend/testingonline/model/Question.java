@@ -8,6 +8,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,6 +33,8 @@ public class Question {
 	protected int level; // 1 Fresher, 2 Junior, 3 Senior
 	
 	@ManyToMany
+	@JoinTable(name = "test_question",
+	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
 	protected List<Test> tests;
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -38,6 +42,18 @@ public class Question {
 	
 	@OneToOne
 	protected EssayQuestion essayQuestion;
+	
+	public Question() {
+		super();
+	}
+	
+	public Question(int id, int subject, String content, int level) {
+		super();
+		this.id = id;
+		this.subject = subject;
+		this.content = content;
+		this.level = level;
+	}
 
 	public int getId() {
 		return id;
@@ -102,5 +118,20 @@ public class Question {
 	public void setEssayQuestion(EssayQuestion essayQuestion) {
 		this.essayQuestion = essayQuestion;
 	}
+
+	@Override
+	public String toString() {
+		return "Question "
+				+ "[id=" + id 
+				+ ", type=" + type 
+				+ ", subject=" + subject 
+				+ ", content=" + content 
+				+ ", level=" + level 
+				+ ", tests=" + tests 
+				+ ", multipleChoiceQuestions=" + multipleChoiceQuestions
+				+ ", essayQuestion=" + essayQuestion + "]";
+	}
+	
+	
 	
 }
