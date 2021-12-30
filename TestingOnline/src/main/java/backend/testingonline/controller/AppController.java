@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
+import url.URL;
 
 @Controller
 public class AppController {
@@ -26,12 +27,12 @@ public class AppController {
 	@Autowired
 	private TestService testService;
 	
-	@GetMapping("/testingonline")
+	@GetMapping(URL.ALL_HOMEPAGE)
 	public String toWebPage() {
 		return "homepage";
 	}
 	
-	@PostMapping("/jointest")
+	@PostMapping(URL.CANDIDATE_JOIN_TEST)
 	public String joinTestWithCode(@RequestParam String code,HttpServletRequest req, HttpServletResponse resp) {
 		if (candidateService.joinTestByCode(code)) {
 			HttpSession session = req.getSession();
@@ -41,12 +42,12 @@ public class AppController {
 		return "redirect:/testingonline";
 	}
 
-	@GetMapping("/login")
+	@GetMapping(URL.STAFF_TO_LOGIN)
 	public String toLoginView() {
 		return "login";
 	}
 
-	@PostMapping("/checklogin")
+	@PostMapping(URL.STAFF_CHECK_LOGIN)
 	public String checkLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, HttpServletResponse resp) {
 		
 		boolean checkLogin = staffService.login(username, password);
@@ -62,7 +63,7 @@ public class AppController {
 		}
 	}
 
-	@PostMapping("/logout")
+	@PostMapping(URL.STAFF_LOGOUT)
 	public String logout(HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
 		session.setAttribute("staff", null);

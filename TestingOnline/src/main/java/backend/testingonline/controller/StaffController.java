@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
-import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.StaffService;
+import url.URL;
 
 @Controller
-@RequestMapping(path = "/staff")
+@RequestMapping(path = URL.STAFF)
 public class StaffController {
 
 	@Autowired
@@ -38,14 +37,14 @@ public class StaffController {
 	@Autowired
 	private QuestionService questionService;
 
-	@GetMapping("/home")
+	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		model.addAttribute("staff", session.getAttribute("staff"));
 		return "staffhome";
 	}
 
-	@GetMapping("/listcandidate")
+	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
 	List<Candidate> getAllCandidate(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		session.setAttribute("listcandidate", candidateService.findAll());
@@ -54,12 +53,12 @@ public class StaffController {
 	}
 	
 	//ADD TEST
-	@GetMapping("/test")
+	@GetMapping(URL.STAFF_TO_TESTVIEW)
 	public String toTestView() {
 		return "testview";
 	}
 	
-	@PostMapping("/addtest")
+	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
 		return staffService.createTest(newTest);
 	}
@@ -68,13 +67,13 @@ public class StaffController {
 //	public 
 	
 	//ADD CANDIDATE
-	@PostMapping("/addcandidate")
+	@PostMapping(URL.STAFF_ADD_CANDIDATE)
 	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
 	}
 	
 	//DELETE A CANDIDATE
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
 	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
 		return candidateService.deleteWithId(id);
 	}
@@ -94,11 +93,8 @@ public class StaffController {
 //						.body(new ResponeObject("failed", "hong tim thay id: " + id, ""));
 ////		return staffRepository.findById(id).orElseThrow(()-> new RuntimeException("Cannot find staff with id = "+ id));
 //	}
-//
 
-//
-//	
-//	@PutMapping("/{id}")
+//	@PutMapping("/updatecandidate/{id}")
 //	ResponseEntity<ResponeObject> updateCandidateTestTime(@RequestBody Candidate newCandidate,@PathVariable Integer id, @PathVariable Calendar calendar) {
 //		calendar = Calendar.getInstance();
 //		calendar.set(2021, 12, 30);
