@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
@@ -22,9 +24,10 @@ import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.StaffService;
+import backend.testingonline.service.TestService;
 import url.URL;
 
-@Controller
+@RestController
 @RequestMapping(path = URL.STAFF)
 public class StaffController {
 
@@ -33,7 +36,10 @@ public class StaffController {
 
 	@Autowired
 	private CandidateService candidateService;
-	
+
+	@Autowired
+	private TestService testService;
+
 	@Autowired
 	private QuestionService questionService;
 
@@ -45,44 +51,62 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
+	@ResponseBody
 	List<Candidate> getAllCandidate(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		session.setAttribute("listcandidate", candidateService.findAll());
 		model.addAttribute("listcandidate", session.getAttribute("staff"));
 		return candidateService.findAll();
 	}
-	
-	//ADD TEST
+
+	// ADD TEST
 	@GetMapping(URL.STAFF_TO_TESTVIEW)
 	public String toTestView() {
 		return "testview";
 	}
-	
+
+	@GetMapping(URL.STAFF_GETALL_TEST)
+	public List<Test> getAllTest(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		session.setAttribute("listtest", testService.getAllTest());
+		return testService.getAllTest();
+	}
+
+	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
+	List<Test> getTestByLevel(@PathVariable Integer level) {
+		return testService.findByLevel(level);
+	}
+
 	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
 		return staffService.createTest(newTest);
 	}
 	
+	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
+	public ResponseEntity<ResponeObject> deleteTestbyId(@PathVariable Integer id) {
+		return testService.deleteById(id);
+	}
+
 //	@PostMapping("/addQuestionToTest")
 //	public 
-	
-	//ADD CANDIDATE
+
+	// ADD CANDIDATE
 	@PostMapping(URL.STAFF_ADD_CANDIDATE)
 	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
 	}
-	
-	//DELETE A CANDIDATE
+
+	// DELETE A CANDIDATE
 	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
 	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
 		return candidateService.deleteWithId(id);
 	}
-	
+
 //	@GetMapping("/getAllStaff")
 //	List<Staff> getAllStaff() {
 //		return staffRepository.findAll();
 //	}
-//
+
 //	@GetMapping("/{id}")
 //	ResponseEntity<ResponeObject> findById(@PathVariable Integer id) {
 //

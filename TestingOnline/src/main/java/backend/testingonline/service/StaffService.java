@@ -19,8 +19,4 @@ public interface StaffService {
 	
 	ResponseEntity<ResponeObject> createTest(Test test);
 	
-	
-	
-	
-	
 }

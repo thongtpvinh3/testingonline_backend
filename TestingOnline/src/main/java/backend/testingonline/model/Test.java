@@ -28,8 +28,8 @@ public class Test {
 	private int level;
 	@Column
 	private Time time;
-	@Column(name = "id_question")
-	private Integer idQuestion;
+//	@Column(name = "id_question")
+//	private Integer idQuestion;
 	@Column
 	private String name;
 	@Column(name = "is_done")
@@ -59,11 +59,10 @@ public class Test {
 		super();
 	}
 	
-	public Test(int subject, int level, Integer idQuestion, String name, int isDone, String codeTest) {
+	public Test(int subject, int level, String name, int isDone, String codeTest) {
 		super();
 		this.subject = subject;
 		this.level = level;
-		this.idQuestion = idQuestion;
 		this.name = name;
 		this.isDone = isDone;
 		this.codeTest = codeTest;
@@ -101,14 +100,6 @@ public class Test {
 
 	public void setTime(Time time) {
 		this.time = time;
-	}
-
-	public int getIdQuestion() {
-		return idQuestion;
-	}
-
-	public void setIdQuestion(int idQuestion) {
-		this.idQuestion = idQuestion;
 	}
 
 	public String getName() {
@@ -151,20 +142,11 @@ public class Test {
 		this.idCandidate = idCandidate;
 	}
 
-	public void setIdQuestion(Integer idQuestion) {
-		this.idQuestion = idQuestion;
-	}
-
 	@Override
 	public String toString() {
-		return "Test {subject=" 
-				+ subject 
-				+ ", level=" + level 
-				+ ", time=" + time 
-				+ ", idQuestion=" + idQuestion
-				+ ", name=" + name 
-				+ ", isDone=" + isDone 
-				+ ", codeTest=" + codeTest + "}";
+		return "Test [id=" + id + ", subject=" + subject + ", level=" + level + ", time=" + time + ", name=" + name
+				+ ", isDone=" + isDone + ", codeTest=" + codeTest + ", idCandidate=" + idCandidate + ", questions="
+				+ questions + "]";
 	}
 	
 	

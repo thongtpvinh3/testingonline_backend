@@ -1,7 +1,6 @@
 package backend.testingonline.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +26,22 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public Test getWithCode(String code) {
 		return testRepository.findByCodeTest(code);
+	}
+
+	@Override
+	public List<Test> findByLevel(Integer level) {
+		return testRepository.findByLevel(level);
+	}
+
+	@Override
+	public List<Test> findByDone(Integer done) {
+		return testRepository.findByIsDone(done);
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> deleteById(Integer id) {
+		testRepository.deleteById(id);
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
 	}
 
 //	@Override

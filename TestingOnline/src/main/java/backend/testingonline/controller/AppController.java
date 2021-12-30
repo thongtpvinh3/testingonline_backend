@@ -1,5 +1,7 @@
 package backend.testingonline.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -9,13 +11,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import backend.testingonline.model.Candidate;
+import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
 import url.URL;
 
-@Controller
+@RestController
 public class AppController {
 
 	@Autowired
@@ -27,6 +32,8 @@ public class AppController {
 	@Autowired
 	private TestService testService;
 	
+	@Autowired
+	private CandidateRepository candidateRepository;
 	@GetMapping(URL.ALL_HOMEPAGE)
 	public String toWebPage() {
 		return "homepage";

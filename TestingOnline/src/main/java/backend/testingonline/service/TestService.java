@@ -12,4 +12,10 @@ public interface TestService {
 	List<Test> getAllTest();
 	
 	Test getWithCode(String code);
+
+	List<Test> findByLevel(Integer level);
+	
+	List<Test> findByDone(Integer done);
+
+	ResponseEntity<ResponeObject> deleteById(Integer id);
 }
