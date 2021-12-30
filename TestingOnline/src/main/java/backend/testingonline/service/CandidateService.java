@@ -18,7 +18,7 @@ public interface CandidateService {
 	ResponseEntity<ResponeObject> save(Candidate newCandidate);
 	
 	boolean joinTestByCode(String code);
-	
+
 	ResponseEntity<ResponeObject> deleteWithId(Integer id);
 	
 }

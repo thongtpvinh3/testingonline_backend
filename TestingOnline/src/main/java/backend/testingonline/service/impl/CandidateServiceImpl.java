@@ -68,7 +68,6 @@ public class CandidateServiceImpl implements CandidateService {
 			candidateRepository.deleteById(id);
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
 		}
-		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
 				new ResponeObject("FAILED","Cannot find candidate delete","")
 				);

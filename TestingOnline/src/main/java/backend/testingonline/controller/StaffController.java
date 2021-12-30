@@ -67,8 +67,6 @@ public class StaffController {
 //	@PostMapping("/addQuestionToTest")
 //	public 
 	
-	
-	
 	//ADD CANDIDATE
 	@PostMapping("/addcandidate")
 	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
