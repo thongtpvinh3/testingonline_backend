@@ -19,10 +19,10 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Autowired
 	private CandidateRepository candidateRepository;
-	
+
 	@Autowired
 	private TestRepository testRepository;
-	
+
 	@Override
 	public List<Candidate> findByEmail(String email) {
 		return candidateRepository.findByEmail(email);
@@ -40,17 +40,15 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Override
 	public ResponseEntity<ResponeObject> save(Candidate newCandidate) {
-		
+
 		List<Candidate> foundCandidateEmail = candidateRepository.findByEmail(newCandidate.getEmail());
 		List<Candidate> foundCandidatePhone = candidateRepository.findByEmail(newCandidate.getPhone());
 		if (foundCandidateEmail.size() > 0 || foundCandidatePhone.size() > 0) {
-			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-					new ResponeObject("FAILED","Email or Phone duplicate","")
-					);
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+					.body(new ResponeObject("FAILED", "Email or Phone duplicate", ""));
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponeObject("OK","Add success", candidateRepository.save(newCandidate))
-				);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponeObject("OK", "Add success", candidateRepository.save(newCandidate)));
 	}
 
 	@Override
@@ -62,4 +60,18 @@ public class CandidateServiceImpl implements CandidateService {
 		}
 		return false;
 	}
+
+	@Override
+	public ResponseEntity<ResponeObject> deleteWithId(Integer id) {
+		boolean exits = candidateRepository.existsById(id);
+		if (exits) {
+			candidateRepository.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+		}
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+				new ResponeObject("FAILED","Cannot find candidate delete","")
+				);
+	}
+
 }

@@ -16,6 +16,12 @@ public class ResponeObject {
 		this.data = data;
 	}
 
+//	public void ResponeObject1(String string, String string2, Object delete) {
+//		this.status = string;
+//		this.message = string2;
+//		this.data = delete;
+//	}
+
 	public String getStatus() {
 		return status;
 	}

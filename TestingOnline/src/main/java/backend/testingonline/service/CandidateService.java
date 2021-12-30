@@ -19,4 +19,6 @@ public interface CandidateService {
 	
 	boolean joinTestByCode(String code);
 	
+	ResponseEntity<ResponeObject> deleteWithId(Integer id);
+	
 }
