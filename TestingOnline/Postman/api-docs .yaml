@@ -1,0 +1,403 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /staff/addtest:
+    post:
+      tags:
+      - staff-controller
+      operationId: addTest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Test'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/addcandidate:
+    post:
+      tags:
+      - staff-controller
+      operationId: addCandidate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Candidate'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /logout:
+    post:
+      tags:
+      - app-controller
+      operationId: logout
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /jointest:
+    post:
+      tags:
+      - app-controller
+      operationId: joinTestWithCode
+      parameters:
+      - name: code
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /checklogin:
+    post:
+      tags:
+      - app-controller
+      operationId: checkLogin
+      parameters:
+      - name: username
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /testpage/test/{id}:
+    get:
+      tags:
+      - candidate-controller
+      operationId: toCandidateTestView
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /testingonline:
+    get:
+      tags:
+      - app-controller
+      operationId: toWebPage
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /staff/test:
+    get:
+      tags:
+      - staff-controller
+      operationId: toTestView
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /staff/listcandidate:
+    get:
+      tags:
+      - staff-controller
+      operationId: getAllCandidate
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidate'
+  /staff/home:
+    get:
+      tags:
+      - staff-controller
+      operationId: toStaffView
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /staff/getalltest:
+    get:
+      tags:
+      - staff-controller
+      operationId: getAllTest
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /staff/getalltest/{level}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestByLevel
+      parameters:
+      - name: level
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /login:
+    get:
+      tags:
+      - app-controller
+      operationId: toLoginView
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /staff/deletetest/{id}:
+    delete:
+      tags:
+      - staff-controller
+      operationId: deleteTestbyId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/delete/{id}:
+    delete:
+      tags:
+      - staff-controller
+      operationId: deleteCandidate
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+components:
+  schemas:
+    EssayQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: integer
+          format: int32
+        subject:
+          type: integer
+          format: int32
+        content:
+          type: string
+        level:
+          type: integer
+          format: int32
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'
+        essayQuestion:
+          $ref: '#/components/schemas/EssayQuestion'
+        answer:
+          type: string
+        image:
+          type: string
+        question:
+          $ref: '#/components/schemas/Question'
+    MultipleChoiceQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: integer
+          format: int32
+        subject:
+          type: integer
+          format: int32
+        content:
+          type: string
+        level:
+          type: integer
+          format: int32
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'
+        essayQuestion:
+          $ref: '#/components/schemas/EssayQuestion'
+        isTrue:
+          type: integer
+          format: int32
+        answer:
+          type: string
+        img:
+          type: string
+        question:
+          $ref: '#/components/schemas/Question'
+    Question:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        type:
+          type: integer
+          format: int32
+        subject:
+          type: integer
+          format: int32
+        content:
+          type: string
+        level:
+          type: integer
+          format: int32
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'
+        multipleChoiceQuestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/MultipleChoiceQuestion'
+        essayQuestion:
+          $ref: '#/components/schemas/EssayQuestion'
+    Test:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        subject:
+          type: integer
+          format: int32
+        level:
+          type: integer
+          format: int32
+        time:
+          type: string
+          format: date-time
+        name:
+          type: string
+        isDone:
+          type: integer
+          format: int32
+        codeTest:
+          type: string
+        idCandidate:
+          type: integer
+          format: int32
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Question'
+    ResponeObject:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+    Candidate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        idTest:
+          type: string
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+        phone:
+          type: string
+        email:
+          type: string
+        position:
+          type: string
+        testTime:
+          type: string
+          format: date-time
+        englishMark:
+          type: number
+          format: float
+        codingMark:
+          type: number
+          format: float
+        knowledgeMark:
+          type: number
+          format: float
