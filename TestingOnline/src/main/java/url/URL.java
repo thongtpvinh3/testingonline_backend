@@ -14,6 +14,9 @@ public class URL {
 	public static final String STAFF_DELETE_CANDIDATE = "/delete/{id}";
 	public static final String STAFF_ADD_TEST = "/addtest";
 	public static final String STAFF_TO_TESTVIEW = "/test";
+	public static final String STAFF_GETALL_TEST = "/getalltest";
+	public static final String STAFF_GET_TEST_BY_LELVEL = "/getalltest/{level}";
+	public static final String STAFF_DELETE_TEST_BY_ID = "/deletetest/{id}";
 	public static final String CANDIDATE_JOIN_TEST = "/jointest";
 	public static final String CANDIDATE = "/testpage";
 	public static final String CANDIDATE_ALL_TEST = "/test/{id}";
