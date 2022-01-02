@@ -16,12 +16,10 @@ import org.springframework.ui.Model;
 import backend.testingonline.model.Staff;
 
 public class LoginFilter implements Filter {
-	
+
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
@@ -35,7 +33,7 @@ public class LoginFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
-	
+
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub

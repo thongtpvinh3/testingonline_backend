@@ -42,7 +42,7 @@ public class CandidateServiceImpl implements CandidateService {
 	public ResponseEntity<ResponeObject> save(Candidate newCandidate) {
 
 		List<Candidate> foundCandidateEmail = candidateRepository.findByEmail(newCandidate.getEmail());
-		List<Candidate> foundCandidatePhone = candidateRepository.findByEmail(newCandidate.getPhone());
+		List<Candidate> foundCandidatePhone = candidateRepository.findByPhone(newCandidate.getPhone());
 		if (foundCandidateEmail.size() > 0 || foundCandidatePhone.size() > 0) {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 					.body(new ResponeObject("FAILED", "Email or Phone duplicate", ""));

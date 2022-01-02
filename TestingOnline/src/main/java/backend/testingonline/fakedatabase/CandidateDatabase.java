@@ -21,12 +21,12 @@ public class CandidateDatabase {
 			@Override
 			public void run(String... args) throws Exception {
 				// TODO Auto-generated method stub
-				Candidate c1 = new Candidate("Quan Vu", 3);
-				Candidate c2 = new Candidate("Truong Phi", 2);
-				Candidate c3 = new Candidate("Dien Vi", 1);
-				Candidate c4 = new Candidate("Hua Chu", 2);
-				Candidate c5 = new Candidate("Thai Su Tu", 2);
-				Candidate c6 = new Candidate("Chu Thai", 2);
+				Candidate c1 = new Candidate("Quan Vu", "0123", "quanvu@gmail.com");
+				Candidate c2 = new Candidate("Truong Phi", "0124","truongphi@gmail.com");
+				Candidate c3 = new Candidate("Dien Vi", "0125","dienvi@gmail.com");
+				Candidate c4 = new Candidate("Hua Chu", "0126", "huachu@gmail.com");
+				Candidate c5 = new Candidate("Thai Su Tu", "0127", "thaisutu@gmail.com");
+				Candidate c6 = new Candidate("Chu Thai", "0128", "chuthai@gmail.com");
 
 				logger.info("insert data: " + candidateRepository.save(c1));
 				logger.info("insert data: " + candidateRepository.save(c2));

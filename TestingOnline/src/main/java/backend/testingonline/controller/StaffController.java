@@ -51,7 +51,6 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
-	@ResponseBody
 	List<Candidate> getAllCandidate(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		session.setAttribute("listcandidate", candidateService.findAll());

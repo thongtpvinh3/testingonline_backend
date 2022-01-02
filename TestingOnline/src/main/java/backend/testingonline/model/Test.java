@@ -34,7 +34,7 @@ public class Test {
 	private String name;
 	@Column(name = "is_done")
 	private int isDone;
-	@Column(name = "code_test")
+	@Column(name = "code_test", unique = true)
 	private String codeTest;
 	@Column(name = "id_candidate")
 	private int idCandidate;

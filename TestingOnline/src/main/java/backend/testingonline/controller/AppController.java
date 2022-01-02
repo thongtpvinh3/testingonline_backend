@@ -7,14 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
-import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
@@ -29,11 +28,13 @@ public class AppController {
 	@Autowired
 	private CandidateService candidateService;
 	
+	public AppController(CandidateService candidateService) {
+		this.candidateService = candidateService;
+	}
+	
 	@Autowired
 	private TestService testService;
 	
-	@Autowired
-	private CandidateRepository candidateRepository;
 	@GetMapping(URL.ALL_HOMEPAGE)
 	public String toWebPage() {
 		return "homepage";
@@ -53,9 +54,14 @@ public class AppController {
 	public String toLoginView() {
 		return "login";
 	}
+	
+//	@GetMapping("/x1")
+//	public List<Candidate> getAllCandidate() {
+//		return candidateService.findAll();
+//	}
 
-	@PostMapping(URL.STAFF_CHECK_LOGIN)
-	public String checkLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req, HttpServletResponse resp) {
+	@PostMapping(value = URL.STAFF_CHECK_LOGIN)
+	public String checkLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req) {
 		
 		boolean checkLogin = staffService.login(username, password);
 		System.out.println(checkLogin);

@@ -6,313 +6,327 @@
 	},
 	"item": [
 		{
-			"name": "check login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "username",
-							"value": "luubi",
-							"type": "text"
+			"name": "staff api",
+			"item": [
+				{
+					"name": "check login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "luubi",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								}
+							]
 						},
-						{
-							"key": "password",
-							"value": "123",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:8080/checklogin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"checklogin"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:8080/checklogin",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"checklogin"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "logout",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/logout",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"logout"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllCandidate",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "",
-							"value": "",
-							"type": "text",
-							"disabled": true
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAllCandidate",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
 						},
+						"url": {
+							"raw": "http://localhost:8080/staff/listcandidate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"listcandidate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add candidate",
+					"event": [
 						{
-							"key": "",
-							"value": "",
-							"type": "text",
-							"disabled": true
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/listcandidate",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"listcandidate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add candidate",
-			"event": [
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Gia Cat Luong\",\r\n    \"level\" : 3,\r\n    \"email\" : \"asdsad@gmail.com\",\r\n    \"phone\" : \"0123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/addcandidate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"addcandidate"
+							]
+						}
+					},
+					"response": []
+				},
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Gia Cat Luong\",\r\n    \"level\" : 3,\r\n    \"email\" : \"asdsad@gmail.com\",\r\n    \"phone\" : \"0123456789\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/addcandidate",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"addcandidate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete candidate",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [],
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/delete/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"delete",
-						"2"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get all Test",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/staff/getalltest",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"getalltest"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get Test by level",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
+					"name": "delete candidate",
+					"event": [
 						{
-							"key": "level",
-							"value": "1",
-							"type": "text"
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
 						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/getalltest/2",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"getalltest",
-						"2"
-					]
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/delete/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"delete",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getalltest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getalltest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Test by level",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "level",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/getalltest/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getalltest",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add test",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"subject\" : 1,\r\n    \"level\": 2,\r\n    \"idQuestion\" : 3,\r\n    \"name\" : \"Bai test English for Computer lv2\",\r\n    \"codeTest\" :  \"ENG234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/addtest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"addtest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete test by Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Le Thi Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/deletetest/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"deletetest",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "add test",
-			"event": [
+			"name": "candidate api",
+			"item": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
+					"name": "join by test code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
 				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"subject\" : 1,\r\n    \"level\": 2,\r\n    \"idQuestion\" : 3,\r\n    \"name\" : \"Bai test English for Computer lv2\",\r\n    \"codeTest\" :  \"ENG234\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/addtest",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"addtest"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete test by Id",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\" : \"Le Thi Z\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/staff/deletetest/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"staff",
-						"deletetest",
-						"3"
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }
