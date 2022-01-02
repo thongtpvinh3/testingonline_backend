@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 public class AppControllerTest extends AbstractTest {
-	
+	 
 	@Override
 	@Before
 	public void setUp() {

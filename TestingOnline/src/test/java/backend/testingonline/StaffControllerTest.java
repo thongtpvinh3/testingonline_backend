@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import backend.testingonline.model.Candidate;
 
 public class StaffControllerTest extends AbstractTest {
-
+ 
 	@Override
 	@Before
 	public void setUp() {

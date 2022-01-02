@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @RunWith(SpringJUnit4ClassRunner.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public abstract class AbstractTest {
+public abstract class AbstractTest { 
 	
 	protected MockMvc mvc;
 	
