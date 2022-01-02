@@ -18,7 +18,7 @@ import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.StaffService;
 
 @Service
-public class StaffServiceImpl implements StaffService {
+public class StaffServiceImpl implements StaffService { 
 
 	@Autowired
 	private StaffRepository staffRepository;

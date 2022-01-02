@@ -15,7 +15,7 @@ import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 
 @Service
-public class CandidateServiceImpl implements CandidateService {
+public class CandidateServiceImpl implements CandidateService { 
 
 	@Autowired
 	private CandidateRepository candidateRepository;

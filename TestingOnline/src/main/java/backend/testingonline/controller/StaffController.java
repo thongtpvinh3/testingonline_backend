@@ -29,7 +29,7 @@ import url.URL;
 
 @RestController
 @RequestMapping(path = URL.STAFF)
-public class StaffController {
+public class StaffController { 
 
 	@Autowired
 	private StaffService staffService;

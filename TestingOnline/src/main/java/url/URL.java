@@ -2,7 +2,7 @@ package url;
 
 public class URL {
 	
-	public static final String ALL_HOMEPAGE = "/testingonline";
+	public static final String ALL_HOMEPAGE = "/testingonline"; 
 	public static final String STAFF = "/staff";
 	public static final String STAFF_TO_STAFFVIEW = "/home";
 	public static final String STAFF_TO_LOGIN = "/login";

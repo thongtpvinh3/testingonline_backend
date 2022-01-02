@@ -20,7 +20,7 @@ import backend.testingonline.service.TestService;
 import url.URL;
 
 @RestController
-public class AppController {
+public class AppController { 
 
 	@Autowired
 	private StaffService staffService;

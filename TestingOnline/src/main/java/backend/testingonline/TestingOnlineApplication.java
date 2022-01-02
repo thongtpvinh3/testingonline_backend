@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(scanBasePackages = {"backend.testingonline"})
+@SpringBootApplication(scanBasePackages = {"backend.testingonline"}) 
 @ComponentScan(basePackages = {"backend.testingonline"})
 public class TestingOnlineApplication {
 

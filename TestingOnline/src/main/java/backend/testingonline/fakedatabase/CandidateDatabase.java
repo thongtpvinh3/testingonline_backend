@@ -10,7 +10,7 @@ import backend.testingonline.model.Candidate;
 import backend.testingonline.repository.CandidateRepository;
 
 @Configuration
-public class CandidateDatabase {
+public class CandidateDatabase { 
 	// logger ~= sysout
 	private static final Logger logger = LoggerFactory.getLogger(CandidateDatabase.class);
 

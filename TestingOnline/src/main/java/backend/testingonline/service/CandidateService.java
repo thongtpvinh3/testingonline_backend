@@ -13,7 +13,7 @@ public interface CandidateService {
 
 	List<Candidate> findByPhone(String phone);
 	
-	List<Candidate> findAll();
+	List<Candidate> findAll(); 
 
 	ResponseEntity<ResponeObject> save(Candidate newCandidate);
 	

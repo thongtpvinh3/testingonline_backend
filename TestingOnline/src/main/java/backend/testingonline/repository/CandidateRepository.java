@@ -21,5 +21,5 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	
 	@Modifying
 	@Query("SELECT candidate FROM Candidate candidate WHERE candidate.phone = :phone")
-	List<Candidate> findByPhone(@Param("phone") String phone);
+	List<Candidate> findByPhone(@Param("phone") String phone); 
 }
