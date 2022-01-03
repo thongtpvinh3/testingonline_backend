@@ -6,6 +6,56 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
+  /staff/updatetest/{id}:
+    put:
+      tags:
+      - staff-controller
+      operationId: updateTest
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Test'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/addquestiontotest/{idTest}/{idQuestion}:
+    put:
+      tags:
+      - staff-controller
+      operationId: addQuestionToTest
+      parameters:
+      - name: idTest
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: idQuestion
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
   /staff/addtest:
     post:
       tags:
@@ -273,6 +323,21 @@ components:
           type: string
         question:
           $ref: '#/components/schemas/Question'
+    LocalTime:
+      type: object
+      properties:
+        hour:
+          type: integer
+          format: int32
+        minute:
+          type: integer
+          format: int32
+        second:
+          type: integer
+          format: int32
+        nano:
+          type: integer
+          format: int32
     MultipleChoiceQuestion:
       type: object
       properties:
@@ -345,8 +410,7 @@ components:
           type: integer
           format: int32
         time:
-          type: string
-          format: date-time
+          $ref: '#/components/schemas/LocalTime'
         name:
           type: string
         isDone:
