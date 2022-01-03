@@ -31,6 +31,31 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
+  /staff/editquestion/{id}:
+    put:
+      tags:
+      - staff-controller
+      operationId: editQuestion
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
   /staff/addquestiontotest/{idTest}/{idQuestion}:
     put:
       tags:
@@ -66,6 +91,24 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Test'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/addquestion:
+    post:
+      tags:
+      - staff-controller
+      operationId: addQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Question'
         required: true
       responses:
         "200":
@@ -242,6 +285,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Test'
+  /staff/getallquestion:
+    get:
+      tags:
+      - staff-controller
+      operationId: getAllQuestion
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
   /login:
     get:
       tags:
@@ -259,6 +316,25 @@ paths:
       tags:
       - staff-controller
       operationId: deleteTestbyId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/deletequestion/{id}:
+    delete:
+      tags:
+      - staff-controller
+      operationId: deleteQuestionbyId
       parameters:
       - name: id
         in: path

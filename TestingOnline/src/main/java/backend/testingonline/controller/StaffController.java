@@ -104,12 +104,12 @@ public class StaffController {
 		return testService.deleteById(id);
 	}
 
-	@PutMapping("/addquestiontotest/{idTest}/{idQuestion}")
+	@PutMapping(URL.STAFF_ADD_QUESTION_TO_TEST)
 	public ResponseEntity<ResponeObject> addQuestionToTest(@PathVariable Integer idTest, @PathVariable Integer idQuestion) {
 		return testService.addQuestionTotest(idTest, idQuestion);
 	}
 	
-	@PutMapping("/updatetest/{id}")
+	@PutMapping(URL.STAFF_UPDATE_TEST)
 	public ResponseEntity<ResponeObject> updateTest(@PathVariable Integer id,@RequestBody Test test) {
 		Test foundTest = testService.findById(id);
 		if (foundTest == null) {
@@ -124,13 +124,30 @@ public class StaffController {
 	
 //---------------------------------QUESTION------------------------------------------------------------------------
 	
-	@GetMapping("/getallquestion")
+	@GetMapping(URL.STAFF_GETALL_QUESTION)
 	public List<Question> getAllQuestion(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
 		session.setAttribute("lisquestion", questionService.findAll());
 		model.addAttribute("listquestion", session.getAttribute("listquestion"));
 		return questionService.findAll();
 	}
+	
+	@PostMapping(URL.STAFF_ADD_QUESTION)
+	public ResponseEntity<ResponeObject> addQuestion(@RequestBody Question newQuestion) {
+		return questionService.save(newQuestion);
+	}
+	
+	@DeleteMapping(URL.STAFF_DELETE_QUESTION)
+	public ResponseEntity<ResponeObject> deleteQuestionbyId(@PathVariable Integer id) {
+		return questionService.deleteById(id);
+	}
+	
+	@PutMapping(URL.STAFF_EDIT_QUESTION)
+	public ResponseEntity<ResponeObject> editQuestion(@PathVariable Integer id,@RequestBody Question newQuestion) {
+		return ResponseEntity.status(HttpStatus.OK).body(
+				new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id,newQuestion))
+				);
+	} 
 	
 
 //	@GetMapping("/getAllStaff")
