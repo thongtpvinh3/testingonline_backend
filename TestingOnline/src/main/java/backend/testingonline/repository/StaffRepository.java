@@ -21,6 +21,10 @@ public interface StaffRepository extends JpaRepository<Staff, Integer> {
 	@Query("SELECT staff FROM Staff staff WHERE staff.username = :username AND staff.password = :password")
 	Staff findByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
 	
+//	@Modifying
+//	@Query("")s
+//	ResponseEntity<ResponeObject> updateTest();
+	
 	// Lien quan den Candidate
 //	List<Candidate> findCandidateByName(String name);
 //	List<Candidate> findCandidateByEmail(String email);

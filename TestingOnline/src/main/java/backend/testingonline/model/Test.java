@@ -1,6 +1,7 @@
 package backend.testingonline.model;
 
-import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 @Table(name = "test")
 public class Test { 
@@ -25,27 +29,28 @@ public class Test {
 	@Column
 	private int subject; // 1 english, 2 coding, 3 knowledge
 	@Column
-	private int level;
+	private int level; // 1 FR, 2 JR, 3 SR
 	@Column
-	private Time time;
+	private LocalTime time;
 //	@Column(name = "id_question")
 //	private Integer idQuestion;
 	@Column
 	private String name;
 	@Column(name = "is_done")
-	private int isDone;
+	private int isDone; // xong chua ?
 	@Column(name = "code_test", unique = true)
-	private String codeTest;
+	private String codeTest; // code join vao
 	@Column(name = "id_candidate")
 	private int idCandidate;
 	
 //	@ManyToMany(fetch = FetchType.LAZY)
 //	private List<Candidate> candidates;
-//	
+
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "test_question",
-	joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
-	private List<Question> questions;
+	@Cascade(value = {CascadeType.ALL})
+//	@JoinTable(name = "test_question",
+//	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")})
+	private List<Question> questions = new ArrayList<>(); // Bo cau hoi
 	
 	public List<Question> getQuestions() {
 		return questions;
@@ -67,6 +72,17 @@ public class Test {
 		this.isDone = isDone;
 		this.codeTest = codeTest;
 	}
+	
+//	public Test(int subject, int level, String name, int isDone, String codeTest,Question question,List<Question> questions) {
+//		super();
+//		this.subject = subject;
+//		this.level = level;
+//		this.name = name;
+//		this.isDone = isDone;
+//		this.codeTest = codeTest;
+//		questions.add(question);
+//		this.questions = questions;
+//	}
 
 
 
@@ -94,11 +110,11 @@ public class Test {
 		this.level = level;
 	}
 
-	public Time getTime() {
+	public LocalTime getTime() {
 		return time;
 	}
 
-	public void setTime(Time time) {
+	public void setTime(LocalTime time) {
 		this.time = time;
 	}
 

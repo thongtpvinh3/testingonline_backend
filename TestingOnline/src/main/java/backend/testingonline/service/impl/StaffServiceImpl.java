@@ -1,5 +1,6 @@
 package backend.testingonline.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Question;
 import backend.testingonline.model.Staff;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
@@ -60,4 +62,19 @@ public class StaffServiceImpl implements StaffService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponeObject("OK", "Add success!", testRepository.save(newTest)));
 	}
+
+//	@Override
+//	public Test addQuestionToTest(int idTest, Question newQuestion) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+
+//	@Override
+//	public Test addQuestionToTest(int idTest, Question newQuestion) {
+//		Test foudTest = testRepository.getById(idTest);
+//		List<Question> newListQuestion = foudTest.getQuestions();
+//		newListQuestion.add(newQuestion);
+//		foudTest.setQuestions(newListQuestion);
+//		return testRepository.save(foudTest);
+//	}
 }

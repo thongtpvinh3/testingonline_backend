@@ -1,5 +1,6 @@
 package backend.testingonline.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,6 +15,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "question")
@@ -32,10 +36,11 @@ public class Question {
 	@Column
 	protected int level; // 1 Fresher, 2 Junior, 3 Senior
 	
-	@ManyToMany
-	@JoinTable(name = "test_question",
-	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
-	protected List<Test> tests;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade(value = {CascadeType.ALL})
+//	@JoinTable(name = "test_question",
+//	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
+	protected List<Test> tests = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
 	protected List<MultipleChoiceQuestion> multipleChoiceQuestions;

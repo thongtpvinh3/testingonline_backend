@@ -28,16 +28,20 @@ public class EssayQuestion extends Question {
 	@JoinColumn(name = "id_question")
 	private Question question;
 	
+	public EssayQuestion() {
+		super();
+	}
+	
+	public EssayQuestion(int type,int subject,String content, int level) {
+		super(type,subject,content,level);
+	}
+	
 	public Question getQuestion() {
 		return question;
 	}
 
 	public void setQuestion(Question question) {
 		this.question = question;
-	}
-
-	public EssayQuestion() {
-		super();
 	}
 
 	public int getId() {

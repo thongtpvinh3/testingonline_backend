@@ -23,12 +23,18 @@ public class MultipleChoiceQuestion extends Question {
 	private String answer;// cac cau tra loi
 	@Column
 	private String img;
-//	@Column(name = "id_question")
-//	private int idQuestion; // map question 1 question co ? dap an
 	
 	@ManyToOne
 	@JoinColumn(name = "id_question")
 	private Question question;
+	
+	public MultipleChoiceQuestion() {
+		super();
+	}
+	
+	public MultipleChoiceQuestion(int type,int subject,String content, int level) {
+		super(type,subject,content,level);
+	}
 	
 	public Question getQuestion() {
 		return question;
@@ -36,10 +42,6 @@ public class MultipleChoiceQuestion extends Question {
 
 	public void setQuestion(Question question) {
 		this.question = question;
-	}
-
-	public MultipleChoiceQuestion() {
-		super();
 	}
 
 	public int getId() {

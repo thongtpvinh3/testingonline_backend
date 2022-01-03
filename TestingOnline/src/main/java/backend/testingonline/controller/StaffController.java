@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Question;
 import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
@@ -29,7 +32,7 @@ import url.URL;
 
 @RestController
 @RequestMapping(path = URL.STAFF)
-public class StaffController { 
+public class StaffController {
 
 	@Autowired
 	private StaffService staffService;
@@ -50,6 +53,8 @@ public class StaffController {
 		return "staffhome";
 	}
 
+//----------------------CANDIDATE--------------------------------------------------------
+
 	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
 	List<Candidate> getAllCandidate(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
@@ -58,6 +63,19 @@ public class StaffController {
 		return candidateService.findAll();
 	}
 
+	// ADD CANDIDATE
+	@PostMapping(URL.STAFF_ADD_CANDIDATE)
+	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
+		return candidateService.save(newCandidate);
+	}
+
+	// DELETE A CANDIDATE
+	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
+	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
+		return candidateService.deleteWithId(id);
+	}
+// --------------------TEST-------------------------------------------------------------------------------------
+	
 	// ADD TEST
 	@GetMapping(URL.STAFF_TO_TESTVIEW)
 	public String toTestView() {
@@ -80,26 +98,30 @@ public class StaffController {
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
 		return staffService.createTest(newTest);
 	}
-	
+
 	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
 	public ResponseEntity<ResponeObject> deleteTestbyId(@PathVariable Integer id) {
 		return testService.deleteById(id);
 	}
 
-//	@PostMapping("/addQuestionToTest")
-//	public 
-
-	// ADD CANDIDATE
-	@PostMapping(URL.STAFF_ADD_CANDIDATE)
-	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
-		return candidateService.save(newCandidate);
+	@PutMapping("/addquestiontotest/{idTest}/{idQuestion}")
+	public ResponseEntity<ResponeObject> addQuestionToTest(@PathVariable Integer idTest, @PathVariable Integer idQuestion) {
+		return testService.addQuestionTotest(idTest, idQuestion);
 	}
-
-	// DELETE A CANDIDATE
-	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
-	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
-		return candidateService.deleteWithId(id);
+	
+	@PutMapping("/updatetest/{id}")
+	public ResponseEntity<ResponeObject> updateTest(@PathVariable Integer id,@RequestBody Test test) {
+		Test foundTest = testService.findById(id);
+		if (foundTest == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					new ResponeObject("FALSE", "Khong tim thay id: "+id, "")
+					);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(
+				new ResponeObject("OK", "update thanh cong", testService.updateTest(id,test))
+				);
 	}
+	
 
 //	@GetMapping("/getAllStaff")
 //	List<Staff> getAllStaff() {
