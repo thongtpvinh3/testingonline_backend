@@ -122,6 +122,16 @@ public class StaffController {
 				);
 	}
 	
+//---------------------------------QUESTION------------------------------------------------------------------------
+	
+	@GetMapping("/getallquestion")
+	public List<Question> getAllQuestion(HttpServletRequest req, Model model) {
+		HttpSession session = req.getSession();
+		session.setAttribute("lisquestion", questionService.findAll());
+		model.addAttribute("listquestion", session.getAttribute("listquestion"));
+		return questionService.findAll();
+	}
+	
 
 //	@GetMapping("/getAllStaff")
 //	List<Staff> getAllStaff() {
