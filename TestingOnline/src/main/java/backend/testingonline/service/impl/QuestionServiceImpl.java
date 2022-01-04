@@ -38,7 +38,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public Question findById(Integer id) {
-		return questionRepository.getById(id);
+		return questionRepository.findById(id).get();
 	}
 
 	@Override

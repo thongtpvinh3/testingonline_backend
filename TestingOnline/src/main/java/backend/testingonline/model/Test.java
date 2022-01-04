@@ -10,13 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
@@ -48,6 +48,8 @@ public class Test {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(value = {CascadeType.ALL})
+//	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 //	@JoinTable(name = "test_question",
 //	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")})
 	private List<Question> questions = new ArrayList<>(); // Bo cau hoi

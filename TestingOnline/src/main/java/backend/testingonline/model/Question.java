@@ -9,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -18,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "question")
@@ -38,15 +38,18 @@ public class Question {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(value = {CascadeType.ALL})
+	@JsonIgnore
 //	@JoinTable(name = "test_question",
 //	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
 	protected List<Test> tests = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.EAGER)
-	protected List<MultipleChoiceQuestion> multipleChoiceQuestions;
+	@OneToMany(fetch = FetchType.LAZY)
+	@Cascade(value = {CascadeType.ALL})
+	private List<MultipleChoiceQuestion> multipleChoiceQuestions = new ArrayList<>();
 	
-	@OneToOne
-	protected EssayQuestion essayQuestion;
+	@OneToOne(fetch = FetchType.LAZY)
+	@Cascade(value = CascadeType.ALL)
+	private EssayQuestion essayQuestion;
 	
 	public Question() {
 		super();
