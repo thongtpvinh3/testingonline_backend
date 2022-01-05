@@ -9,12 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.service.CandidateService;
+import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
 import url.URL;
@@ -27,6 +29,9 @@ public class AppController {
 	
 	@Autowired
 	private CandidateService candidateService;
+	
+	@Autowired
+	private QuestionService questionService;
 	
 	public AppController(CandidateService candidateService) {
 		this.candidateService = candidateService;
@@ -76,11 +81,8 @@ public class AppController {
 		}
 	}
 
-	@PostMapping(URL.STAFF_LOGOUT)
-	public String logout(HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		session.setAttribute("staff", null);
-		return "redirect:/login";
-	}
-
+//	@GetMapping("/type/{id}")
+//	public String testType(@PathVariable Integer id) {
+//		return questionService.getType(id);
+//	}
 }

@@ -14,6 +14,8 @@ public interface CandidateService {
 	List<Candidate> findByPhone(String phone);
 	
 	List<Candidate> findAll(); 
+	
+	Candidate findById(Integer id);
 
 	ResponseEntity<ResponeObject> save(Candidate newCandidate);
 	

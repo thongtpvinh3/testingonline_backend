@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.Test;
+import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.repository.QuestionRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responeexception.ResponeObject;
@@ -19,6 +21,9 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TestRepository testRepository;
+	
+	@Autowired
+	private CandidateRepository candidateRepository;
 
 	@Autowired
 	private QuestionRepository questionRepository;
@@ -51,7 +56,7 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public Test findById(Integer id) {
-		return testRepository.getById(id);
+		return testRepository.findById(id).get();
 	}
 
 	@Override
@@ -61,7 +66,7 @@ public class TestServiceImpl implements TestService {
 //		Question newAddQuestion = test.getQuestions().get(0);
 //		foundTest.getQuestions().add(newAddQuestion);
 
-		foundTest.setIdCandidate(test.getIdCandidate());
+//		foundTest.setIdCandidate(test.getIdCandidate());
 		foundTest.setIsDone(test.getIsDone());
 		foundTest.setLevel(test.getLevel());
 		foundTest.setName(test.getName());
@@ -98,5 +103,51 @@ public class TestServiceImpl implements TestService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
 
+	}
+
+	@Override
+	public List<Test> findByName(String name) {
+		return testRepository.findByName(name);
+	}
+
+	@Override
+	public List<Test> findBySubject(Integer subject) {
+		return testRepository.findBySubject(subject);
+	}
+
+	@Override
+	public List<Test> findByCandidateId(Integer id) {
+		Candidate foundCandidate = candidateRepository.getById(id);
+		return foundCandidate.getTests();
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate) {
+		Test newTest = testRepository.getById(idTest);
+		Candidate foundCandidate = candidateRepository.getById(idCandidate);
+//		while (!foundTest.getQuestions().isEmpty()) {
+//			for (Question q : foundTest.getQuestions()) {
+//				if (foundTest.getQuestions().contains(q)) {
+//					return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+//							.body(new ResponeObject("FAILED", "Duplicate question", ""));
+//				} else {
+					List<Test> newList = foundCandidate.getTests();
+					newList.add(newTest);
+					foundCandidate.setTests(newList);
+					List<Candidate> newListCandidate = newTest.getCandidates();
+					newListCandidate.add(foundCandidate);
+					newTest.setCandidates(newListCandidate);
+//				}
+//			}
+//		}
+
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
+
+	}
+
+	@Override
+	public void setTestIsDone(Integer id) {
+		testRepository.setTestIsDone(id);
 	}
 }

@@ -19,5 +19,15 @@ public interface QuestionService {
 
 	Question editQuestion(Integer id, Question newQuestion);
 	
+	String getType(Integer idQuestion);
+
+	List<Question> findByType(Integer type);
+
+	List<Question> findBySubject(Integer subject);
+
+	List<Question> findByLevel(Integer level);
+
+	List<Question> getByTestId(Integer idTest);
+	
 	
 }

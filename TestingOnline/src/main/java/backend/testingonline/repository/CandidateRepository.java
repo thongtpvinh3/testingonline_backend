@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Test;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
@@ -19,4 +20,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	
 	@Query("SELECT candidate FROM Candidate candidate WHERE candidate.phone = :phone")
 	List<Candidate> findByPhone(@Param("phone") String phone); 
+	
+	@org.springframework.data.jpa.repository.Query(value = "SELECT * from Candidate candidate WHERE candidate.id = :id", nativeQuery = true)
+	List<Test> aaaCanidateTest(@Param("id") Integer id);
 }

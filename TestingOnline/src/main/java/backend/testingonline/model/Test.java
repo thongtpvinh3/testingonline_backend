@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -40,11 +41,14 @@ public class Test {
 	private int isDone; // xong chua ?
 	@Column(name = "code_test", unique = true)
 	private String codeTest; // code join vao
-	@Column(name = "id_candidate")
-	private int idCandidate;
+//	@Column(name = "id_candidate")
+//	private int idCandidate;
 	
-//	@ManyToMany(fetch = FetchType.LAZY)
-//	private List<Candidate> candidates;
+	@ManyToMany//(fetch = FetchType.LAZY)
+	@JsonIgnore
+//	@JoinTable(name = "candidate_test",
+//	joinColumns = {@JoinColumn(name = "id_candidate")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
+	private List<Candidate> candidates;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(value = {CascadeType.ALL})
@@ -136,13 +140,13 @@ public class Test {
 		this.isDone = isDone;
 	}
 
-//	public List<Candidate> getCandidates() {
-//		return candidates;
-//	}
-//
-//	public void setCandidates(List<Candidate> candidates) {
-//		this.candidates = candidates;
-//	}
+	public List<Candidate> getCandidates() {
+		return candidates;
+	}
+
+	public void setCandidates(List<Candidate> candidates) {
+		this.candidates = candidates;
+	}
 
 	public String getCodeTest() {
 		return codeTest;
@@ -152,18 +156,18 @@ public class Test {
 		this.codeTest = codeTest;
 	}
 	
-	public int getIdCandidate() {
-		return idCandidate;
-	}
-
-	public void setIdCandidate(int idCandidate) {
-		this.idCandidate = idCandidate;
-	}
+//	public int getIdCandidate() {
+//		return idCandidate;
+//	}
+//
+//	public void setIdCandidate(int idCandidate) {
+//		this.idCandidate = idCandidate;
+//	}
 
 	@Override
 	public String toString() {
 		return "Test [id=" + id + ", subject=" + subject + ", level=" + level + ", time=" + time + ", name=" + name
-				+ ", isDone=" + isDone + ", codeTest=" + codeTest + ", idCandidate=" + idCandidate + ", questions="
+				+ ", isDone=" + isDone + ", codeTest=" +  ", questions="
 				+ questions + "]";
 	}
 	

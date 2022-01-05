@@ -72,4 +72,9 @@ public class CandidateServiceImpl implements CandidateService {
 				new ResponeObject("FAILED","Cannot find candidate delete","")
 				);
 	}
+
+	@Override
+	public Candidate findById(Integer id) {
+		return candidateRepository.getById(id);
+	}
 }

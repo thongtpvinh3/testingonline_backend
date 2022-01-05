@@ -6,7 +6,9 @@ import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
 
 @Repository
@@ -26,8 +28,16 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
 	Test findByCodeTest(@Param("code") String code);
 	
 	@Query("SELECT test FROM Test test WHERE test.name like %:name%")
-	List<Test> getByName(@Param("name") String name);
-
+	List<Test> findByName(@Param("name") String name);
+	
+	@Transactional
+	@org.springframework.data.jpa.repository.Modifying
+	@org.springframework.data.jpa.repository.Query(value = "UPDATE Test test SET is_done = 1 WHERE id = ?1", nativeQuery = true)
+	void setTestIsDone(Integer id);
+	
+//	@Query("SELECT test FROM Test test WHERE test.candidate = :candidate")
+//	List<Test> findByCandidates(@Param("candidate") Candidate candidate);
+	
 //	@Query("")
 //	Object addQuestion(@Param("question") Question newQuestion);
 

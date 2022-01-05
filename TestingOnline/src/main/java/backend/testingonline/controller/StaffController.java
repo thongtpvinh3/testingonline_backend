@@ -3,6 +3,7 @@ package backend.testingonline.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,13 @@ public class StaffController {
 		model.addAttribute("staff", session.getAttribute("staff"));
 		return "staffhome";
 	}
+	
+	@PostMapping(URL.STAFF_LOGOUT)
+	public String logout(HttpServletRequest req, HttpServletResponse resp) {
+		HttpSession session = req.getSession();
+		session.setAttribute("staff", null);
+		return "redirect:/login";
+	}
 
 //----------------------CANDIDATE--------------------------------------------------------
 
@@ -88,10 +96,40 @@ public class StaffController {
 		session.setAttribute("listtest", testService.getAllTest());
 		return testService.getAllTest();
 	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_NAME)
+	List<Test> getTestByName(@PathVariable String name) {
+		return testService.findByName(name);
+	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_CODE)
+	Test getTestByCode(@PathVariable String code) {
+		return testService.getWithCode(code);
+	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_SUBJECT)
+	List<Test> getTestBySubject(@PathVariable Integer subject) {
+		return testService.findBySubject(subject);
+	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_ID)
+	Test getTestbyId(@PathVariable Integer id) {
+		return testService.findById(id);
+	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
+	List<Test> getTestByDone(@PathVariable Integer done) {
+		return testService.findByDone(done);
+	}
 
 	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
 	List<Test> getTestByLevel(@PathVariable Integer level) {
 		return testService.findByLevel(level);
+	}
+	
+	@GetMapping(URL.SATFF_GET_TEST_BY_CANDIDATEID)
+	List<Test> getTestByCandidateId(@PathVariable Integer id) {
+		 return testService.findByCandidateId(id);
 	}
 
 	@PostMapping(URL.STAFF_ADD_TEST)
@@ -122,7 +160,20 @@ public class StaffController {
 				);
 	}
 	
-//---------------------------------QUESTION------------------------------------------------------------------------
+	@PutMapping(URL.STAFF_ADD_TEST_FOR_CANDIDATE)
+	public ResponseEntity<ResponeObject> addTestForCandidate(@PathVariable Integer idTest,@PathVariable Integer idCandidate) {
+		return testService.addTestForCandidate(idTest,idCandidate);
+	}
+	
+//	@PutMapping("/setisdone/{id}")
+//	public ResponseEntity<ResponeObject> setTestIsDone(@PathVariable Integer id) {
+//		testService.setTestIsDone(id);
+//		return ResponseEntity.status(HttpStatus.OK).body(
+//				new ResponeObject("OK", "Set trang thai thanh cong", "")
+//				); 
+//	}
+	
+//-------------------------QUESTION-----------------------------------------------------------------------------
 	
 	@GetMapping(URL.STAFF_GETALL_QUESTION)
 	public List<Question> getAllQuestion(HttpServletRequest req, Model model) {
@@ -132,6 +183,31 @@ public class StaffController {
 		return questionService.findAll();
 	}
 	
+	@GetMapping(URL.STAFF_GET_QUESTION_BY_ID)
+	public Question getQuestionById(@PathVariable Integer id) {
+		return questionService.findById(id);
+	}
+	
+	@GetMapping(URL.STAFF_GET_QUESTION_BY_TYPE)
+	public List<Question> getQuestionByType(@PathVariable Integer type) {
+		return questionService.findByType(type);
+	}
+	
+	@GetMapping(URL.STAFF_GET_QUESTION_BY_SUBJECT)
+	public List<Question> getQuestionBySubject(@PathVariable Integer subject) {
+		return questionService.findBySubject(subject);
+	}
+	
+	@GetMapping(URL.STAFF_GET_QUESTION_BY_LEVEL)
+	public List<Question> getQuestionByLevel(@PathVariable Integer level) {
+		return questionService.findByLevel(level);
+	}
+	
+	@GetMapping(URL.STAFF_GET_QUESTION_BY_TESTID)
+	public List<Question> getQuestionByTestId(@PathVariable Integer idTest) {
+		return questionService.getByTestId(idTest);
+	}
+	 
 	@PostMapping(URL.STAFF_ADD_QUESTION)
 	public ResponseEntity<ResponeObject> addQuestion(@RequestBody Question newQuestion) {
 		return questionService.save(newQuestion);
@@ -147,7 +223,7 @@ public class StaffController {
 		return ResponseEntity.status(HttpStatus.OK).body(
 				new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id,newQuestion))
 				);
-	} 
+	}
 	
 
 //	@GetMapping("/getAllStaff")

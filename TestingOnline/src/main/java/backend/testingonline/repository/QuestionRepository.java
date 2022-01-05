@@ -21,6 +21,9 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	
 	//Dung native Query
 	@org.springframework.data.jpa.repository.Query(value = "SELECT q.type FROM question q WHERE id=:id",nativeQuery = true)
-	int getTypeById(@Param("id") Integer idQuestion); 
+	int getTypeById(@Param("id") Integer idQuestion);
+	
+	@Query("SELECT question FROM Question question WHERE question.type = :type")
+	List<Question> findByType(@Param("types")Integer type); 
 
 }
