@@ -22,12 +22,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Levels;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.Subject;
 import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
+import backend.testingonline.service.LevelService;
 import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.StaffService;
+import backend.testingonline.service.SubjectService;
 import backend.testingonline.service.TestService;
 import url.URL;
 
@@ -46,6 +50,12 @@ public class StaffController {
 
 	@Autowired
 	private QuestionService questionService;
+	
+	@Autowired
+	private LevelService levelService;
+	
+	@Autowired
+	private SubjectService subjectService;
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
@@ -224,7 +234,40 @@ public class StaffController {
 				new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id,newQuestion))
 				);
 	}
+
+//------------------------------Level-------------------------------------------
 	
+	@GetMapping("/getalllevel")
+	public List<Levels> getAllLevels() {
+		return levelService.getAll();
+	}
+	
+	@PostMapping("/addnewlevel")
+	ResponseEntity<ResponeObject> addNewLevel(@RequestBody Levels level) {
+		return levelService.save(level);
+	}
+	
+	@DeleteMapping("/deletelevel/{id}")
+	ResponseEntity<ResponeObject> deleteLevel(@PathVariable Integer id) {
+		return levelService.deleteById(id);
+	}
+	
+//-----------------------------Subject------------------------------------------
+	
+	@GetMapping("/getallsubject")
+	public List<Subject> getallSubject() {
+		return subjectService.getAll();
+	}
+	
+	@PostMapping("/addsubject")
+	ResponseEntity<ResponeObject> addNewSubject(@RequestBody Subject subject) {
+		return subjectService.save(subject);
+	}
+	
+	@DeleteMapping("/deletesubject/{id}")
+	ResponseEntity<ResponeObject> deleteSubjectById(@PathVariable Integer id) {
+		return subjectService.deleteById(id);
+	}
 
 //	@GetMapping("/getAllStaff")
 //	List<Staff> getAllStaff() {

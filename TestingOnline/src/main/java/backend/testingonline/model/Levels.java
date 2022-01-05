@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "levels")
 public class Levels {
@@ -22,12 +24,15 @@ public class Levels {
 	private String name;
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Candidate> candidates;
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Question> questions;
 	
 	@ManyToMany
+	@JsonIgnore
 	private List<Test> tests;
 	
 	public List<Candidate> getCandidates() {
