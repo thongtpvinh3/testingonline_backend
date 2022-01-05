@@ -6,6 +6,25 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
+  /testpage/setisdone/{id}:
+    put:
+      tags:
+      - candidate-controller
+      operationId: setTestIsDone
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
   /staff/updatetest/{id}:
     put:
       tags:
@@ -56,6 +75,31 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
+  /staff/addtestforcandidate/{idTest}/{idCandidate}:
+    put:
+      tags:
+      - staff-controller
+      operationId: addTestForCandidate
+      parameters:
+      - name: idTest
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: idCandidate
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
   /staff/addquestiontotest/{idTest}/{idQuestion}:
     put:
       tags:
@@ -81,6 +125,18 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
+  /staff/logout:
+    post:
+      tags:
+      - staff-controller
+      operationId: logout
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
   /staff/addtest:
     post:
       tags:
@@ -135,18 +191,6 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
-  /logout:
-    post:
-      tags:
-      - app-controller
-      operationId: logout
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                type: string
   /jointest:
     post:
       tags:
@@ -250,11 +294,18 @@ paths:
             '*/*':
               schema:
                 type: string
-  /staff/getalltest:
+  /staff/gettestbysubject/{subject}:
     get:
       tags:
       - staff-controller
-      operationId: getAllTest
+      operationId: getTestBySubject
+      parameters:
+      - name: subject
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       responses:
         "200":
           description: OK
@@ -264,7 +315,27 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Test'
-  /staff/getalltest/{level}:
+  /staff/gettestbyname/{name}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestByName
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /staff/gettestbylevel/{level}:
     get:
       tags:
       - staff-controller
@@ -276,6 +347,202 @@ paths:
         schema:
           type: integer
           format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /staff/gettestbyid/{id}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestbyId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Test'
+  /staff/gettestbydone/{done}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestByDone
+      parameters:
+      - name: done
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /staff/gettestbycode/{code}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestByCode
+      parameters:
+      - name: code
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Test'
+  /staff/gettestbycandidateid/{id}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getTestByCandidateId
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+  /staff/getquestionbytype/{type}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getQuestionByType
+      parameters:
+      - name: type
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /staff/getquestionbytest/{idTest}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getQuestionByTestId
+      parameters:
+      - name: idTest
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /staff/getquestionbysubject/{subject}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getQuestionBySubject
+      parameters:
+      - name: subject
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /staff/getquestionbylevel/{level}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getQuestionByLevel
+      parameters:
+      - name: level
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Question'
+  /staff/getquestionbyid/{id}:
+    get:
+      tags:
+      - staff-controller
+      operationId: getQuestionById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Question'
+  /staff/getalltest:
+    get:
+      tags:
+      - staff-controller
+      operationId: getAllTest
       responses:
         "200":
           description: OK
@@ -370,29 +637,21 @@ paths:
                 $ref: '#/components/schemas/ResponeObject'
 components:
   schemas:
+    ResponeObject:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
     EssayQuestion:
       type: object
       properties:
         id:
           type: integer
           format: int32
-        type:
-          type: integer
-          format: int32
-        subject:
-          type: integer
-          format: int32
-        content:
-          type: string
-        level:
-          type: integer
-          format: int32
-        tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/Test'
-        essayQuestion:
-          $ref: '#/components/schemas/EssayQuestion'
         answer:
           type: string
         image:
@@ -420,23 +679,6 @@ components:
         id:
           type: integer
           format: int32
-        type:
-          type: integer
-          format: int32
-        subject:
-          type: integer
-          format: int32
-        content:
-          type: string
-        level:
-          type: integer
-          format: int32
-        tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/Test'
-        essayQuestion:
-          $ref: '#/components/schemas/EssayQuestion'
         isTrue:
           type: integer
           format: int32
@@ -463,16 +705,14 @@ components:
         level:
           type: integer
           format: int32
-        tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/Test'
         multipleChoiceQuestions:
           type: array
           items:
             $ref: '#/components/schemas/MultipleChoiceQuestion'
         essayQuestion:
           $ref: '#/components/schemas/EssayQuestion'
+        typeToString:
+          type: string
     Test:
       type: object
       properties:
@@ -494,22 +734,10 @@ components:
           format: int32
         codeTest:
           type: string
-        idCandidate:
-          type: integer
-          format: int32
         questions:
           type: array
           items:
             $ref: '#/components/schemas/Question'
-    ResponeObject:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
     Candidate:
       type: object
       properties:
@@ -541,3 +769,7 @@ components:
         knowledgeMark:
           type: number
           format: float
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/Test'

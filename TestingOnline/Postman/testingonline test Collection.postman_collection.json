@@ -48,13 +48,14 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/logout",
+							"raw": "http://localhost:8080/staff/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"staff",
 								"logout"
 							]
 						}
@@ -198,6 +199,89 @@
 					"response": []
 				},
 				{
+					"name": "get test by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getalltest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getalltest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get test by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/gettestbyname/{name}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"gettestbyname",
+								"{name}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get test by code",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/gettestbycode/ENG2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"gettestbycode",
+								"ENG2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get test by subject",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/gettestbysubject/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"gettestbysubject",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get Test by level",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -226,6 +310,63 @@
 								"staff",
 								"getalltest",
 								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Test by done",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "level",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/getalltest/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getalltest",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get test by candidate id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080//staff//gettestbycandidateid/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"",
+								"staff",
+								"",
+								"gettestbycandidateid",
+								"1"
 							]
 						}
 					},
@@ -266,6 +407,28 @@
 							"path": [
 								"staff",
 								"addtest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add test for candidate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/addtestforcandidate/2/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"addtestforcandidate",
+								"2",
+								"1"
 							]
 						}
 					},
@@ -354,48 +517,6 @@
 					"response": []
 				},
 				{
-					"name": "add question to test",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"isdone\" : 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/staff/addquestiontotest/1/3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"staff",
-								"addquestiontotest",
-								"1",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "get all question",
 					"request": {
 						"method": "GET",
@@ -410,6 +531,111 @@
 							"path": [
 								"staff",
 								"getalltest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get question by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getquestionbyid/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getquestionbyid",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get question by type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getquestionbytype/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getquestionbytype",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get question by subject",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getquestionbysubject/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getquestionbysubject",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get question by level",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getquestionbylevel/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getquestionbylevel",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get question by test id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/staff/getquestionbytest/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"getquestionbytest",
+								"1"
 							]
 						}
 					},
@@ -476,6 +702,48 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "add question to test",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isdone\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/staff/addquestiontotest/1/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"staff",
+								"addquestiontotest",
+								"1",
+								"3"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -488,6 +756,27 @@
 						"method": "GET",
 						"header": [],
 						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Set is done",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/testpage/setisdone/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"testpage",
+								"setisdone",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
