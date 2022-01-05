@@ -70,9 +70,16 @@ public class Question {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public int getType() {
 		return type;
+	}
+	
+	public String getTypeToString() {
+		if (type == 0) {
+			return "Multiple Choice Question";
+		}
+		return "Essay Question";
 	}
 
 	public void setType(int type) {
@@ -126,7 +133,7 @@ public class Question {
 	public void setEssayQuestion(EssayQuestion essayQuestion) {
 		this.essayQuestion = essayQuestion;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Question "

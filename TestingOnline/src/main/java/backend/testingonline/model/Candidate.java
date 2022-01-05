@@ -1,13 +1,23 @@
 package backend.testingonline.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "candidate")
@@ -38,9 +48,13 @@ public class Candidate {
 	@Column(name = "knowledge_mark")
 	private float knowledgeMark;// ?
 
-//	@ManyToMany
-//	private List<Test> tests;
-//	
+	@ManyToMany
+	@Cascade(value = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+//	@JoinTable(name = "candidate_test",
+//	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
+	private List<Test> tests = new ArrayList<>();
+	
 //	@ManyToMany
 //	private List<Levels> levels;
 
@@ -156,6 +170,14 @@ public class Candidate {
 	public void setKnowledgeMark(float knowledgeMark) {
 		this.knowledgeMark = knowledgeMark;
 	}
+	
+	public List<Test> getTests() {
+		return tests;
+	}
+
+	public void setTests(List<Test> tests) {
+		this.tests = tests;
+	}
 
 	@Override
 	public String toString() {
@@ -174,11 +196,5 @@ public class Candidate {
 				+ "}";
 	}
 	
-//	public List<Test> getTests() {
-//		return tests;
-//	}
-//
-//	public void setTests(List<Test> tests) {
-//		this.tests = tests;
-//	}
+
 }

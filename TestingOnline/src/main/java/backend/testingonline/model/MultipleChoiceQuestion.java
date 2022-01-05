@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mc_question")
-public class MultipleChoiceQuestion extends Question {
+public class MultipleChoiceQuestion {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,6 @@ public class MultipleChoiceQuestion extends Question {
 	
 	public MultipleChoiceQuestion() {
 		super();
-	}
-	
-	public MultipleChoiceQuestion(int type,int subject,String content, int level) {
-		super(type,subject,content,level);
 	}
 	
 	public Question getQuestion() {

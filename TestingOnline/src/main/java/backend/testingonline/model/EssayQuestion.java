@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "e_question")
-public class EssayQuestion extends Question {
+public class EssayQuestion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +30,6 @@ public class EssayQuestion extends Question {
 	
 	public EssayQuestion() {
 		super();
-	}
-	
-	public EssayQuestion(int type,int subject,String content, int level) {
-		super(type,subject,content,level);
 	}
 	
 	public Question getQuestion() {
