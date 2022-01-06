@@ -13,9 +13,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Question;
 
 public class StaffControllerTest extends AbstractTest {
- 
+
 	@Override
 	@Before
 	public void setUp() {
@@ -103,6 +104,14 @@ public class StaffControllerTest extends AbstractTest {
 	}
 
 	@Test
+	public void testAddTestForCandidate() throws Exception {
+		String url = "/addtestforcandidate/1/2";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(url)).andReturn();
+		int httpStatusCode = mvcResult.getResponse().getStatus();
+		assertEquals(httpStatusCode, 200);
+	}
+
+	@Test
 	public void testDeleteTest() throws Exception {
 		String url = "/staff/deletetest/{id}";
 
@@ -110,5 +119,28 @@ public class StaffControllerTest extends AbstractTest {
 		int httpStatusCode = mvcResult.getResponse().getStatus();
 		assertEquals(httpStatusCode, 200);
 		System.out.println();
+	}
+
+	@Test
+	public void testAddAnswerToQuestion() throws Exception {
+		String url = "/staff/addanswertoquestion/1/2";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(url)).andReturn();
+		int httpStatuscode = mvcResult.getResponse().getStatus();
+		assertEquals(httpStatuscode, 200);
+	}
+	
+	@Test 
+	public void testAddQuestion() throws Exception {
+		String url = "/staff/addquestion";
+
+		Question newQuestion = new Question(8, 2, "code", 1);
+		String inputJson = super.mapToJson(newQuestion);
+
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+		int httpStatusCode = mvcResult.getResponse().getStatus();
+		assertEquals(httpStatusCode, 200);
 	}
 }
