@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,6 +32,7 @@ public class EssayQuestion {
 	@OneToOne
 	@JoinColumn(name = "id_question")
 	@JsonIgnore
+	@Cascade(value = {CascadeType.ALL})
 	private Question question;
 	
 	public EssayQuestion() {

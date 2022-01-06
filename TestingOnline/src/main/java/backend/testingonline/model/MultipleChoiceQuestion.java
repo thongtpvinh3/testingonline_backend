@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,6 +32,7 @@ public class MultipleChoiceQuestion {
 	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "id_question")
+	@Cascade(value = CascadeType.REMOVE)
 	private Question question;
 	
 	public MultipleChoiceQuestion() {

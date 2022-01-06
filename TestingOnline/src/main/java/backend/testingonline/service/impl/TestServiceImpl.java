@@ -1,5 +1,6 @@
 package backend.testingonline.service.impl;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,5 +163,14 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public void setTestIsDone(Integer id) {
 		testRepository.setTestIsDone(id);
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> setTestTime(Integer idTest, LocalTime time) {
+		Test foundTest = testRepository.getById(idTest);
+		foundTest.setTime(time);
+		return ResponseEntity.status(HttpStatus.OK).body(
+				new ResponeObject("OK", "Set test time success!", testRepository.save(foundTest))
+				);
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
+import backend.testingonline.model.EssayQuestion;
+import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
 import backend.testingonline.responeexception.ResponeObject;
 
@@ -30,6 +32,16 @@ public interface QuestionService {
 	List<Question> getByTestId(Integer idTest);
 	
 	ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion);
+
+	ResponseEntity<ResponeObject> addMultipleAnswer(Integer idQuestion, MultipleChoiceQuestion ans);
+
+	ResponseEntity<ResponeObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans);
+
+	ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idQuestion, Integer idAnswer);
+
+	ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer);
+
+	ResponseEntity<ResponeObject> updateMCAnswer(Integer idQuestion, MultipleChoiceQuestion answer);
 	
 	
 }

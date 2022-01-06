@@ -1,5 +1,6 @@
 package backend.testingonline.service;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,8 @@ public interface TestService {
 	ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate);
 
 	void setTestIsDone(Integer id);
+
+	ResponseEntity<ResponeObject> setTestTime(Integer idTest,LocalTime time);
 	
 	
 }
