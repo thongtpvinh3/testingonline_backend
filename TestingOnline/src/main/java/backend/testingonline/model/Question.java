@@ -18,6 +18,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "question")
@@ -45,10 +46,12 @@ public class Question {
 	
 	@OneToMany(fetch = FetchType.LAZY)
 	@Cascade(value = {CascadeType.ALL})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private List<MultipleChoiceQuestion> multipleChoiceQuestions = new ArrayList<>();
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@Cascade(value = CascadeType.ALL)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private EssayQuestion essayQuestion;
 	
 	public Question() {

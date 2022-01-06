@@ -21,7 +21,7 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private TestRepository testRepository;
-	
+
 	@Autowired
 	private CandidateRepository candidateRepository;
 
@@ -84,25 +84,38 @@ public class TestServiceImpl implements TestService {
 
 		Question newQuestion = questionRepository.getById(idQuestion);
 		Test foundTest = testRepository.getById(idTest);
-//		while (!foundTest.getQuestions().isEmpty()) {
-//			for (Question q : foundTest.getQuestions()) {
-//				if (foundTest.getQuestions().contains(q)) {
-//					return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-//							.body(new ResponeObject("FAILED", "Duplicate question", ""));
-//				} else {
-					List<Question> newList = foundTest.getQuestions();
-					newList.add(newQuestion);
-					foundTest.setQuestions(newList);
-					List<Test> newTest = newQuestion.getTests();
-					newTest.add(foundTest);
-					newQuestion.setTests(newTest);
-//				}
-//			}
-//		}
 
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
-
+		if (foundTest.getQuestions().size() == 0 && newQuestion.getLevel() == foundTest.getLevel()
+				&& newQuestion.getSubject() == foundTest.getSubject()) {
+			List<Question> newList = foundTest.getQuestions();
+			newList.add(newQuestion);
+			foundTest.setQuestions(newList);
+			List<Test> newTest = newQuestion.getTests();
+			newTest.add(foundTest);
+			newQuestion.setTests(newTest);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
+		} else {
+			if (newQuestion.getLevel() != foundTest.getLevel() || newQuestion.getSubject() != foundTest.getSubject()) {
+				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+						.body(new ResponeObject("FAILED", "Subject or Level is not equals", ""));
+			}
+			if (foundTest.getQuestions().contains(newQuestion) == false
+					&& newQuestion.getLevel() == foundTest.getLevel()
+					&& newQuestion.getSubject() == foundTest.getSubject()) {
+				List<Question> newList = foundTest.getQuestions();
+				newList.add(newQuestion);
+				foundTest.setQuestions(newList);
+				List<Test> newTest = newQuestion.getTests();
+				newTest.add(foundTest);
+				newQuestion.setTests(newTest);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+						.body(new ResponeObject("FAILED", "Duplicate question", ""));
+			}
+		}
 	}
 
 	@Override
@@ -125,25 +138,25 @@ public class TestServiceImpl implements TestService {
 	public ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate) {
 		Test newTest = testRepository.getById(idTest);
 		Candidate foundCandidate = candidateRepository.getById(idCandidate);
-//		while (!foundTest.getQuestions().isEmpty()) {
-//			for (Question q : foundTest.getQuestions()) {
-//				if (foundTest.getQuestions().contains(q)) {
-//					return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-//							.body(new ResponeObject("FAILED", "Duplicate question", ""));
-//				} else {
-					List<Test> newList = foundCandidate.getTests();
-					newList.add(newTest);
-					foundCandidate.setTests(newList);
-					List<Candidate> newListCandidate = newTest.getCandidates();
-					newListCandidate.add(foundCandidate);
-					newTest.setCandidates(newListCandidate);
-//				}
-//			}
-//		}
 
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
+		if (newTest.getLevel() != foundCandidate.getLevel()) {
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
+		}
 
+		if (foundCandidate.getTests().contains(newTest) == false) {
+			List<Test> newList = foundCandidate.getTests();
+			newList.add(newTest);
+			foundCandidate.setTests(newList);
+			List<Candidate> newListCandidate = newTest.getCandidates();
+			newListCandidate.add(foundCandidate);
+			newTest.setCandidates(newListCandidate);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+					new ResponeObject("FAILED", "Bai test bi trung !", "")
+					);
+		}
 	}
 
 	@Override

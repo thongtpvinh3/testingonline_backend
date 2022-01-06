@@ -25,5 +25,9 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
 	
 	@Query("SELECT question FROM Question question WHERE question.type = :type")
 	List<Question> findByType(@Param("types")Integer type); 
-
+	
+//	@org.springframework.data.jpa.repository.Query(value = "")
+//	Integer getSubject(Integer idQuestion);
+	
+//	Integer getLevel(Integer idQuestion);
 }

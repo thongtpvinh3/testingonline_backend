@@ -7,8 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import backend.testingonline.model.EssayQuestion;
+import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.Test;
+import backend.testingonline.repository.EssayQuestionRepository;
+import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responeexception.ResponeObject;
@@ -22,6 +26,12 @@ public class QuestionServiceImpl implements QuestionService {
 	
 	@Autowired
 	private TestRepository testRepository;
+	
+	@Autowired
+	private EssayQuestionRepository essayQuestionRepository;
+	
+	@Autowired
+	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
 	
 	@Override
 	public List<Question> findAll() {
@@ -59,8 +69,8 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public String getType(Integer idQuestion) {
-		return questionRepository.findById(idQuestion).get().getTypeToString();
+	public Integer getType(Integer idQuestion) {
+		return questionRepository.findById(idQuestion).get().getType();
 	}
 
 	@Override
@@ -82,5 +92,27 @@ public class QuestionServiceImpl implements QuestionService {
 	public List<Question> getByTestId(Integer idTest) {
 		Test foundTest = testRepository.getById(idTest);
 		return foundTest.getQuestions();
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion) {
+		Question foundQuestion = questionRepository.getById(idQuestion);
+		if (foundQuestion.getType() == 0) {
+			MultipleChoiceQuestion mq = multipleChoiceQuestionRepository.getById(idAnswer);
+			List<MultipleChoiceQuestion> newListMC = foundQuestion.getMultipleChoiceQuestions();
+			newListMC.add(mq);
+			foundQuestion.setMultipleChoiceQuestions(newListMC);
+			mq.setQuestion(foundQuestion);
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponeObject("OK", "Add success !", questionRepository.save(foundQuestion))
+					);
+		} else {
+			EssayQuestion essayQuestion = essayQuestionRepository.getById(idAnswer);
+			essayQuestion.setQuestion(foundQuestion);
+			foundQuestion.setEssayQuestion(essayQuestion);
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponeObject("OK", "Add success !", questionRepository.save(foundQuestion))
+					);
+		}
 	}
 }

@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "mc_question")
 public class MultipleChoiceQuestion {
@@ -25,6 +27,7 @@ public class MultipleChoiceQuestion {
 	private String img;
 	
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name = "id_question")
 	private Question question;
 	

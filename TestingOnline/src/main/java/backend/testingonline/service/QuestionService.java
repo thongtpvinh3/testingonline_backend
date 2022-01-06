@@ -19,8 +19,8 @@ public interface QuestionService {
 
 	Question editQuestion(Integer id, Question newQuestion);
 	
-	String getType(Integer idQuestion);
-
+	Integer getType(Integer idQuestion);
+	
 	List<Question> findByType(Integer type);
 
 	List<Question> findBySubject(Integer subject);
@@ -28,6 +28,8 @@ public interface QuestionService {
 	List<Question> findByLevel(Integer level);
 
 	List<Question> getByTestId(Integer idTest);
+	
+	ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion);
 	
 	
 }

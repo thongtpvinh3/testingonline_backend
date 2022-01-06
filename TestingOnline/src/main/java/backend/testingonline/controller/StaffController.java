@@ -234,6 +234,19 @@ public class StaffController {
 				new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id,newQuestion))
 				);
 	}
+	
+	@PutMapping("/addanswertoquestion/{idAnswer}/{idQuestion}")
+	public ResponseEntity<ResponeObject> addAnswerToTest(@PathVariable Integer idAnswer, @PathVariable Integer idQuestion) {
+		return questionService.addAnswerToQuestion(idAnswer, idQuestion);
+	}
+	
+	@GetMapping("/type/{id}")
+	String testType(@PathVariable Integer id) {
+		if (questionService.getType(id) == 0) {
+			return "Multiple Choice Question!";
+		}
+		return "Essay Question";
+	}
 
 //------------------------------Level-------------------------------------------
 	

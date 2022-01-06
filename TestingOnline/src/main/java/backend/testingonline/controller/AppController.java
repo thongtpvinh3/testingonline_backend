@@ -59,11 +59,6 @@ public class AppController {
 	public String toLoginView() {
 		return "login";
 	}
-	
-//	@GetMapping("/x1")
-//	public List<Candidate> getAllCandidate() {
-//		return candidateService.findAll();
-//	}
 
 	@PostMapping(value = URL.STAFF_CHECK_LOGIN)
 	public String checkLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req) {
