@@ -1,6 +1,5 @@
 package backend.testingonline.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
-import backend.testingonline.model.Question;
 import backend.testingonline.model.Staff;
 import backend.testingonline.model.Test;
-import backend.testingonline.repository.CandidateRepository;
-import backend.testingonline.repository.QuestionRepository;
 import backend.testingonline.repository.StaffRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responeexception.ResponeObject;
@@ -27,12 +23,6 @@ public class StaffServiceImpl implements StaffService {
 	
 	@Autowired
 	private TestRepository testRepository;
-	
-	@Autowired
-	private CandidateRepository candidateRepository;
-	
-	@Autowired
-	private QuestionRepository questionRepository;
 
 	@Override
 	public Optional<Candidate> findById(int id) {

@@ -1,6 +1,6 @@
 package backend.testingonline.controller;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
@@ -28,9 +26,11 @@ import backend.testingonline.model.Levels;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.Subject;
+import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
+import backend.testingonline.repository.TempResultRepository;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.LevelService;
@@ -67,6 +67,9 @@ public class StaffController {
 
 	@Autowired
 	private EssayQuestionRepository essayQuestionRepository;
+	
+	@Autowired
+	private TempResultRepository tempResultRepository;
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
@@ -178,8 +181,14 @@ public class StaffController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ResponeObject("FALSE", "Khong tim thay id: " + id, ""));
 		}
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "update thanh cong", testService.updateTest(id, test)));
+
+		if (!test.getDateTest().isAfter(LocalDateTime.now())) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body(new ResponeObject("FALSE", "Date khong hop le!", ""));
+		} else {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponeObject("OK", "update thanh cong", testService.updateTest(id, test)));
+		}
 	}
 
 	@PutMapping(URL.STAFF_ADD_TEST_FOR_CANDIDATE)
@@ -188,11 +197,37 @@ public class StaffController {
 		return testService.addTestForCandidate(idTest, idCandidate);
 	}
 
-	@PostMapping("/settesttime/{idTest}")
-	public ResponseEntity<ResponeObject> setTestTime(@PathVariable Integer idTest, @RequestBody LocalTime time) {
-		return testService.setTestTime(idTest, time);
+//	@PostMapping(value = "/settesttime/{idTest}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<ResponeObject> setTestTime(@PathVariable Integer idTest, @RequestBody LocalTime time) {
+//		return testService.setTestTime(idTest, time);
+//	}
+//
+//	@PostMapping(value = "/setdatetest/{idTest}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<ResponeObject> setDateTest(@PathVariable Integer idTest,
+//			@RequestBody LocalDateTime dateTest) {
+//		return testService.setDateTest(idTest, dateTest);
+//	}
+	
+	@PostMapping(URL.STAFF_REVIEW_MC_QUESTION)
+	public Double reviewMCQuestion(@PathVariable Integer idTest) {
+		return testService.reviewMCQuestion(idTest);
 	}
-
+	
+	@PutMapping(URL.STAFF_REVIEW_ESSAY_QUESTION)
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest,@PathVariable Integer idEssay,@PathVariable Double mark) {
+		return testService.reviewEssayQuestion(idTest,idEssay,mark);
+	}
+	
+	@PutMapping(URL.STAFF_SET_MARK_FOR_CANDIDATE)
+	public ResponseEntity<ResponeObject> setMark(@PathVariable Integer idCandidate) {
+		return candidateService.setMark(idCandidate);
+	}
+	
+	@GetMapping(URL.STAFF_GET_ALL_RESULT)
+	public List<TempResultOfCandidate> getAllRes() {
+		return tempResultRepository.findAll();
+	}
+	
 //-------------------------QUESTION-----------------------------------------------------------------------------
 
 	@GetMapping(URL.STAFF_GETALL_QUESTION)
@@ -244,23 +279,25 @@ public class StaffController {
 				.body(new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id, newQuestion)));
 	}
 
-	@PutMapping("/addanswertoquestion/{idAnswer}/{idQuestion}")
+	@PutMapping(URL.STAFF_ADD_ANS_TO_QUESTION)
 	public ResponseEntity<ResponeObject> addAnswerToTest(@PathVariable Integer idAnswer,
 			@PathVariable Integer idQuestion) {
 		return questionService.addAnswerToQuestion(idAnswer, idQuestion);
 	}
 
-	@GetMapping("/type/{id}")
-	String testType(@PathVariable Integer id) {
-		if (questionService.getType(id) == 0) {
-			return "Multiple Choice Question!";
-		}
-		return "Essay Question";
-	}
+//	@GetMapping("/type/{id}")
+//	String testType(@PathVariable Integer id) {
+//		if (questionService.getType(id) == 0) {
+//			return "Multiple Choice Question!";
+//		}
+//		return "Essay Question";
+//	}
+	
+	
 
 //------------------------------ANSWER------------------------------------------
 
-	@PostMapping("/addmultiplechoiceanswer/{idQuestion}")
+	@PostMapping(URL.STAFF_ADD_MCQ_FOR_QUESTION)
 	public ResponseEntity<ResponeObject> addMultipleChoiceAnswerForQuestion(@PathVariable Integer idQuestion,
 			@RequestBody MultipleChoiceQuestion ans) {
 		if (questionService.findById(idQuestion).getType() == 0) {
@@ -269,23 +306,25 @@ public class StaffController {
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 				.body(new ResponeObject("FAILED", "Khong dung loai cau hoi !", ""));
 	}
-	
-	@DeleteMapping("/deletemultipleanswer/{idQuestion}/{idAnswer}")
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(@PathVariable Integer idQuestion,@PathVariable Integer idAnswer) {
-		return questionService.deleteMultipleAnswerFromQuestion(idQuestion,idAnswer);
+
+	@DeleteMapping(URL.STAFF_DELETE_MC_ANSWER_FROM_QUESTION)
+	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(@PathVariable Integer idQuestion,
+			@PathVariable Integer idAnswer) {
+		return questionService.deleteMultipleAnswerFromQuestion(idQuestion, idAnswer);
 	}
-	
-	@GetMapping("/getallmcanswer")
+
+	@GetMapping(URL.STAFF_GET_ALL_MC_ANSWER)
 	public List<MultipleChoiceQuestion> getAllMCAnswer() {
 		return multipleChoiceQuestionRepository.findAll();
 	}
-	
-	@PutMapping("/updatemcanswer/{idQuestion}")
-	public ResponseEntity<ResponeObject> updateMCAnswerForQuestion(@PathVariable Integer idQuestion,@RequestBody MultipleChoiceQuestion answer) {
-		return questionService.updateMCAnswer(idQuestion,answer);
+
+	@PutMapping(URL.STAFF_UPDATE_MC_ANSWER_FOR_QUESTION)
+	public ResponseEntity<ResponeObject> updateMCAnswerForQuestion(@PathVariable Integer idQuestion,
+			@RequestBody MultipleChoiceQuestion answer) {
+		return questionService.updateMCAnswer(idQuestion, answer);
 	}
 
-	@PostMapping("/addessayanswer/{idQuestion}")
+	@PostMapping(URL.STAFF_ADD_E_ASNSWER_FOR_QUESTION)
 	public ResponseEntity<ResponeObject> addEssayAnswerForQuestion(@PathVariable Integer idQuestion,
 			@RequestBody EssayQuestion ans) {
 		if (questionService.findById(idQuestion).getType() == 1) {
@@ -294,65 +333,49 @@ public class StaffController {
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 				.body(new ResponeObject("FAILED", "Khong dung loai cau hoi !", ""));
 	}
-	
-	@PutMapping("/updateessayanswer/{idQuestion}")
-	public ResponseEntity<ResponeObject> updateEssayAnswerForQuestion(@PathVariable Integer idQuestion,@RequestBody EssayQuestion answer) {
-		return questionService.updateEssayAnswer(idQuestion,answer);
+
+	@PutMapping(URL.STAFF_UPDATE_ESSAY_ANSWER)
+	public ResponseEntity<ResponeObject> updateEssayAnswerForQuestion(@PathVariable Integer idQuestion,
+			@RequestBody EssayQuestion answer) {
+		return questionService.updateEssayAnswer(idQuestion, answer);
 	}
-	
-	@GetMapping("/getallessayanswer")
+
+	@GetMapping(URL.STAFF_GET_ALL_ESSAY_ANSWER)
 	public List<EssayQuestion> getAllEssayAnswer() {
 		return essayQuestionRepository.findAll();
 	}
 
 //------------------------------Level-------------------------------------------
 
-	@GetMapping("/getalllevel")
+	@GetMapping(URL.STAFF_GET_ALL_LEVEL)
 	public List<Levels> getAllLevels() {
 		return levelService.getAll();
 	}
 
-	@PostMapping("/addnewlevel")
+	@PostMapping(URL.STAFF_ADD_NEW_LEVEL)
 	ResponseEntity<ResponeObject> addNewLevel(@RequestBody Levels level) {
 		return levelService.save(level);
 	}
 
-	@DeleteMapping("/deletelevel/{id}")
+	@DeleteMapping(URL.STAFF_DELETE_LEVEL)
 	ResponseEntity<ResponeObject> deleteLevel(@PathVariable Integer id) {
 		return levelService.deleteById(id);
 	}
 
 //-----------------------------Subject------------------------------------------
 
-	@GetMapping("/getallsubject")
+	@GetMapping(URL.STAFF_GET_ALL_SUBJECT)
 	public List<Subject> getallSubject() {
 		return subjectService.getAll();
 	}
 
-	@PostMapping("/addsubject")
+	@PostMapping(URL.STAFF_ADD_NEW_SUBJECT)
 	ResponseEntity<ResponeObject> addNewSubject(@RequestBody Subject subject) {
 		return subjectService.save(subject);
 	}
 
-	@DeleteMapping("/deletesubject/{id}")
+	@DeleteMapping(URL.STAFF_DELETE_SUBJECT)
 	ResponseEntity<ResponeObject> deleteSubjectById(@PathVariable Integer id) {
 		return subjectService.deleteById(id);
 	}
-
-//	@PutMapping("/updatecandidate/{id}")
-//	ResponseEntity<ResponeObject> updateCandidateTestTime(@RequestBody Candidate newCandidate,@PathVariable Integer id, @PathVariable Calendar calendar) {
-//		calendar = Calendar.getInstance();
-//		calendar.set(2021, 12, 30);
-//		Candidate updateCandidate = candidateRepository.findById(id).map(candidate -> {
-//			candidate.setTestTime(newCandidate.getTestTime());
-//			return candidateRepository.save(candidate);
-//		}).orElseGet(()-> {
-//			newCandidate.setId(id);
-//			return candidateRepository.save(newCandidate);
-//		});
-//		
-//		return ResponseEntity.status(HttpStatus.OK).body(
-//				new ResponeObject("OK","Cap nhat thanh cong",updateCandidate)
-//				);
-//	}
 }

@@ -1,5 +1,6 @@
 package backend.testingonline.model;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
-public class Test { 
-	
+public class Test {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
@@ -33,10 +37,17 @@ public class Test {
 	@Column
 	private int level; // 1 FR, 2 JR, 3 SR
 	@Column
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss[.SSS][.SS][.S]")
+	@DateTimeFormat(pattern = "HH:mm:ss", iso = ISO.TIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
 	private LocalTime time;
 //	@Column(name = "id_question")
 //	private Integer idQuestion;
+	
+	@Column(name = "date_test")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dateTest;
+	
 	@Column
 	private String name;
 	@Column(name = "is_done")
@@ -45,21 +56,24 @@ public class Test {
 	private String codeTest; // code join vao
 //	@Column(name = "id_candidate")
 //	private int idCandidate;
-	
-	@ManyToMany//(fetch = FetchType.LAZY)
+
+	@Column
+	private double marks;
+
+	@ManyToOne // (fetch = FetchType.LAZY)
 	@JsonIgnore
 //	@JoinTable(name = "candidate_test",
 //	joinColumns = {@JoinColumn(name = "id_candidate")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
-	private List<Candidate> candidates;
+	private Candidate candidate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade(value = {CascadeType.ALL})
+	@Cascade(value = { CascadeType.ALL })
 //	@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 //	@JoinTable(name = "test_question",
 //	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")})
 	private List<Question> questions = new ArrayList<>(); // Bo cau hoi
-	
+
 	public List<Question> getQuestions() {
 		return questions;
 	}
@@ -71,7 +85,7 @@ public class Test {
 	public Test() {
 		super();
 	}
-	
+
 	public Test(int subject, int level, String name, int isDone, String codeTest) {
 		super();
 		this.subject = subject;
@@ -80,7 +94,7 @@ public class Test {
 		this.isDone = isDone;
 		this.codeTest = codeTest;
 	}
-	
+
 //	public Test(int subject, int level, String name, int isDone, String codeTest,Question question,List<Question> questions) {
 //		super();
 //		this.subject = subject;
@@ -91,8 +105,6 @@ public class Test {
 //		questions.add(question);
 //		this.questions = questions;
 //	}
-
-
 
 	public int getId() {
 		return id;
@@ -142,12 +154,12 @@ public class Test {
 		this.isDone = isDone;
 	}
 
-	public List<Candidate> getCandidates() {
-		return candidates;
+	public Candidate getCandidate() {
+		return candidate;
 	}
 
-	public void setCandidates(List<Candidate> candidates) {
-		this.candidates = candidates;
+	public void setCandidate(Candidate candidate) {
+		this.candidate = candidate;
 	}
 
 	public String getCodeTest() {
@@ -157,23 +169,27 @@ public class Test {
 	public void setCodeTest(String codeTest) {
 		this.codeTest = codeTest;
 	}
-	
-//	public int getIdCandidate() {
-//		return idCandidate;
-//	}
-//
-//	public void setIdCandidate(int idCandidate) {
-//		this.idCandidate = idCandidate;
-//	}
 
-	@Override
-	public String toString() {
-		return "Test [id=" + id + ", subject=" + subject + ", level=" + level + ", time=" + time + ", name=" + name
-				+ ", isDone=" + isDone + ", codeTest=" +  ", questions="
-				+ questions + "]";
+	public double getMarks() {
+		return marks;
+	}
+
+	public void setMarks(double marks) {
+		this.marks = marks;
 	}
 	
-	
-	
-	
+	public LocalDateTime getDateTest() {
+		return dateTest;
+	}
+
+	public void setDateTest(LocalDateTime dateTest) {
+		this.dateTest = dateTest;
+	}
+
+//	@Override
+//	public String toString() {
+//		return "Test [id=" + id + ", subject=" + subject + ", level=" + level + ", time=" + time + ", name=" + name
+//				+ ", isDone=" + isDone + ", codeTest=" + ", questions=" + questions + "]";
+//	}
+
 }

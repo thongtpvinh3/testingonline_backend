@@ -1,5 +1,7 @@
 package backend.testingonline.service.impl;
 
+import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -9,10 +11,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.EssayQuestion;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
+import backend.testingonline.repository.EssayQuestionRepository;
+import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
+import backend.testingonline.repository.TempResultRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.TestService;
@@ -28,6 +35,15 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private QuestionRepository questionRepository;
+
+	@Autowired
+	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
+
+	@Autowired
+	private EssayQuestionRepository essayQuestionRepository;
+
+	@Autowired
+	private TempResultRepository tempResultRepository;
 
 	@Override
 	public List<Test> getAllTest() {
@@ -63,18 +79,16 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public Test updateTest(Integer id, Test test) {
 		Test foundTest = testRepository.getById(id);
-//		Question newQuestion = questionRepository.getById(id);
-//		Question newAddQuestion = test.getQuestions().get(0);
-//		foundTest.getQuestions().add(newAddQuestion);
 
-//		foundTest.setIdCandidate(test.getIdCandidate());
 		foundTest.setIsDone(test.getIsDone());
 		foundTest.setLevel(test.getLevel());
 		foundTest.setName(test.getName());
 		foundTest.setQuestions(test.getQuestions());
 		foundTest.setSubject(test.getSubject());
 		foundTest.setCodeTest(test.getCodeTest());
-		foundTest.setTime(test.getTime());
+		if (test.getDateTest().isBefore(LocalDateTime.now()))
+			foundTest.setTime(test.getTime());
+		foundTest.setDateTest(test.getDateTest());
 
 		return testRepository.save(foundTest);
 
@@ -148,15 +162,13 @@ public class TestServiceImpl implements TestService {
 			List<Test> newList = foundCandidate.getTests();
 			newList.add(newTest);
 			foundCandidate.setTests(newList);
-			List<Candidate> newListCandidate = newTest.getCandidates();
-			newListCandidate.add(foundCandidate);
-			newTest.setCandidates(newListCandidate);
+			newTest.setCandidate(foundCandidate);
+			testRepository.save(newTest);
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-					new ResponeObject("FAILED", "Bai test bi trung !", "")
-					);
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+					.body(new ResponeObject("FAILED", "Bai test bi trung !", ""));
 		}
 	}
 
@@ -169,8 +181,83 @@ public class TestServiceImpl implements TestService {
 	public ResponseEntity<ResponeObject> setTestTime(Integer idTest, LocalTime time) {
 		Test foundTest = testRepository.getById(idTest);
 		foundTest.setTime(time);
-		return ResponseEntity.status(HttpStatus.OK).body(
-				new ResponeObject("OK", "Set test time success!", testRepository.save(foundTest))
-				);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponeObject("OK", "Set test time success!", testRepository.save(foundTest)));
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest) {
+		Test foundTest = testRepository.getById(idTest);
+		if (dateTest.isAfter(LocalDateTime.now())) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponeObject("FAILED", "Thoi gian khong hop le!", ""));
+		} else {
+			foundTest.setDateTest(dateTest);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ResponeObject("OK", "Set date test success!", testRepository.save(foundTest)));
+		}
+	}
+
+	@Override
+	public Double reviewMCQuestion(Integer idTest) {
+		Test foundTest = testRepository.getById(idTest);
+		List<Question> thisTestQuestion = foundTest.getQuestions();
+		Integer idCandidate = foundTest.getCandidate().getId();
+		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate);
+		int count = 0;
+		int rightResult = 0;
+
+		for (Question q : thisTestQuestion) {
+			if (q.getType() == 0) {
+				count++;
+			}
+		}
+		for (TempResultOfCandidate res : result) {
+			if (multipleChoiceQuestionRepository.findWithIdAndisTrue(res.getIdAnswer(),
+					Integer.parseInt(res.getAnswer())) != null) {
+				rightResult++;
+			}
+		}
+
+		Double oneQuestionMark = 50.0/count;
+		DecimalFormat df = new DecimalFormat("#.##");
+		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
+		
+		Double lastResult = tmp * rightResult;
+		foundTest.setMarks(lastResult);
+		testRepository.save(foundTest);
+
+		return lastResult;
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idEssay,Double mark) {
+		Test foundTest = testRepository.getById(idTest);
+		List<Question> listQ = foundTest.getQuestions();
+		int count = 0;
+		for (Question q: listQ) {
+			if(q.getType() == 1) {
+				count++;
+			}
+		}
+		
+		Double oneQuestionMark = 50.0/count;
+		DecimalFormat df = new DecimalFormat("#.##");
+		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
+		
+		if(mark>tmp) {
+			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+					new ResponeObject("FAILED!", "Diem vuot qua max cau hoi!", "")
+					);
+		} else {
+			EssayQuestion e = essayQuestionRepository.getById(idEssay);
+			e.setMark(mark);
+			Double x = foundTest.getMarks()+mark;
+			foundTest.setMarks(x);
+			testRepository.save(foundTest);
+			return ResponseEntity.status(HttpStatus.OK).body(
+					new ResponeObject("OK", "Cham Diem thanh cong!", essayQuestionRepository.save(null))
+					);
+		}
 	}
 }

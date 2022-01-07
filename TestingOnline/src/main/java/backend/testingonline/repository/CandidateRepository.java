@@ -24,3 +24,8 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	@org.springframework.data.jpa.repository.Query(value = "SELECT * from Candidate candidate WHERE candidate.id = :id", nativeQuery = true)
 	List<Test> aaaCanidateTest(@Param("id") Integer id);
 }
+
+/*
+ * SELECT * FROM mc_question
+ * 
+ * */

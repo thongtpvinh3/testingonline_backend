@@ -28,6 +28,8 @@ public class EssayQuestion {
 	private String answer;
 	@Column
 	private String image;
+	@Column
+	private double mark;
 	
 	@OneToOne
 	@JoinColumn(name = "id_question")
@@ -71,6 +73,14 @@ public class EssayQuestion {
 		this.image = image;
 	}
 	
+	public double getMark() {
+		return mark;
+	}
+
+	public void setMark(double mark) {
+		this.mark = mark;
+	}
+
 	@Override
 	public String toString() {
 		return "EssayQuestion "

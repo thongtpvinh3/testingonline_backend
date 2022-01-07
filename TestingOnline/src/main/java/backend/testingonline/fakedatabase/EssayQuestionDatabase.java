@@ -23,8 +23,11 @@ public class EssayQuestionDatabase {
 				
 				EssayQuestion eq1 = new EssayQuestion();
 				eq1.setAnswer("I'm think ...");
+				EssayQuestion eq2 = new EssayQuestion();
+				eq2.setAnswer("I'm said that ...");
 	
 				logger.info("insert data: " + essayQuestionRepository.save(eq1));
+				logger.info("insert data: " + essayQuestionRepository.save(eq2));
 			}
 		};
 	}

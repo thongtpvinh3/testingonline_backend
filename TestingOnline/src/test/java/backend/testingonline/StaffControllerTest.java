@@ -2,6 +2,7 @@ package backend.testingonline;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.List;
 
@@ -129,8 +130,8 @@ public class StaffControllerTest extends AbstractTest {
 		int httpStatuscode = mvcResult.getResponse().getStatus();
 		assertEquals(httpStatuscode, 200);
 	}
-	
-	@Test 
+
+	@Test
 	public void testAddQuestion() throws Exception {
 		String url = "/staff/addquestion";
 
@@ -143,4 +144,25 @@ public class StaffControllerTest extends AbstractTest {
 		int httpStatusCode = mvcResult.getResponse().getStatus();
 		assertEquals(httpStatusCode, 200);
 	}
+
+	@Test
+	public void testaddMCAnswerToQuestion() throws Exception {
+		String url = "/addmultiplechoiceanswer/1";
+		
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url)).andReturn();
+		int httpStatusCode = mvcResult.getResponse().getStatus();
+		assertEquals(httpStatusCode, 200);
+	}
+	
+	@Test
+	public void testAddEssayAnswerToQuestion() throws Exception {
+		String url = "/addessayanswer/6";
+		
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(url)).andReturn();
+		int htppStatusCode = mvcResult.getResponse().getStatus();
+		assertEquals(htppStatusCode, 200);
+	}
+	
+//	@Test
+//	public void 
 }

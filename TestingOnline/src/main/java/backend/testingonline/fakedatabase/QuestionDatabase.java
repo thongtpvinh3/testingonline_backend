@@ -6,19 +6,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import backend.testingonline.model.EssayQuestion;
-import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
 import backend.testingonline.repository.EssayQuestionRepository;
-import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
 
 @Configuration
 public class QuestionDatabase {
 	
 	private static final Logger logger = LoggerFactory.getLogger(QuestionDatabase.class);
-//	private static final Logger logger1 = LoggerFactory.getLogger(MultipleChoiceQuestion.class);
-	private static final Logger logger2 = LoggerFactory.getLogger(EssayQuestion.class);
 
 	@Bean
 	CommandLineRunner initQuestionDatabase(QuestionRepository questionRepository,EssayQuestionRepository essayQuestionRepository) {
@@ -33,6 +28,9 @@ public class QuestionDatabase {
 				Question q4 = new Question(4, 1, "Where ?", 2);
 				Question q5 = new Question(5, 2, "code with framework?", 2);
 				Question q6 = new Question(6, 3, "React ?", 2);
+				Question q7 = new Question(7, 1, "asdsad", 1);
+				Question q8 = new Question(8, 1, "asdsadasd", 1);
+				Question q9 = new Question(9, 1, "asdsadasdasd ?", 1);
 				
 				q1.setType(0);
 				q2.setType(1);
@@ -40,6 +38,10 @@ public class QuestionDatabase {
 				q4.setType(0);
 				q5.setType(1);
 				q6.setType(1);
+				q9.setType(0);
+				q7.setType(0);
+				q8.setType(0);
+				
 				
 				logger.info("insert data: " + questionRepository.save(q1));
 				logger.info("insert data: " + questionRepository.save(q2));
@@ -47,6 +49,9 @@ public class QuestionDatabase {
 				logger.info("insert data: " + questionRepository.save(q4));
 				logger.info("insert data: " + questionRepository.save(q5));
 				logger.info("insert data: " + questionRepository.save(q6));
+				logger.info("insert data: " + questionRepository.save(q7));
+				logger.info("insert data: " + questionRepository.save(q8));
+				logger.info("insert data: " + questionRepository.save(q9));
 			}
 		};
 	}

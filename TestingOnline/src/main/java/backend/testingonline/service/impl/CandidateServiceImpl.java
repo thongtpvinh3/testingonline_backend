@@ -77,4 +77,25 @@ public class CandidateServiceImpl implements CandidateService {
 	public Candidate findById(Integer id) {
 		return candidateRepository.getById(id);
 	}
+
+	@Override
+	public ResponseEntity<ResponeObject> setMark(Integer id) {
+		Candidate foundCandidate = candidateRepository.getById(id);
+		List<Test> foundTest = foundCandidate.getTests();
+		for (Test t: foundTest) {
+			if (t.getSubject() == 1) {
+				foundCandidate.setEnglishMark(t.getMarks());
+			}
+			if (t.getSubject() == 2) {
+				foundCandidate.setCodingMark(t.getMarks());
+			}
+			if (t.getSubject() == 3) {
+				foundCandidate.setKnowledgeMark(t.getMarks());
+			}
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body(
+				new ResponeObject("OK","Set diem thanh cong", candidateRepository.save(foundCandidate))
+				);
+	}
 }

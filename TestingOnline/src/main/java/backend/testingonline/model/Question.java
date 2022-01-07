@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,13 +40,15 @@ public class Question {
 	protected int level; // 1 Fresher, 2 Junior, 3 Senior
 	
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.ALL})
 	@JsonIgnore
 //	@JoinTable(name = "test_question",
 //	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
 	protected List<Test> tests = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
+	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.ALL})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private List<MultipleChoiceQuestion> multipleChoiceQuestions = new ArrayList<>();

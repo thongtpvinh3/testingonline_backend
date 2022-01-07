@@ -9,9 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -42,13 +40,13 @@ public class Candidate {
 	@Column(name = "test_time")
 	private Date testTime; // Thoi gian lam bai
 	@Column(name = "english_mark")
-	private float englishMark; // ??
+	private double englishMark; // ??
 	@Column(name = "coding_mark")
-	private float codingMark;// ?
+	private double codingMark;// ?
 	@Column(name = "knowledge_mark")
-	private float knowledgeMark;// ?
+	private double knowledgeMark;// ?
 
-	@ManyToMany
+	@OneToMany
 	@Cascade(value = CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 //	@JoinTable(name = "candidate_test",
@@ -147,27 +145,27 @@ public class Candidate {
 		this.testTime = testTime;
 	}
 
-	public float getEnglishMark() {
+	public double getEnglishMark() {
 		return englishMark;
 	}
 
-	public void setEnglishMark(float englishMark) {
+	public void setEnglishMark(double englishMark) {
 		this.englishMark = englishMark;
 	}
 
-	public float getCodingMark() {
+	public double getCodingMark() {
 		return codingMark;
 	}
 
-	public void setCodingMark(float codingMark) {
+	public void setCodingMark(double codingMark) {
 		this.codingMark = codingMark;
 	}
 
-	public float getKnowledgeMark() {
+	public double getKnowledgeMark() {
 		return knowledgeMark;
 	}
 
-	public void setKnowledgeMark(float knowledgeMark) {
+	public void setKnowledgeMark(double knowledgeMark) {
 		this.knowledgeMark = knowledgeMark;
 	}
 	

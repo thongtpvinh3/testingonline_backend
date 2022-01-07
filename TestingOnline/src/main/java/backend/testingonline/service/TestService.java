@@ -1,12 +1,11 @@
 package backend.testingonline.service;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import backend.testingonline.model.Candidate;
-import backend.testingonline.model.Question;
 import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 
@@ -39,6 +38,12 @@ public interface TestService {
 	void setTestIsDone(Integer id);
 
 	ResponseEntity<ResponeObject> setTestTime(Integer idTest,LocalTime time);
+
+	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
+
+	Double reviewMCQuestion(Integer idTest);
+
+	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest, Integer idEssay, Double mark);
 	
 	
 }

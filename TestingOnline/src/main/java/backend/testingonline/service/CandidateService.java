@@ -23,4 +23,7 @@ public interface CandidateService {
 
 	ResponseEntity<ResponeObject> deleteWithId(Integer id);
 	
+	ResponseEntity<ResponeObject> setMark(Integer id);
+
+	
 }
