@@ -148,6 +148,27 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "set mark for candidate",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/staff/setmark/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"staff",
+										"setmark",
+										"2"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -406,7 +427,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"isdone\" : 1\r\n}",
+									"raw": "{\r\n    \"id\": 2,\r\n    \"subject\": 2,\r\n    \"level\": 1,\r\n    \"time\": \"01:30:00\",\r\n    \"dateTest\": \"2022-01-01 12:30:00\",\r\n    \"name\": \"Bai test coding lv1\",\r\n    \"isDone\": 0,\r\n    \"codeTest\": \"CODE1\",\r\n    \"marks\": 0.0,\r\n    \"questions\": []\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -414,7 +435,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/staff/updatetest/1",
+									"raw": "http://localhost:8080/staff/updatetest/2",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -423,7 +444,7 @@
 									"path": [
 										"staff",
 										"updatetest",
-										"1"
+										"2"
 									]
 								}
 							},
@@ -513,7 +534,7 @@
 							"response": []
 						},
 						{
-							"name": "add test time",
+							"name": "review MC question in Test",
 							"event": [
 								{
 									"listen": "prerequest",
@@ -530,7 +551,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"hour\" : 1,\r\n    \"minute\" : 0,\r\n    \"second\" : 0 \r\n}",
+									"raw": "",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -538,7 +559,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/staff//settesttime/1",
+									"raw": "http://localhost:8080/staff/reviewmcquestion/1",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -546,9 +567,51 @@
 									"port": "8080",
 									"path": [
 										"staff",
-										"",
-										"settesttime",
+										"reviewmcquestion",
 										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "review an Essay question in Test",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/staff/reviewessayquestion/1/1/20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"staff",
+										"reviewessayquestion",
+										"1",
+										"1",
+										"20"
 									]
 								}
 							},
@@ -1062,6 +1125,49 @@
 							"response": []
 						},
 						{
+							"name": "get all result",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"hour\" : 1,\r\n    \"minute\" : 0,\r\n    \"second\" : 0 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/staff/getallres",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"staff",
+										"getallres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "update mc answer for question",
 							"event": [
 								{
@@ -1414,6 +1520,35 @@
 				{
 					"name": "join by test code",
 					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "code",
+									"value": "ENG1",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/jointest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"jointest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get this join test",
+					"request": {
 						"method": "GET",
 						"header": [],
 						"url": null
@@ -1421,7 +1556,37 @@
 					"response": []
 				},
 				{
-					"name": "Set is done",
+					"name": "submit test",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n        {\r\n            \"idAnswer\" : 7,\r\n            \"answer\" : \"1\",\r\n            \"idCandidate\" : 2\r\n        },\r\n        {\r\n            \"idAnswer\" : 9,\r\n            \"answer\" : \"1\",\r\n            \"idCandidate\" : 2\r\n        },\r\n        {\r\n            \"idAnswer\" : 12,\r\n            \"answer\" : \"1\",\r\n            \"idCandidate\" : 2\r\n        }\r\n    ]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/testpage/setisdone/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"testpage",
+								"setisdone",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Candidate out test",
 					"request": {
 						"method": "PUT",
 						"header": [],

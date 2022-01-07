@@ -6,25 +6,6 @@ servers:
 - url: http://localhost:8080
   description: Generated server url
 paths:
-  /testpage/setisdone/{id}:
-    put:
-      tags:
-      - candidate-controller
-      operationId: setTestIsDone
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: OK
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ResponeObject'
   /staff/updatetest/{id}:
     put:
       tags:
@@ -93,6 +74,56 @@ paths:
             schema:
               $ref: '#/components/schemas/EssayQuestion'
         required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/setmark/{idCandidate}:
+    put:
+      tags:
+      - staff-controller
+      operationId: setMark
+      parameters:
+      - name: idCandidate
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponeObject'
+  /staff/reviewessayquestion/{idTest}/{idEssay}/{mark}:
+    put:
+      tags:
+      - staff-controller
+      operationId: reviewEssayQuestion
+      parameters:
+      - name: idTest
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: idEssay
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: mark
+        in: path
+        required: true
+        schema:
+          type: number
+          format: double
       responses:
         "200":
           description: OK
@@ -200,11 +231,11 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
-  /staff/settesttime/{idTest}:
+  /testpage/setisdone/{idTest}:
     post:
       tags:
-      - staff-controller
-      operationId: setTestTime
+      - candidate-controller
+      operationId: setTestIsDone
       parameters:
       - name: idTest
         in: path
@@ -216,7 +247,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LocalTime'
+              type: array
+              items:
+                $ref: '#/components/schemas/TempResultOfCandidate'
         required: true
       responses:
         "200":
@@ -225,11 +258,43 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/ResponeObject'
+  /testpage/logout:
+    post:
+      tags:
+      - candidate-controller
+      operationId: logout
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /staff/reviewmcquestion/{idTest}:
+    post:
+      tags:
+      - staff-controller
+      operationId: reviewMCQuestion
+      parameters:
+      - name: idTest
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: number
+                format: double
   /staff/logout:
     post:
       tags:
       - staff-controller
-      operationId: logout
+      operationId: logout_1
       responses:
         "200":
           description: OK
@@ -430,30 +495,23 @@ paths:
             '*/*':
               schema:
                 type: string
-  /testingonline:
+  /testpage/gettest:
     get:
       tags:
-      - app-controller
-      operationId: toWebPage
+      - candidate-controller
+      operationId: getTest
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                type: string
-  /staff/type/{id}:
+                $ref: '#/components/schemas/Test'
+  /testingonline:
     get:
       tags:
-      - staff-controller
-      operationId: testType
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: integer
-          format: int32
+      - app-controller
+      operationId: toWebPage
       responses:
         "200":
           description: OK
@@ -771,6 +829,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Subject'
+  /staff/getallres:
+    get:
+      tags:
+      - staff-controller
+      operationId: getAllRes
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TempResultOfCandidate'
   /staff/getallquestion:
     get:
       tags:
@@ -961,15 +1033,6 @@ paths:
                 $ref: '#/components/schemas/ResponeObject'
 components:
   schemas:
-    ResponeObject:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
     EssayQuestion:
       type: object
       properties:
@@ -980,6 +1043,9 @@ components:
           type: string
         image:
           type: string
+        mark:
+          type: number
+          format: double
     LocalTime:
       type: object
       properties:
@@ -1047,6 +1113,9 @@ components:
           format: int32
         time:
           $ref: '#/components/schemas/LocalTime'
+        dateTest:
+          type: string
+          format: date-time
         name:
           type: string
         isDone:
@@ -1054,10 +1123,36 @@ components:
           format: int32
         codeTest:
           type: string
+        marks:
+          type: number
+          format: double
         questions:
           type: array
           items:
             $ref: '#/components/schemas/Question'
+    ResponeObject:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+    TempResultOfCandidate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        idAnswer:
+          type: integer
+          format: int32
+        answer:
+          type: string
+        idCandidate:
+          type: integer
+          format: int32
     Subject:
       type: object
       properties:
@@ -1098,13 +1193,13 @@ components:
           format: date-time
         englishMark:
           type: number
-          format: float
+          format: double
         codingMark:
           type: number
-          format: float
+          format: double
         knowledgeMark:
           type: number
-          format: float
+          format: double
         tests:
           type: array
           items:
