@@ -1,5 +1,6 @@
 package backend.testingonline.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +20,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "candidate")
-public class Candidate {
+public class Candidate implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-	@Column(name = "id_test")
-	private String idTest; // Map bai test
+//	@Column(name = "id_test")
+//	private String idTest; // Map bai test
 	@Column
 	private String name;// Ten cua bai test
 	@Column
@@ -97,13 +98,13 @@ public class Candidate {
 		this.id = id;
 	}
 
-	public String getIdTest() {
-		return idTest;
-	}
-
-	public void setIdTest(String idTest) {
-		this.idTest = idTest;
-	}
+//	public String getIdTest() {
+//		return idTest;
+//	}
+//
+//	public void setIdTest(String idTest) {
+//		this.idTest = idTest;
+//	}
 
 	public String getName() {
 		return name;
@@ -181,7 +182,6 @@ public class Candidate {
 	public String toString() {
 		return "Candidate "
 				+ "{id=" + id + ","
-				+ " idTest=" + idTest 
 				+ ", name=" + name 
 				+ ", level=" + level 
 				+ ", phone=" + phone

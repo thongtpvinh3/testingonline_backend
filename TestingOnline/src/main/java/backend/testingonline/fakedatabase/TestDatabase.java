@@ -1,5 +1,8 @@
 package backend.testingonline.fakedatabase;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +29,9 @@ public class TestDatabase {
 				Test t4 = new Test(1, 2, "Bai test english lv2", 0, "ENG2");
 				Test t5 = new Test(2, 2, "Bai test coding lv2", 0, "CODE2");
 				Test t6 = new Test(3, 2, "Bai test kien thuc chung lv2", 0, "KNOW2");
+				
+				t1.setDateTest(LocalDateTime.of(2022, 1, 19, 12, 10));
+				t1.setTime(LocalTime.of(0,38,0));
 				
 				logger.info("insert data: " + testRepository.save(t1));
 				logger.info("insert data: " + testRepository.save(t2));

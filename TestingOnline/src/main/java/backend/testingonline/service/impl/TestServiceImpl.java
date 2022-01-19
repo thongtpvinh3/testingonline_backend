@@ -260,4 +260,11 @@ public class TestServiceImpl implements TestService {
 					);
 		}
 	}
+
+	@Override
+	public Integer getIdCandidate(int idTest) {
+		return testRepository.getById(idTest).getCandidate().getId();
+	}
+	
+	
 }

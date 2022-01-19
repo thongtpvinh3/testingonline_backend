@@ -45,5 +45,6 @@ public interface TestService {
 
 	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest, Integer idEssay, Double mark);
 	
+	Integer getIdCandidate(int idTest);
 	
 }

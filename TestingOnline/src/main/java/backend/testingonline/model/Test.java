@@ -1,5 +1,6 @@
 package backend.testingonline.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
-public class Test {
+public class Test implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -184,6 +185,10 @@ public class Test {
 
 	public void setDateTest(LocalDateTime dateTest) {
 		this.dateTest = dateTest;
+	}
+	
+	public int timeToSecond() {
+		return LocalTime.of(this.time.getHour(), this.time.getMinute(), this.time.getSecond()).toSecondOfDay();
 	}
 
 //	@Override

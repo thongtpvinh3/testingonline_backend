@@ -98,4 +98,6 @@ public class CandidateServiceImpl implements CandidateService {
 				new ResponeObject("OK","Set diem thanh cong", candidateRepository.save(foundCandidate))
 				);
 	}
+	
+	
 }

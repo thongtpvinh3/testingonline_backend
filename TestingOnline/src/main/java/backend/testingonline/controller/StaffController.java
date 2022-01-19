@@ -70,6 +70,28 @@ public class StaffController {
 	
 	@Autowired
 	private TempResultRepository tempResultRepository;
+//	
+//	private final RedisCandidateCacheValue valueCache;
+//	
+//	@Autowired
+//	public StaffController(final RedisCandidateCacheValue valueCache) {
+//		this.valueCache = valueCache;
+//	}
+//	
+//	@PostMapping("/cache")
+//	public void cacheCandidate(@RequestBody final Candidate c) {
+//		valueCache.cache(String.valueOf(c.getId()), c);
+//	}
+//	
+//	@GetMapping("/getcachecandidate/{id}")
+//	public Candidate getCandidate(@PathVariable final String id) {
+//		return (Candidate) valueCache.getCachedValue(id);
+//	}
+//	
+//	@DeleteMapping("/deletecachecandidate/{id}")
+//	public void deleteCandidate(@PathVariable final String id) {
+//		valueCache.deleteCachedValue(id);
+//	}
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
