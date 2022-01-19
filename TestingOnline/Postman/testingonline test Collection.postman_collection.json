@@ -52,6 +52,86 @@
 							"response": []
 						},
 						{
+							"name": "redis test",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/staff/listcandidate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"staff",
+										"listcandidate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "redis test Copy",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/staff/listcandidate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"staff",
+										"listcandidate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "add candidate",
 							"event": [
 								{
@@ -1550,8 +1630,27 @@
 					"name": "get this join test",
 					"request": {
 						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get All Cache Ans",
+					"request": {
+						"method": "GET",
 						"header": [],
-						"url": null
+						"url": {
+							"raw": "http://localhost:8080/testpage/getcacheans",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"testpage",
+								"getcacheans"
+							]
+						}
 					},
 					"response": []
 				},
@@ -1601,6 +1700,35 @@
 								"testpage",
 								"setisdone",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Candidate Do A question and Save to Redis",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"idAnswer\" : 8,\r\n    \"answer\" : \"1\",\r\n    \"idCandidate\" : 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/testpage/doingtest",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"testpage",
+								"doingtest"
 							]
 						}
 					},
