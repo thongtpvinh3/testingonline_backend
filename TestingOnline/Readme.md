@@ -37,6 +37,7 @@ Start up project:
     {<br> 
       "idAnswer" : id của câu trả lời ,<br>
       "isTrue": câu trả lời (cả Trắc nghiệm và tự luận), <br>
+      "type" : loại câu trả lời, <br>
       "idCandidate": cố định <br>
     }<br>
     *** Có thể sửa đổi câu trả lời: đổi id câu trả lời và "isTrue" 
