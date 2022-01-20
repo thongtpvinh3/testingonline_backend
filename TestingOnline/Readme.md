@@ -5,6 +5,13 @@ Start up project:
  2. Test API in Postman with file testingonline test Collection.postman_collection.json
  3. Import file Collection.postman_collection.json to Postman app
  4. to use Staff APIs, please login with API checklogin username: "luubi" and password = "123"
+ 5. Bảng CSDL test (H2-Database)<br>
+ ![image](https://user-images.githubusercontent.com/65841739/150341180-de7e06eb-ae49-40ff-8e3f-7af084139dd0.png) <br>
+ ![image](https://user-images.githubusercontent.com/65841739/150343006-0ef41ecb-34d0-45df-97dd-bc579e898abc.png)<br>
+ 
+
+ 
+
 
 ###### Bước 1: Thử add đáp án cho 1 câu hỏi nhiều lựa chọn
  1. trong Postman chọn API "add mc answer to question have id" 
@@ -22,12 +29,12 @@ Start up project:
  1. trong Postman chọn API "join by test code"
  2. trong phần x-www-form urlencoded : thêm key: code và value: mã của bài Test (Đã có sẵn bài test có mã ENG1) -> Gửi đi
  3. Có thể xem bài test hiện tại . Chọn API "get this join test"
- 4. Làm 1 câu hỏi: chọn API "Candidate Do A question and Save to Redis". Mẫu JSON gửi đi bao gồm 
-    { 
-      "idAnswer" : id của câu trả lời ,
-      "isTrue": câu trả lời (cả Trắc nghiệm và tự luận), 
-      "idCandidate": cố định 
-    }
+ 4. Làm 1 câu hỏi: chọn API "Candidate Do A question and Save to Redis". Mẫu JSON gửi đi bao gồm <br>
+    {<br> 
+      "idAnswer" : id của câu trả lời ,<br>
+      "isTrue": câu trả lời (cả Trắc nghiệm và tự luận), <br>
+      "idCandidate": cố định <br>
+    }<br>
     *** Có thể sửa đổi câu trả lời: đổi id câu trả lời và "isTrue" --> Nếu không làm isTrue có thể truyền = 2
  6. Khi đang làm mà hết thời gian :  xóa Cache và lưu vào CSDL --> Lưu lại KQ
  7. muốn nộp bài: chọn API "submit test"
