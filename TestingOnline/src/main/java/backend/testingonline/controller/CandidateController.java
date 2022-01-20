@@ -68,8 +68,11 @@ public class CandidateController {
 		int testtime = thisTest.timeToSecond();
 		int timestart = thisTest.getDateTest().toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
-//			
-			valueCache.save(tempAns);
+			if (tempAns.getType() == 0) {
+				valueCache.saveMultiple(tempAns);
+			} else {
+				valueCache.saveEssay(tempAns);
+			}
 		} else {
 			List<TempResultOfCandidate> finalRes = new ArrayList<>();
 			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache

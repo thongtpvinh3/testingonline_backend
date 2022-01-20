@@ -69,7 +69,7 @@ public class CandidateServiceImpl implements CandidateService {
 				if (timeNow-timeStart > timeTest) {System.out.println("Da het thoi gian lam bai"); return false;}
 				return true;
 			} else {
-				System.out.println(optionalTest.toString());
+				System.out.println("Bai Thi Da Lam xong");
 				return false;
 			}
 		}

@@ -18,12 +18,12 @@ import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 public class RedisCandidateDoTestCache {
 
 	private ValueOperations<String, Object> valueOps;
-	
+
 	private HashOperations hashOps;
-	
+
 	@Autowired
 	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
-	
+
 	@Autowired
 	private EssayQuestionRepository essayQuestionRepository;
 
@@ -31,26 +31,37 @@ public class RedisCandidateDoTestCache {
 		valueOps = redisTemplate.opsForValue();
 		hashOps = redisTemplate.opsForHash();
 	}
-	
-	//---------------------Dung Hash Map ------------------
-	public void save(TempResultOfCandidate temp) {
+
+	// ---------------------Dung Hash Map ------------------
+	public void saveEssay(TempResultOfCandidate temp) {
 		try {
-			int idQuestion = multipleChoiceQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
-			hashOps.put("ans", idQuestion, temp);
+			int idEQuestion = essayQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
+			hashOps.put("ans", idEQuestion, temp);
+			System.out.println(idEQuestion);
 		} catch (Exception e) {
-			System.out.println("Ko co cau tra loi IdAns cho cau hoi ");
+			System.out.println("Ko tim thay cau tra loi");
 		}
 	}
 	
+	public void saveMultiple(TempResultOfCandidate temp) {
+		try {
+			int idQuestion = multipleChoiceQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
+			hashOps.put("ans", idQuestion, temp);
+			System.out.println(idQuestion);
+		} catch (Exception e) {
+			System.out.println("khong tim thay cau tra loi");
+		}
+	}
+
 	public Object getHashCacheAns(String key) {
 		return hashOps.entries(key);
 	}
-	
+
 	public void delete(String key) {
 		hashOps.getOperations().delete(key);
 	}
-	
-	//--------------- Dung List ------------------------
+
+	// --------------- Dung List ------------------------
 	public void cache(final String key, final Object data) {
 		valueOps.set(key, data, 2, TimeUnit.HOURS);
 	}

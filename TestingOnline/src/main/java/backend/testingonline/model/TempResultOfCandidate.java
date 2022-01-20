@@ -20,6 +20,8 @@ public class TempResultOfCandidate implements Serializable {
 	@Column(name = "id_answer")
 	private int idAnswer;
 	@Column
+	private int type;
+	@Column
 	private String answer;
 	@Column(name = "id_candidate")
 	private int idCandidate;
@@ -65,6 +67,14 @@ public class TempResultOfCandidate implements Serializable {
 
 	public void setIdAnswer(int idAnswer) {
 		this.idAnswer = idAnswer;
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	@Override

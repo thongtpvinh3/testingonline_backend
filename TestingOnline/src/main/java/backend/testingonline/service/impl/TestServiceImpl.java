@@ -202,7 +202,7 @@ public class TestServiceImpl implements TestService {
 		Test foundTest = testRepository.getById(idTest);
 		List<Question> thisTestQuestion = foundTest.getQuestions();
 		Integer idCandidate = foundTest.getCandidate().getId();
-		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate);
+		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate,0);
 		int count = 0;
 		int rightResult = 0;
 
@@ -255,7 +255,7 @@ public class TestServiceImpl implements TestService {
 			foundTest.setMarks(x);
 			testRepository.save(foundTest);
 			return ResponseEntity.status(HttpStatus.OK).body(
-					new ResponeObject("OK", "Cham Diem thanh cong!", essayQuestionRepository.save(null))
+					new ResponeObject("OK", "Cham Diem thanh cong!", essayQuestionRepository.save(e))
 					);
 		}
 	}

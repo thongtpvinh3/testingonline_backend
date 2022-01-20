@@ -12,7 +12,7 @@ import backend.testingonline.model.TempResultOfCandidate;
 @Repository
 public interface TempResultRepository extends JpaRepository<TempResultOfCandidate, Integer> {
 	
-	@Query(value = "SELECT * FROM result_candidate r WHERE r.id_candidate =:id", nativeQuery = true)
-	List<TempResultOfCandidate> getAnswerOfCandidate(@Param("id") Integer idCandidate);
+	@Query(value = "SELECT * FROM result_candidate r WHERE r.id_candidate =:id AND type =:type", nativeQuery = true)
+	List<TempResultOfCandidate> getAnswerOfCandidate(@Param("id") Integer idCandidate,@Param("type") Integer type);
 
 }

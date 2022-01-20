@@ -23,7 +23,7 @@ public class QuestionDatabase {
 			public void run(String... args) throws Exception {
 				// TODO Auto-generated method stub
 				Question q1 = new Question(1, 1, "How many people", 1);
-				Question q2 = new Question(2, 2, "Code a login form ?", 1);
+				Question q2 = new Question(2, 1, "Code a login form ?", 1);
 				Question q3 = new Question(3, 3, "Spring boot app ?", 1);
 				Question q4 = new Question(4, 1, "Where ?", 2);
 				Question q5 = new Question(5, 2, "code with framework?", 2);

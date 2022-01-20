@@ -53,8 +53,8 @@ public class Question {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private List<MultipleChoiceQuestion> multipleChoiceQuestions = new ArrayList<>();
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@Cascade(value = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER)
+	@Cascade(CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private EssayQuestion essayQuestion;
 	
