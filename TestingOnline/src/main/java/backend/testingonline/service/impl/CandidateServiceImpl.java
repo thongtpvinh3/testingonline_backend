@@ -1,5 +1,7 @@
 package backend.testingonline.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,16 @@ public class CandidateServiceImpl implements CandidateService {
 	@Override
 	public boolean joinTestByCode(String code) {
 		Test optionalTest = testRepository.findByCodeTest(code);
+		
 		if (optionalTest != null) {
+			int timeNow = LocalDateTime.now().toLocalTime().toSecondOfDay();
+			int timeTest = optionalTest.getTime().toSecondOfDay();
+			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
+			
+			if (optionalTest.getIsDone() == 1 || (optionalTest.getDateTest().equals(LocalDateTime.now()) == false && timeNow - timeStart > timeTest)) {
+				System.out.println("da hoan thanh hoac chua den gio hoac qua gio");
+				return false;
+			}
 			System.out.println(optionalTest.toString());
 			return true;
 		}

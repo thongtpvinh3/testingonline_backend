@@ -86,8 +86,7 @@ public class TestServiceImpl implements TestService {
 		foundTest.setQuestions(test.getQuestions());
 		foundTest.setSubject(test.getSubject());
 		foundTest.setCodeTest(test.getCodeTest());
-		if (test.getDateTest().isBefore(LocalDateTime.now()))
-			foundTest.setTime(test.getTime());
+		foundTest.setTime(test.getTime());
 		foundTest.setDateTest(test.getDateTest());
 
 		return testRepository.save(foundTest);
