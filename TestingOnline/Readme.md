@@ -32,6 +32,7 @@ Start up project:
  6. Khi đang làm mà hết thời gian : Tự động xóa Cache và lưu vào CSDL --> Lưu lại KQ
  7. muốn nộp bài: chọn API "submit test"
  8. Có thể xem các đáp án đang được lưu trong Cache --> chọn API: "get All cache ans"
+ 9. Chỉnh sửa lại thời gian bắt đầu làm bài và thời gian làm bài trong Source code: testingonline.backend.fakedatabase.TestDatabase
 ## Test phần chấm điểm
  1. trong Postman chọn API "get all result" để xem các đáp án đã được lưu
  2. chọn API "review MC question in Test" để chấm điểm phần trắc nghiệm của bài test (Thay đổi bài test bằng cách đổi PathVariable(id bài test cần review) trên URL
