@@ -63,7 +63,7 @@ public class CandidateController {
 		HttpSession session = req.getSession();
 		Test thisTest = (Test) session.getAttribute("test");
 
-		valueCache.cache("testtime", LocalTime.now().toSecondOfDay());
+		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
 		int timenow = (int) valueCache.getCachedValue("testtime");
 		int testtime = thisTest.timeToSecond();
 		int timestart = thisTest.getDateTest().toLocalTime().toSecondOfDay();

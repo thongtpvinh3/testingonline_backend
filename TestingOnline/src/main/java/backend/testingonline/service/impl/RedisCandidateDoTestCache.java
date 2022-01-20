@@ -20,7 +20,7 @@ public class RedisCandidateDoTestCache {
 	private ValueOperations<String, Object> valueOps;
 	
 	private HashOperations hashOps;
-	
+	 
 	@Autowired
 	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
 	
