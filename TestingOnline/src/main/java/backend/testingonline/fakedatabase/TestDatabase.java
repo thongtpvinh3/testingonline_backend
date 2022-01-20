@@ -30,8 +30,8 @@ public class TestDatabase {
 				Test t5 = new Test(2, 2, "Bai test coding lv2", 0, "CODE2");
 				Test t6 = new Test(3, 2, "Bai test kien thuc chung lv2", 0, "KNOW2");
 				
-				t1.setDateTest(LocalDateTime.of(2022, 1, 20, 18, 30));
-				t1.setTime(LocalTime.of(0,40,0));
+				t1.setDateTest(LocalDateTime.of(2022, 1, 20, 23, 00));
+				t1.setTime(LocalTime.of(0,55,0));
 				
 				logger.info("insert data: " + testRepository.save(t1));
 				logger.info("insert data: " + testRepository.save(t2));

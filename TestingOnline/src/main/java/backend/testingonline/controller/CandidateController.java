@@ -44,11 +44,6 @@ public class CandidateController {
 		this.valueCache = valueCache;
 	}
 
-//	@GetMapping("/getDoingTest")
-
-//	@PostMapping("/cacheanswer/{idQuestion}")
-//	public @ResponseBody List<TempResultOfCandidate> cacheAnswer(@PathVariable)
-
 	@GetMapping(URL.CANDIDATE_ALL_TEST)
 	public String toCandidateTestView(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();
@@ -73,48 +68,33 @@ public class CandidateController {
 		int testtime = thisTest.timeToSecond();
 		int timestart = thisTest.getDateTest().toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
-//			List<TempResultOfCandidate> tempRes = (List<TempResultOfCandidate>) valueCache
-//					.getCachedValue(String.valueOf(thisTest.getId()));
-			Map<Integer, TempResultOfCandidate> tempResHashMap = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
-			if (tempResHashMap == null) {
-				Map<Integer, TempResultOfCandidate> t = new HashMap<>();
-//				t.add(tempAns);
-				t.put(tempAns.getId(), tempAns);
-				valueCache.save(tempAns);
-//				valueCache.cache(String.valueOf(thisTest.getId()), t);
-			} else {
-				tempResHashMap.put(tempAns.getId(), tempAns);
-				valueCache.save(tempAns);
-//				valueCache.cache(String.valueOf(thisTest.getId()), tempRes);
-			}
+//			
+			valueCache.save(tempAns);
 		} else {
-//			List<TempResultOfCandidate> finalRes = (List<TempResultOfCandidate>) valueCache
-//					.getCachedValue(String.valueOf(thisTest.getId()));
 			List<TempResultOfCandidate> finalRes = new ArrayList<>();
-			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
-			for (Map.Entry<Integer, TempResultOfCandidate> e: finalRes1.entrySet()) {
+			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
+					.getHashCacheAns("ans");
+			for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
 				finalRes.add(e.getValue());
 			}
 			tempResultService.saveAll(finalRes);
 			testService.setTestIsDone(thisTest.getId());
 			valueCache.delete("ans");
-//			valueCache.deleteCachedValue(String.valueOf(thisTest.getId()));
 		}
 	}
-	
+
 	@GetMapping("/getcacheans")
 	public Map<Integer, TempResultOfCandidate> getTempAns() {
-//		return (List<TempResultOfCandidate>) valueCache.getCachedValue("1");
 		return (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
 	public ResponseEntity<ResponeObject> setTestIsDone(@PathVariable Integer idTest) {
 		testService.setTestIsDone(idTest);
-//		tempResultOfCandidate = (List<TempResultOfCandidate>) valueCache.getCachedValue(String.valueOf(idTest));
 		List<TempResultOfCandidate> tempAnsResult = new ArrayList<>();
-		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
-		for (Map.Entry<Integer, TempResultOfCandidate> e: finalRes1.entrySet()) {
+		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
+				.getHashCacheAns("ans");
+		for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
 			tempAnsResult.add(e.getValue());
 		}
 		tempResultService.saveAll(tempAnsResult);
