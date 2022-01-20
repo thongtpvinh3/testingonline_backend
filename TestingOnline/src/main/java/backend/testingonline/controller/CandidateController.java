@@ -2,7 +2,9 @@ package backend.testingonline.controller;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -71,35 +73,52 @@ public class CandidateController {
 		int testtime = thisTest.timeToSecond();
 		int timestart = thisTest.getDateTest().toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
-			List<TempResultOfCandidate> tempRes = (List<TempResultOfCandidate>) valueCache
-					.getCachedValue(String.valueOf(thisTest.getId()));
-			if (tempRes == null) {
-				List<TempResultOfCandidate> t = new ArrayList<TempResultOfCandidate>();
-				t.add(tempAns);
-				valueCache.cache(String.valueOf(thisTest.getId()), t);
+//			List<TempResultOfCandidate> tempRes = (List<TempResultOfCandidate>) valueCache
+//					.getCachedValue(String.valueOf(thisTest.getId()));
+			Map<Integer, TempResultOfCandidate> tempResHashMap = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+			if (tempResHashMap == null) {
+				Map<Integer, TempResultOfCandidate> t = new HashMap<>();
+//				t.add(tempAns);
+				t.put(tempAns.getId(), tempAns);
+				valueCache.save(tempAns);
+//				valueCache.cache(String.valueOf(thisTest.getId()), t);
 			} else {
-				tempRes.add(tempAns);
-				valueCache.cache(String.valueOf(thisTest.getId()), tempRes);
+				tempResHashMap.put(tempAns.getId(), tempAns);
+				valueCache.save(tempAns);
+//				valueCache.cache(String.valueOf(thisTest.getId()), tempRes);
 			}
 		} else {
-			List<TempResultOfCandidate> finalRes = (List<TempResultOfCandidate>) valueCache
-					.getCachedValue(String.valueOf(thisTest.getId()));
+//			List<TempResultOfCandidate> finalRes = (List<TempResultOfCandidate>) valueCache
+//					.getCachedValue(String.valueOf(thisTest.getId()));
+			List<TempResultOfCandidate> finalRes = new ArrayList<>();
+			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+			for (Map.Entry<Integer, TempResultOfCandidate> e: finalRes1.entrySet()) {
+				finalRes.add(e.getValue());
+			}
 			tempResultService.saveAll(finalRes);
 			testService.setTestIsDone(thisTest.getId());
-			valueCache.deleteCachedValue(String.valueOf(thisTest.getId()));
+			valueCache.delete("ans");
+//			valueCache.deleteCachedValue(String.valueOf(thisTest.getId()));
 		}
 	}
 	
 	@GetMapping("/getcacheans")
-	public List<TempResultOfCandidate> getTempAns() {
-		return (List<TempResultOfCandidate>) valueCache.getCachedValue("1");
+	public Map<Integer, TempResultOfCandidate> getTempAns() {
+//		return (List<TempResultOfCandidate>) valueCache.getCachedValue("1");
+		return (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
-	public ResponseEntity<ResponeObject> setTestIsDone(@PathVariable Integer idTest,
-			@RequestBody List<TempResultOfCandidate> tempResultOfCandidate) {
+	public ResponseEntity<ResponeObject> setTestIsDone(@PathVariable Integer idTest) {
 		testService.setTestIsDone(idTest);
-		tempResultService.saveAll(tempResultOfCandidate);
+//		tempResultOfCandidate = (List<TempResultOfCandidate>) valueCache.getCachedValue(String.valueOf(idTest));
+		List<TempResultOfCandidate> tempAnsResult = new ArrayList<>();
+		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+		for (Map.Entry<Integer, TempResultOfCandidate> e: finalRes1.entrySet()) {
+			tempAnsResult.add(e.getValue());
+		}
+		tempResultService.saveAll(tempAnsResult);
+		valueCache.delete("ans");
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Nop bai thanh cong", ""));
 	}
 
