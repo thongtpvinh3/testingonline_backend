@@ -8,9 +8,11 @@ Start up project:
  5. Bảng CSDL test (H2-Database)<br>
  ![image](https://user-images.githubusercontent.com/65841739/150341180-de7e06eb-ae49-40ff-8e3f-7af084139dd0.png) <br>
  ![image](https://user-images.githubusercontent.com/65841739/150343006-0ef41ecb-34d0-45df-97dd-bc579e898abc.png)<br>
- 
+ ![image](https://user-images.githubusercontent.com/65841739/150345143-ce51c0f3-ffbf-4a3d-971c-7bd8a1d6b653.png)<br>
+ ![image](https://user-images.githubusercontent.com/65841739/150345209-1968c535-3ff9-498d-ba66-b6f5c3a8bec4.png)<br>
+![Uploading image.png…]()
 
- 
+
 
 
 ###### Bước 1: Thử add đáp án cho 1 câu hỏi nhiều lựa chọn
