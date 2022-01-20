@@ -38,7 +38,7 @@ Start up project:
       "isTrue": câu trả lời (cả Trắc nghiệm và tự luận), <br>
       "idCandidate": cố định <br>
     }<br>
-    *** Có thể sửa đổi câu trả lời: đổi id câu trả lời và "isTrue" --> Nếu không làm isTrue có thể truyền = 2
+    *** Có thể sửa đổi câu trả lời: đổi id câu trả lời và "isTrue" 
  6. Khi đang làm mà hết thời gian :  xóa Cache và lưu vào CSDL --> Lưu lại KQ
  7. muốn nộp bài: chọn API "submit test"
  8. Có thể xem các đáp án đang được lưu trong Cache --> chọn API: "get All cache ans"
