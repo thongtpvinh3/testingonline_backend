@@ -75,7 +75,7 @@ public class CandidateController {
 			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
 					.getHashCacheAns("ans");
 			for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
-				finalRes.add(e.getValue());
+				finalRes.add(e.getValue()); 
 			}
 			tempResultService.saveAll(finalRes);
 			testService.setTestIsDone(thisTest.getId());

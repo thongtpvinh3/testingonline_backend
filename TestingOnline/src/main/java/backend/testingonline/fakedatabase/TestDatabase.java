@@ -18,7 +18,7 @@ public class TestDatabase {
 
 	@Bean
 	CommandLineRunner initDatabase(TestRepository testRepository) {
-		return new CommandLineRunner() {
+		return new CommandLineRunner() { 
 
 			@Override
 			public void run(String... args) throws Exception {

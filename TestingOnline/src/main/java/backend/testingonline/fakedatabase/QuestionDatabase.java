@@ -19,7 +19,7 @@ public class QuestionDatabase {
 	CommandLineRunner initQuestionDatabase(QuestionRepository questionRepository,EssayQuestionRepository essayQuestionRepository) {
 		return new CommandLineRunner() {
 
-			@Override
+			@Override 
 			public void run(String... args) throws Exception {
 				// TODO Auto-generated method stub
 				Question q1 = new Question(1, 1, "How many people", 1);
