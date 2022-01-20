@@ -2,6 +2,7 @@ package backend.testingonline.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,12 +63,15 @@ public class CandidateServiceImpl implements CandidateService {
 			int timeTest = optionalTest.getTime().toSecondOfDay();
 			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
 			
-			if (optionalTest.getIsDone() == 1 || (optionalTest.getDateTest().equals(LocalDateTime.now()) == false && timeNow - timeStart > timeTest)) {
-				System.out.println("da hoan thanh hoac chua den gio hoac qua gio");
+			if (optionalTest.getIsDone() == 0) {
+				if (optionalTest.getDateTest().toLocalDate().equals(LocalDate.now()) == false) {System.out.println("Chua den ngay hoac da qua ngay test"); return false;}
+				if (optionalTest.getDateTest().toLocalTime().isAfter(LocalTime.now())) { System.out.println("Chua den gio"); return false;}
+				if (timeNow-timeStart > timeTest) {System.out.println("Da het thoi gian lam bai"); return false;}
+				return true;
+			} else {
+				System.out.println(optionalTest.toString());
 				return false;
 			}
-			System.out.println(optionalTest.toString());
-			return true;
 		}
 		return false;
 	}
