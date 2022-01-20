@@ -29,7 +29,7 @@ Start up project:
       "idCandidate": cố định 
     }
     *** Có thể sửa đổi câu trả lời: đổi id câu trả lời và "isTrue" --> Nếu không làm isTrue có thể truyền = 2
- 6. Khi đang làm mà hết thời gian : Tự động xóa Cache và lưu vào CSDL --> Lưu lại KQ
+ 6. Khi đang làm mà hết thời gian :  xóa Cache và lưu vào CSDL --> Lưu lại KQ
  7. muốn nộp bài: chọn API "submit test"
  8. Có thể xem các đáp án đang được lưu trong Cache --> chọn API: "get All cache ans"
  9. Chỉnh sửa lại thời gian bắt đầu làm bài và thời gian làm bài trong Source code: testingonline.backend.fakedatabase.TestDatabase
