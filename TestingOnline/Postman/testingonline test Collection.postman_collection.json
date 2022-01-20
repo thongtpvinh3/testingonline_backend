@@ -1685,27 +1685,6 @@
 					"response": []
 				},
 				{
-					"name": "Candidate out test",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/testpage/setisdone/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"testpage",
-								"setisdone",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Candidate Do A question and Save to Redis",
 					"request": {
 						"method": "POST",
@@ -1729,6 +1708,27 @@
 							"path": [
 								"testpage",
 								"doingtest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Candidate out test",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/testpage/setisdone/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"testpage",
+								"setisdone",
+								"1"
 							]
 						}
 					},
