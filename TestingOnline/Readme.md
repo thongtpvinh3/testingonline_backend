@@ -29,6 +29,7 @@ Start up project:
  2. gửi đi để thêm bài test có id = 1 cho ứng viên có id = 1 (Trùng Level)
  3. Có thể thêm bài test khác cho ứng viên khác bằng cách thay đổi PathVariable trong URL "/staff/addtestforcandidate/1/2" 1: id bài test || 2: id ứng viên
 ## Test phần làm bài của ứng viên
+ 1. Mở Redis-Server lên để test
  1. trong Postman chọn API "join by test code"
  2. trong phần x-www-form urlencoded : thêm key: code và value: mã của bài Test (Đã có sẵn bài test có mã ENG1) -> Gửi đi
  3. Có thể xem bài test hiện tại . Chọn API "get this join test"
