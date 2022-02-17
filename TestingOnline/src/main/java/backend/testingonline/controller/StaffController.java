@@ -67,31 +67,9 @@ public class StaffController {
 
 	@Autowired
 	private EssayQuestionRepository essayQuestionRepository;
-	
+
 	@Autowired
 	private TempResultRepository tempResultRepository;
-//	
-//	private final RedisCandidateCacheValue valueCache;
-//	
-//	@Autowired
-//	public StaffController(final RedisCandidateCacheValue valueCache) {
-//		this.valueCache = valueCache;
-//	}
-//	
-//	@PostMapping("/cache")
-//	public void cacheCandidate(@RequestBody final Candidate c) {
-//		valueCache.cache(String.valueOf(c.getId()), c);
-//	}
-//	
-//	@GetMapping("/getcachecandidate/{id}")
-//	public Candidate getCandidate(@PathVariable final String id) {
-//		return (Candidate) valueCache.getCachedValue(id);
-//	}
-//	
-//	@DeleteMapping("/deletecachecandidate/{id}")
-//	public void deleteCandidate(@PathVariable final String id) {
-//		valueCache.deleteCachedValue(id);
-//	}
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
@@ -129,7 +107,6 @@ public class StaffController {
 		return candidateService.deleteWithId(id);
 	}
 
-//	@PostMapping("/")
 // --------------------TEST-------------------------------------------------------------------------------------
 
 	// ADD TEST
@@ -182,7 +159,12 @@ public class StaffController {
 
 	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
-		return staffService.createTest(newTest);
+		if (!newTest.getDateTest().isAfter(LocalDateTime.now())) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body(new ResponeObject("FALSE", "Date khong hop le!", ""));
+		} else {
+			return staffService.createTest(newTest);
+		}
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
@@ -229,27 +211,28 @@ public class StaffController {
 //			@RequestBody LocalDateTime dateTest) {
 //		return testService.setDateTest(idTest, dateTest);
 //	}
-	
+
 	@PostMapping(URL.STAFF_REVIEW_MC_QUESTION)
 	public Double reviewMCQuestion(@PathVariable Integer idTest) {
 		return testService.reviewMCQuestion(idTest);
 	}
-	
+
 	@PutMapping(URL.STAFF_REVIEW_ESSAY_QUESTION)
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest,@PathVariable Integer idEssay,@PathVariable Double mark) {
-		return testService.reviewEssayQuestion(idTest,idEssay,mark);
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest,
+			@PathVariable Integer idEssay, @PathVariable Double mark) {
+		return testService.reviewEssayQuestion(idTest, idEssay, mark);
 	}
-	
+
 	@PutMapping(URL.STAFF_SET_MARK_FOR_CANDIDATE)
 	public ResponseEntity<ResponeObject> setMark(@PathVariable Integer idCandidate) {
 		return candidateService.setMark(idCandidate);
 	}
-	
+
 	@GetMapping(URL.STAFF_GET_ALL_RESULT)
 	public List<TempResultOfCandidate> getAllRes() {
 		return tempResultRepository.findAll();
 	}
-	
+
 //-------------------------QUESTION-----------------------------------------------------------------------------
 
 	@GetMapping(URL.STAFF_GETALL_QUESTION)
@@ -314,8 +297,6 @@ public class StaffController {
 //		}
 //		return "Essay Question";
 //	}
-	
-	
 
 //------------------------------ANSWER------------------------------------------
 

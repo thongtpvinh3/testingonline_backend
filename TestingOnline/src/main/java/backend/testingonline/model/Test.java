@@ -1,8 +1,11 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -37,22 +42,22 @@ public class Test implements Serializable{
 	private int subject; // 1 english, 2 coding, 3 knowledge
 	@Column
 	private int level; // 1 FR, 2 JR, 3 SR
-	@Column
+
+	@Column(name = "time")
 	@DateTimeFormat(pattern = "HH:mm:ss", iso = ISO.TIME)
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
-	private LocalTime time;
-//	@Column(name = "id_question")
-//	private Integer idQuestion;
+	private LocalTime times;
 	
+
 	@Column(name = "date_test")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dateTest;
+	private LocalDateTime dates;
 	
 	@Column
 	private String name;
 	@Column(name = "is_done")
-	private int isDone; // xong chua ?
+	private int isDone; // xong chua ? 
 	@Column(name = "code_test", unique = true)
 	private String codeTest; // code join vao
 //	@Column(name = "id_candidate")
@@ -61,18 +66,16 @@ public class Test implements Serializable{
 	@Column
 	private double marks;
 
-	@ManyToOne // (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonIgnore
-//	@JoinTable(name = "candidate_test",
-//	joinColumns = {@JoinColumn(name = "id_candidate")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
+	@JoinColumn(name = "id_candidate")
 	private Candidate candidate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(value = { CascadeType.ALL })
-//	@JsonIgnore
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-//	@JoinTable(name = "test_question",
-//	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")})
+	@JoinTable(name = "test_question",
+	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	private List<Question> questions = new ArrayList<>(); // Bo cau hoi
 
 	public List<Question> getQuestions() {
@@ -132,11 +135,11 @@ public class Test implements Serializable{
 	}
 
 	public LocalTime getTime() {
-		return time;
+		return times;
 	}
 
 	public void setTime(LocalTime time) {
-		this.time = time;
+		this.times = time;
 	}
 
 	public String getName() {
@@ -180,15 +183,15 @@ public class Test implements Serializable{
 	}
 	
 	public LocalDateTime getDateTest() {
-		return dateTest;
+		return dates;
 	}
 
 	public void setDateTest(LocalDateTime dateTest) {
-		this.dateTest = dateTest;
+		this.dates = dateTest;
 	}
 	
 	public int timeToSecond() {
-		return LocalTime.of(this.time.getHour(), this.time.getMinute(), this.time.getSecond()).toSecondOfDay();
+		return LocalTime.of(this.times.getHour(), this.times.getMinute(), this.times.getSecond()).toSecondOfDay();
 	}
 
 //	@Override

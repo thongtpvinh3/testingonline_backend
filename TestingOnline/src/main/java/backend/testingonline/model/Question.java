@@ -1,5 +1,6 @@
 package backend.testingonline.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "question")
-public class Question {
+public class Question implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +41,15 @@ public class Question {
 	protected String content; // noi dung
 	@Column
 	protected int level; // 1 Fresher, 2 Junior, 3 Senior
+	@Column(name = "img")
+	protected String image;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.ALL})
 	@JsonIgnore
-//	@JoinTable(name = "test_question",
-//	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id")})
+	@JoinTable(name = "test_question",
+	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
 	protected List<Test> tests = new ArrayList<>();
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -53,7 +58,7 @@ public class Question {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private List<MultipleChoiceQuestion> multipleChoiceQuestions = new ArrayList<>();
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, mappedBy = "question")
 	@Cascade(CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private EssayQuestion essayQuestion;
@@ -153,7 +158,5 @@ public class Question {
 				+ ", multipleChoiceQuestions=" + multipleChoiceQuestions
 				+ ", essayQuestion=" + essayQuestion + "]";
 	}
-	
-	
 	
 }

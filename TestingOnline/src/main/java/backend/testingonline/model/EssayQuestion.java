@@ -22,12 +22,8 @@ public class EssayQuestion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-//	@Column(name = "id_type")
-//	private int idType; // ???
 	@Column
 	private String answer;
-	@Column
-	private String image;
 	@Column
 	private double mark;
 	
@@ -64,14 +60,6 @@ public class EssayQuestion {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
 	
 	public double getMark() {
 		return mark;
@@ -86,7 +74,6 @@ public class EssayQuestion {
 		return "EssayQuestion "
 				+ "[id=" + id 
 				+ ", answer=" + answer 
-				+ ", image=" + image 
 				+ ", question=" + question 
 				+ "]";
 	}

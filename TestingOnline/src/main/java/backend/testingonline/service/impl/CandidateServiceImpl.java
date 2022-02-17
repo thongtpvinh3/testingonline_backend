@@ -60,7 +60,7 @@ public class CandidateServiceImpl implements CandidateService {
 		
 		if (optionalTest != null) {
 			int timeNow = LocalDateTime.now().toLocalTime().toSecondOfDay();
-			int timeTest = optionalTest.getTime().toSecondOfDay();
+			int timeTest = optionalTest.timeToSecond();
 			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
 			
 			if (optionalTest.getIsDone() == 0) {

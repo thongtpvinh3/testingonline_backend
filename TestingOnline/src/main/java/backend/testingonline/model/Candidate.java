@@ -1,20 +1,19 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,37 +25,29 @@ public class Candidate implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-//	@Column(name = "id_test")
-//	private String idTest; // Map bai test
 	@Column
 	private String name;// Ten cua bai test
-	@Column
+	@Column(nullable = true)
 	private int level; // 1 Fresher, 2 Junior, 3 Senior
 	@Column(unique = true)
 	private String phone; // SDT
 	@Column(unique = true)
 	private String email;
-	@Column
+	@Column(nullable = true)
 	private String position;// Vi tri ???
-	@Column(name = "test_time")
-	private Date testTime; // Thoi gian lam bai
-	@Column(name = "english_mark")
-	private double englishMark; // ??
-	@Column(name = "coding_mark")
-	private double codingMark;// ?
-	@Column(name = "knowledge_mark")
-	private double knowledgeMark;// ?
+	@Column(name = "english_mark", nullable = true)
+	private double englishMark; // ?? Diem english
+	@Column(name = "coding_mark",nullable = true)
+	private double codingMark;// ?? Diem Code
+	@Column(name = "knowledge_mark",nullable = true)
+	private double knowledgeMark;// ?? Diem KnowL
 
-	@OneToMany
-	@Cascade(value = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-//	@JoinTable(name = "candidate_test",
-//	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
+	@JoinTable(name = "candidate_test",
+	joinColumns = {@JoinColumn(name = "id_candidate")}, inverseJoinColumns = {@JoinColumn(name = "id_test")} )
 	private List<Test> tests = new ArrayList<>();
 	
-//	@ManyToMany
-//	private List<Levels> levels;
-
 	public String getPhone() {
 		return phone;
 	}
@@ -78,14 +69,6 @@ public class Candidate implements Serializable {
 		this.phone = phone;
 	}
 
-//	public List<Levels> getLevels() {
-//		return levels;
-//	}
-//
-//	public void setLevels(List<Levels> levels) {
-//		this.levels = levels;
-//	}
-
 	public Candidate() {
 		super();
 	}
@@ -97,14 +80,6 @@ public class Candidate implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-//	public String getIdTest() {
-//		return idTest;
-//	}
-//
-//	public void setIdTest(String idTest) {
-//		this.idTest = idTest;
-//	}
 
 	public String getName() {
 		return name;
@@ -136,14 +111,6 @@ public class Candidate implements Serializable {
 
 	public void setPosition(String position) {
 		this.position = position;
-	}
-
-	public Date getTestTime() {
-		return testTime;
-	}
-
-	public void setTestTime(Date testTime) {
-		this.testTime = testTime;
 	}
 
 	public double getEnglishMark() {
@@ -187,7 +154,6 @@ public class Candidate implements Serializable {
 				+ ", phone=" + phone
 				+ ", email=" + email 
 				+ ", position=" + position 
-				+ ", testTime=" + testTime 
 				+ ", englishMark=" + englishMark 
 				+ ", codingMark=" + codingMark 
 				+ ", knowledgeMark=" + knowledgeMark 

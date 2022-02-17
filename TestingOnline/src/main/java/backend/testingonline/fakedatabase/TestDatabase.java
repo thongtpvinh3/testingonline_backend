@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.TestRepository;
 
-@Configuration
+//@Configuration
 public class TestDatabase {
 	private static final Logger logger = LoggerFactory.getLogger(TestDatabase.class);
 

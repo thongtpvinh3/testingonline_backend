@@ -1,5 +1,7 @@
 package backend.testingonline.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "mc_question")
-public class MultipleChoiceQuestion {
+public class MultipleChoiceQuestion implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +28,6 @@ public class MultipleChoiceQuestion {
 	private int isTrue; // Dung ko ?
 	@Column
 	private String answer;// cac cau tra loi
-	@Column
-	private String img;
 	
 	@ManyToOne
 	@JsonIgnore
@@ -63,14 +63,6 @@ public class MultipleChoiceQuestion {
 		this.isTrue = isTrue;
 	}
 
-	public String getImg() {
-		return img;
-	}
-
-	public void setImg(String img) {
-		this.img = img;
-	}
-
 	public String getAnswer() {
 		return answer;
 	}
@@ -85,7 +77,6 @@ public class MultipleChoiceQuestion {
 				+ "[id=" + id 
 				+ ", isTrue=" + isTrue 
 				+ ", answer=" + answer 
-				+ ", img=" + img
 				+ ", question=" + question 
 				+ "]";
 	}

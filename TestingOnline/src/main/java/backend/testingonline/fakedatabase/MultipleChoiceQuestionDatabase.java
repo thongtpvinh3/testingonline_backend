@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 
-@Configuration
+//@Configuration
 public class MultipleChoiceQuestionDatabase {
 
 	private static final Logger logger = LoggerFactory.getLogger(MultipleChoiceQuestionDatabase.class);
