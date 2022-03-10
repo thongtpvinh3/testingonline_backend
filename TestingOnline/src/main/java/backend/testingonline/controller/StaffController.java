@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.EssayQuestion;
@@ -40,6 +44,7 @@ import backend.testingonline.service.SubjectService;
 import backend.testingonline.service.TestService;
 import url.URL;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = URL.STAFF)
 public class StaffController {
@@ -96,7 +101,7 @@ public class StaffController {
 	}
 
 	// ADD CANDIDATE
-	@PostMapping(URL.STAFF_ADD_CANDIDATE)
+	@PostMapping(value = URL.STAFF_ADD_CANDIDATE)
 	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
 	}
@@ -105,6 +110,11 @@ public class StaffController {
 	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
 	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
 		return candidateService.deleteWithId(id);
+	}
+	
+	@GetMapping("/listcandidate/{idCandidate}")
+	public Candidate getCandidateById(@PathVariable Integer idCandidate) {
+		return candidateService.findById(idCandidate);
 	}
 
 // --------------------TEST-------------------------------------------------------------------------------------
@@ -363,7 +373,7 @@ public class StaffController {
 	@DeleteMapping(URL.STAFF_DELETE_LEVEL)
 	ResponseEntity<ResponeObject> deleteLevel(@PathVariable Integer id) {
 		return levelService.deleteById(id);
-	}
+	} 
 
 //-----------------------------Subject------------------------------------------
 

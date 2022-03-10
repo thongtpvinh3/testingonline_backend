@@ -31,8 +31,8 @@ public class MultipleChoiceQuestion implements Serializable {
 	
 	@ManyToOne
 	@JsonIgnore
-	@JoinColumn(name = "id_question")
-	@Cascade(value = CascadeType.REMOVE)
+	@JoinColumn(name = "id_question", nullable = true)
+	@Cascade(value = { CascadeType.MERGE })
 	private Question question;
 	
 	public MultipleChoiceQuestion() {

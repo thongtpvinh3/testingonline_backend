@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -44,9 +42,10 @@ public class Candidate implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-	@JoinTable(name = "candidate_test",
-	joinColumns = {@JoinColumn(name = "id_candidate")}, inverseJoinColumns = {@JoinColumn(name = "id_test")} )
 	private List<Test> tests = new ArrayList<>();
+	
+	@Column
+	private String avatar;
 	
 	public String getPhone() {
 		return phone;
@@ -143,6 +142,14 @@ public class Candidate implements Serializable {
 
 	public void setTests(List<Test> tests) {
 		this.tests = tests;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	@Override

@@ -59,6 +59,7 @@ public class Test implements Serializable{
 	@Column(name = "is_done")
 	private int isDone; // xong chua ? 
 	@Column(name = "code_test", unique = true)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String codeTest; // code join vao
 //	@Column(name = "id_candidate")
 //	private int idCandidate;
@@ -72,7 +73,6 @@ public class Test implements Serializable{
 	private Candidate candidate;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade(value = { CascadeType.ALL })
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})

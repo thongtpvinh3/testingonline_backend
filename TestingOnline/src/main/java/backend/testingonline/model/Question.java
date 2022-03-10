@@ -46,7 +46,7 @@ public class Question implements Serializable {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Fetch(value = FetchMode.SUBSELECT)
-	@Cascade(value = {CascadeType.ALL})
+	@Cascade(value = {CascadeType.MERGE})
 	@JsonIgnore
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
