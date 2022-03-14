@@ -321,9 +321,9 @@ public class StaffController {
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_MC_ANSWER_FROM_QUESTION)
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(
 			@PathVariable Integer idAnswer) {
-		return questionService.deleteMultipleAnswerFromQuestion(idQuestion, idAnswer);
+		return questionService.deleteMultipleAnswerFromQuestion(idAnswer);
 	}
 
 	@GetMapping(URL.STAFF_GET_ALL_MC_ANSWER)

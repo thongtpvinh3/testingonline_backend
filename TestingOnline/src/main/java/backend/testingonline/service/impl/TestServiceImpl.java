@@ -104,9 +104,6 @@ public class TestServiceImpl implements TestService {
 			List<Question> newList = foundTest.getQuestions();
 			newList.add(newQuestion);
 			foundTest.setQuestions(newList);
-			List<Test> newTest = newQuestion.getTests();
-			newTest.add(foundTest);
-			newQuestion.setTests(newTest);
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
 		} else {
@@ -120,9 +117,6 @@ public class TestServiceImpl implements TestService {
 				List<Question> newList = foundTest.getQuestions();
 				newList.add(newQuestion);
 				foundTest.setQuestions(newList);
-				List<Test> newTest = newQuestion.getTests();
-				newTest.add(foundTest);
-				newQuestion.setTests(newTest);
 				return ResponseEntity.status(HttpStatus.OK)
 						.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
 			} else {
@@ -246,7 +240,7 @@ public class TestServiceImpl implements TestService {
 		
 		if(mark>tmp) {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
-					new ResponeObject("FAILED!", "Diem vuot qua max cau hoi!", "")
+					new ResponeObject("FAILED!", "Diem vuot qua max cau hoi! (" + tmp + ")", "")
 					);
 		} else {
 			EssayQuestion e = essayQuestionRepository.getById(idEssay);

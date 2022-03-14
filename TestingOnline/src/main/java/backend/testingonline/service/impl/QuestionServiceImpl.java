@@ -141,14 +141,11 @@ public class QuestionServiceImpl implements QuestionService {
 				"Add answer to question id: " + foundQuestion.getId(), questionRepository.save(foundQuestion)));
 	}
 
-	@Override
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idQuestion, Integer idAnswer) {
-		Question question = questionRepository.getById(idQuestion);
-		List<MultipleChoiceQuestion> thisListAnswer = question.getMultipleChoiceQuestions();
-		thisListAnswer.remove(multipleChoiceQuestionRepository.getById(idAnswer));
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Remove success!", questionRepository.save(question)));
-	}
+//	@Override
+//	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idAnswer) {
+//		return ResponseEntity.status(HttpStatus.OK)
+//				.body(new ResponeObject("OK", "Remove success!", multipleChoiceQuestionRepository.deleteById(idAnswer));
+//	}
 
 	@Override
 	public ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer) {
@@ -164,5 +161,12 @@ public class QuestionServiceImpl implements QuestionService {
 		Question question = questionRepository.getById(idQuestion);
 		multipleChoiceQuestionRepository.save(answer);
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("", "", questionRepository.save(question)));
+	}
+
+	@Override
+	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idAnswer) {
+		multipleChoiceQuestionRepository.deleteById(idAnswer);
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(new ResponeObject("OK", "Remove success!", ""));
 	}
 }

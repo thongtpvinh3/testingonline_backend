@@ -37,7 +37,7 @@ public interface QuestionService {
 
 	ResponseEntity<ResponeObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans);
 
-	ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idQuestion, Integer idAnswer);
+	ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idAnswer);
 
 	ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer);
 

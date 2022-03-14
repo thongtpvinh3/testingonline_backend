@@ -49,10 +49,10 @@ public class Question implements Serializable {
 	@Cascade(value = {CascadeType.MERGE})
 	@JsonIgnore
 	@JoinTable(name = "test_question",
-	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
+	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	protected List<Test> tests = new ArrayList<>();
 	
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "question")
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.ALL})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 

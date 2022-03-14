@@ -67,7 +67,7 @@ public class Test implements Serializable{
 	@Column
 	private double marks;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JsonIgnore
 	@JoinColumn(name = "id_candidate")
 	private Candidate candidate;
@@ -75,7 +75,7 @@ public class Test implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JoinTable(name = "test_question",
-	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
+	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
 	private List<Question> questions = new ArrayList<>(); // Bo cau hoi
 
 	public List<Question> getQuestions() {

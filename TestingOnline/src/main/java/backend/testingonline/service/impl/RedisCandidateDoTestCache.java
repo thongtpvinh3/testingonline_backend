@@ -19,7 +19,7 @@ public class RedisCandidateDoTestCache {
 
 	private ValueOperations<String, Object> valueOps;
 
-	private HashOperations hashOps;
+	private HashOperations<String, Integer, TempResultOfCandidate> hashOps;
 
 	@Autowired
 	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
@@ -33,6 +33,7 @@ public class RedisCandidateDoTestCache {
 	}
 
 	// ---------------------Dung Hash Map ------------------
+	
 	public void saveEssay(TempResultOfCandidate temp) {
 		try {
 			int idEQuestion = essayQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
