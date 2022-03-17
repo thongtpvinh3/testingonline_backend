@@ -1,27 +1,20 @@
 package backend.testingonline.service.impl;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.CandidateTest;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
+import backend.testingonline.repository.CandidateTestRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
@@ -34,6 +27,9 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Autowired
 	private TestRepository testRepository;
+
+	@Autowired
+	private CandidateTestRepository candidateTestRepository;
 
 	@Override
 	public List<Candidate> findByEmail(String email) {
@@ -50,12 +46,12 @@ public class CandidateServiceImpl implements CandidateService {
 		return candidateRepository.findAll();
 	}
 
-	private final Path storageFolder = Paths.get("uploads");
-
-	private boolean isImageFile(MultipartFile file) {
-		String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
-		return Arrays.asList(new String[] { "png", "jpg", "jpeg", "bmp" }).contains(fileExtension.trim().toLowerCase());
-	}
+//	private final Path storageFolder = Paths.get("uploads");
+//
+//	private boolean isImageFile(MultipartFile file) {
+//		String fileExtension = FilenameUtils.getExtension(file.getOriginalFilename());
+//		return Arrays.asList(new String[] { "png", "jpg", "jpeg", "bmp" }).contains(fileExtension.trim().toLowerCase());
+//	}
 
 	@Override
 	public ResponseEntity<ResponeObject> save(Candidate newCandidate) {
@@ -103,34 +99,36 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public boolean joinTestByCode(String code) {
+	public Test joinTestByCode(String code, Integer idCandidate) {
 		Test optionalTest = testRepository.findByCodeTest(code);
-
+		
 		if (optionalTest != null) {
+			Integer idTest = optionalTest.getId();
+			CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
 			int timeNow = LocalDateTime.now().toLocalTime().toSecondOfDay();
 			int timeTest = optionalTest.timeToSecond();
 			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
 
-			if (optionalTest.getIsDone() == 0) {
+			if (candidateTest.getIsDone() == 0) {
 				if (optionalTest.getDateTest().toLocalDate().equals(LocalDate.now()) == false) {
 					System.out.println("Chua den ngay hoac da qua ngay test");
-					return false;
+					return null;
 				}
 				if (optionalTest.getDateTest().toLocalTime().isAfter(LocalTime.now())) {
 					System.out.println("Chua den gio");
-					return false;
+					return null;
 				}
 				if (timeNow - timeStart > timeTest) {
 					System.out.println("Da het thoi gian lam bai");
-					return false;
+					return null;
 				}
-				return true;
+				return optionalTest;
 			} else {
 				System.out.println("Bai Thi Da Lam xong");
-				return false;
+				return null;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -152,17 +150,23 @@ public class CandidateServiceImpl implements CandidateService {
 	@Override
 	public ResponseEntity<ResponeObject> setMark(Integer id) {
 		Candidate foundCandidate = candidateRepository.getById(id);
-		List<Test> foundTest = foundCandidate.getTests();
-		for (Test t : foundTest) {
-			if (t.getSubject() == 1) {
-				foundCandidate.setEnglishMark(t.getMarks());
+		
+		for (CandidateTest ct: candidateTestRepository.findByCandidateId(id)) {
+//			Double marks = ct.getMarks();
+//			if(marks.isEmpty()) ct.setMarks(0.0);
+			switch (testRepository.getById(ct.getTestId()).getSubject()) {
+			case 1:
+				foundCandidate.setEnglishMark(ct.getMarks());
+				break;
+			case 2:
+				foundCandidate.setCodingMark(ct.getMarks());
+				break;
+			case 3:
+				foundCandidate.setKnowledgeMark(ct.getMarks());
+			default:
+				break;
 			}
-			if (t.getSubject() == 2) {
-				foundCandidate.setCodingMark(t.getMarks());
-			}
-			if (t.getSubject() == 3) {
-				foundCandidate.setKnowledgeMark(t.getMarks());
-			}
+			
 		}
 
 		return ResponseEntity.status(HttpStatus.OK)

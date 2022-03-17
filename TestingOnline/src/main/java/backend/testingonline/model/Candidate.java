@@ -4,19 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -38,16 +38,22 @@ public class Candidate implements Serializable {
 	private String email;
 	@Column(nullable = true)
 	private String position;// Vi tri ???
-	@Column(name = "english_mark", nullable = true)
-	private double englishMark; // ?? Diem english
-	@Column(name = "coding_mark",nullable = true)
-	private double codingMark;// ?? Diem Code
-	@Column(name = "knowledge_mark",nullable = true)
-	private double knowledgeMark;// ?? Diem KnowL
+	@Column(name = "english_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double englishMark; // ?? Diem english
+	@Column(name = "coding_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double codingMark;// ?? Diem Code
+	@Column(name = "knowledge_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double knowledgeMark;// ?? Diem KnowL
 
-	@OneToMany(mappedBy = "candidate")
-	@Fetch(value = FetchMode.SUBSELECT)
-	@Cascade(value = {CascadeType.ALL})
+//	@OneToMany(mappedBy = "candidate")// sua thanh Many to Many
+//	@Fetch(value = FetchMode.SUBSELECT)
+//	@Cascade(value = {CascadeType.ALL})
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//	@Cascade(value = CascadeType.)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
+				inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private List<Test> tests = new ArrayList<>();
 	
@@ -119,27 +125,27 @@ public class Candidate implements Serializable {
 		this.position = position;
 	}
 
-	public double getEnglishMark() {
+	public Double getEnglishMark() {
 		return englishMark;
 	}
 
-	public void setEnglishMark(double englishMark) {
+	public void setEnglishMark(Double englishMark) {
 		this.englishMark = englishMark;
 	}
 
-	public double getCodingMark() {
+	public Double getCodingMark() {
 		return codingMark;
 	}
 
-	public void setCodingMark(double codingMark) {
+	public void setCodingMark(Double codingMark) {
 		this.codingMark = codingMark;
 	}
 
-	public double getKnowledgeMark() {
+	public Double getKnowledgeMark() {
 		return knowledgeMark;
 	}
 
-	public void setKnowledgeMark(double knowledgeMark) {
+	public void setKnowledgeMark(Double knowledgeMark) {
 		this.knowledgeMark = knowledgeMark;
 	}
 	

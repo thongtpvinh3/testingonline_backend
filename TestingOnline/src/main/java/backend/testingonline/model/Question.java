@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "question")
+@JsonIgnoreProperties(value = {"tests"})
 public class Question implements Serializable {
 	
 	@Id
@@ -44,10 +45,10 @@ public class Question implements Serializable {
 	@Column(name = "img")
 	protected String image;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.MERGE})
-	@JsonIgnore
+//	@JsonIgnore
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	protected List<Test> tests = new ArrayList<>();

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
 
 public class JoinTestFilter implements Filter {
@@ -24,8 +25,8 @@ public class JoinTestFilter implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
 		HttpSession session = req.getSession();
-		Test test = (Test) session.getAttribute("test");
-		if (test == null) {
+		Candidate candidate = (Candidate) session.getAttribute("candidate");
+		if (candidate == null) {
 			resp.sendRedirect(req.getContextPath() + "/testingonline");
 			return;
 		} else {

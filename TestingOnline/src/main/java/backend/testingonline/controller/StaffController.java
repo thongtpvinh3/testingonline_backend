@@ -89,6 +89,8 @@ public class StaffController {
 		session.setAttribute("staff", null);
 		return "redirect:/login";
 	}
+	
+	// Get test have candidate id
 
 //----------------------CANDIDATE--------------------------------------------------------
 
@@ -152,10 +154,10 @@ public class StaffController {
 		return testService.findById(id);
 	}
 
-	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
-	List<Test> getTestByDone(@PathVariable Integer done) {
-		return testService.findByDone(done);
-	}
+//	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
+//	List<Test> getTestByDone(@PathVariable Integer done) {
+//		return testService.findByDone(done);
+//	}
 
 	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
 	List<Test> getTestByLevel(@PathVariable Integer level) {
@@ -222,15 +224,15 @@ public class StaffController {
 //		return testService.setDateTest(idTest, dateTest);
 //	}
 
-	@PostMapping(URL.STAFF_REVIEW_MC_QUESTION)
-	public Double reviewMCQuestion(@PathVariable Integer idTest) {
-		return testService.reviewMCQuestion(idTest);
+	@PutMapping(URL.STAFF_REVIEW_MC_QUESTION)
+	public Double reviewMCQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate) {
+		return testService.reviewMCQuestion(idTest, idCandidate);
 	}
 
 	@PutMapping(URL.STAFF_REVIEW_ESSAY_QUESTION)
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest,
-			@PathVariable Integer idEssay, @PathVariable Double mark) {
-		return testService.reviewEssayQuestion(idTest, idEssay, mark);
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate,
+			@PathVariable Double mark) {
+		return testService.reviewEssayQuestion(idTest,idCandidate, mark);
 	}
 
 	@PutMapping(URL.STAFF_SET_MARK_FOR_CANDIDATE)

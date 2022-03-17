@@ -26,8 +26,8 @@ public class EssayQuestion implements Serializable {
 	private int id;
 	@Column
 	private String answer;
-	@Column
-	private double mark;
+//	@Column
+//	private double mark;
 	
 	@OneToOne
 	@JoinColumn(name = "id_question")
@@ -63,13 +63,13 @@ public class EssayQuestion implements Serializable {
 		this.answer = answer;
 	}
 	
-	public double getMark() {
-		return mark;
-	}
-
-	public void setMark(double mark) {
-		this.mark = mark;
-	}
+//	public double getMark() {
+//		return mark;
+//	}
+//
+//	public void setMark(double mark) {
+//		this.mark = mark;
+//	}
 
 	@Override
 	public String toString() {

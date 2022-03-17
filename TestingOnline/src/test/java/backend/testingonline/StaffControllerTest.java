@@ -88,21 +88,21 @@ public class StaffControllerTest extends AbstractTest {
 		System.out.println(testList);
 	}
 
-	@Test
-	public void testAddTest() throws Exception {
-		String url = "/staff/addtest";
-
-		backend.testingonline.model.Test newTest = new backend.testingonline.model.Test(2, 2, "bai test coding lv2", 0,
-				"CODE125");
-		String inputJson = super.mapToJson(newTest);
-
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-		int httpStatusCode = mvcResult.getResponse().getStatus();
-		assertEquals(httpStatusCode, 200);
-		System.out.println();
-	}
+//	@Test
+//	public void testAddTest() throws Exception {
+//		String url = "/staff/addtest";
+//
+//		backend.testingonline.model.Test newTest = new backend.testingonline.model.Test(2, 2, "bai test coding lv2", 0,
+//				"CODE125");
+//		String inputJson = super.mapToJson(newTest);
+//
+//		MvcResult mvcResult = mvc.perform(
+//				MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+//				.andReturn();
+//		int httpStatusCode = mvcResult.getResponse().getStatus();
+//		assertEquals(httpStatusCode, 200);
+//		System.out.println();
+//	}
 
 	@Test
 	public void testAddTestForCandidate() throws Exception {

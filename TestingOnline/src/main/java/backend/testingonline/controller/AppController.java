@@ -25,10 +25,10 @@ public class AppController {
 	@Autowired
 	private CandidateService candidateService;
 	
-	public AppController(CandidateService candidateService) {
-		this.candidateService = candidateService;
-	}
-	
+//	public AppController(CandidateService candidateService) {
+//		this.candidateService = candidateService;
+//	}
+//	
 	@Autowired
 	private TestService testService;
 	
@@ -38,10 +38,10 @@ public class AppController {
 	}
 	
 	@PostMapping(URL.CANDIDATE_JOIN_TEST)
-	public String joinTestWithCode(@RequestParam String code,HttpServletRequest req) {
-		if (candidateService.joinTestByCode(code)) {
+	public String joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
+		if (candidateService.findById(code) != null) {
 			HttpSession session = req.getSession();
-			session.setAttribute("test", testService.getWithCode(code));
+			session.setAttribute("candidate", candidateService.findById(code));
 			
 			return "redirect:/testpage";
 		}

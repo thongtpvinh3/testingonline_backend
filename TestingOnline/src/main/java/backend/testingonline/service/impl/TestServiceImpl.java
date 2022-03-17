@@ -11,12 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
-import backend.testingonline.model.EssayQuestion;
+import backend.testingonline.model.CandidateTest;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
-import backend.testingonline.repository.EssayQuestionRepository;
+import backend.testingonline.repository.CandidateTestRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
 import backend.testingonline.repository.TempResultRepository;
@@ -40,10 +40,10 @@ public class TestServiceImpl implements TestService {
 	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
 
 	@Autowired
-	private EssayQuestionRepository essayQuestionRepository;
-
-	@Autowired
 	private TempResultRepository tempResultRepository;
+	
+	@Autowired
+	private CandidateTestRepository candidateTestRepository;
 
 	@Override
 	public List<Test> getAllTest() {
@@ -60,10 +60,7 @@ public class TestServiceImpl implements TestService {
 		return testRepository.findByLevel(level);
 	}
 
-	@Override
-	public List<Test> findByDone(Integer done) {
-		return testRepository.findByIsDone(done);
-	}
+//	-
 
 	@Override
 	public ResponseEntity<ResponeObject> deleteById(Integer id) {
@@ -80,7 +77,6 @@ public class TestServiceImpl implements TestService {
 	public Test updateTest(Integer id, Test test) {
 		Test foundTest = testRepository.getById(id);
 
-		foundTest.setIsDone(test.getIsDone());
 		foundTest.setLevel(test.getLevel());
 		foundTest.setName(test.getName());
 		foundTest.setQuestions(test.getQuestions());
@@ -96,7 +92,7 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public ResponseEntity<ResponeObject> addQuestionTotest(Integer idTest, Integer idQuestion) {
 
-		Question newQuestion = questionRepository.getById(idQuestion);
+		Question newQuestion = questionRepository.findById(idQuestion).get();
 		Test foundTest = testRepository.getById(idTest);
 
 		if (foundTest.getQuestions().size() == 0 && newQuestion.getLevel() == foundTest.getLevel()
@@ -151,12 +147,18 @@ public class TestServiceImpl implements TestService {
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
 		}
 
+		List<Test> newList = foundCandidate.getTests();
+		for (int i = 0; i< newList.size();i++) {
+			System.out.println("\n\n\n"+newList.get(i).toString1()+"\n\n\n");
+		}
 		if (foundCandidate.getTests().contains(newTest) == false) {
-			List<Test> newList = foundCandidate.getTests();
+			foundCandidate.setTests(null);
+			candidateRepository.save(foundCandidate);
 			newList.add(newTest);
 			foundCandidate.setTests(newList);
-			newTest.setCandidate(foundCandidate);
-			testRepository.save(newTest);
+			for (int i1 = 0; i1< newList.size();i1++) {
+				System.out.println("\n\n\n"+newList.get(i1).toString1()+"\n\n\n");
+			}
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
 		} else {
@@ -166,8 +168,8 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public void setTestIsDone(Integer id) {
-		testRepository.setTestIsDone(id);
+	public void setTestIsDone(Integer idTest, Integer idCandidate) {
+		candidateTestRepository.setIsDone(idTest,idCandidate);
 	}
 
 	@Override
@@ -192,10 +194,10 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public Double reviewMCQuestion(Integer idTest) {
+	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
 		Test foundTest = testRepository.getById(idTest);
 		List<Question> thisTestQuestion = foundTest.getQuestions();
-		Integer idCandidate = foundTest.getCandidate().getId();
+//		Integer idCandidate = foundTest.getCandidate().getId();
 		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate,0);
 		int count = 0;
 		int rightResult = 0;
@@ -217,16 +219,20 @@ public class TestServiceImpl implements TestService {
 		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
 		
 		Double lastResult = tmp * rightResult;
-		foundTest.setMarks(lastResult);
+		CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate,idTest);
+		candidateTest.setMarks(lastResult+candidateTest.getMarks());
+		candidateTestRepository.save(candidateTest);
+//		foundTest.setMarks(lastResult);
 		testRepository.save(foundTest);
 
 		return lastResult;
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idEssay,Double mark) {
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idCandidate,Double mark) {
 		Test foundTest = testRepository.getById(idTest);
 		List<Question> listQ = foundTest.getQuestions();
+		CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
 		int count = 0;
 		for (Question q: listQ) {
 			if(q.getType() == 1) {
@@ -243,21 +249,16 @@ public class TestServiceImpl implements TestService {
 					new ResponeObject("FAILED!", "Diem vuot qua max cau hoi! (" + tmp + ")", "")
 					);
 		} else {
-			EssayQuestion e = essayQuestionRepository.getById(idEssay);
-			e.setMark(mark);
-			Double x = foundTest.getMarks()+mark;
-			foundTest.setMarks(x);
-			testRepository.save(foundTest);
+//			EssayQuestion e = essayQuestionRepository.getById(idEssay);
+//			e.setMark(mark);
+//			Double x = foundTest.getMarks()+mark;
+			Double x = candidateTest.getMarks()+mark;
+			candidateTest.setMarks(x);
+			candidateTestRepository.save(candidateTest);
 			return ResponseEntity.status(HttpStatus.OK).body(
-					new ResponeObject("OK", "Cham Diem thanh cong!", essayQuestionRepository.save(e))
+					new ResponeObject("OK", "Cham Diem thanh cong!", testRepository.save(foundTest))
 					);
 		}
 	}
 
-	@Override
-	public Integer getIdCandidate(int idTest) {
-		return testRepository.getById(idTest).getCandidate().getId();
-	}
-	
-	
 }

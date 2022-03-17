@@ -19,7 +19,7 @@ public interface TestService {
 
 	List<Test> findByLevel(Integer level);
 	
-	List<Test> findByDone(Integer done);
+//	List<Test> findByDone(Integer done);
 
 	List<Test> findBySubject(Integer subject);
 	
@@ -35,16 +35,14 @@ public interface TestService {
 
 	ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate);
 
-	void setTestIsDone(Integer id);
+	void setTestIsDone(Integer idTest, Integer idCandidate);
 
 	ResponseEntity<ResponeObject> setTestTime(Integer idTest,LocalTime time);
 
 	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
 
-	Double reviewMCQuestion(Integer idTest);
+	Double reviewMCQuestion(Integer idTest, Integer idCandidate);
 
-	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest, Integer idEssay, Double mark);
-	
-	Integer getIdCandidate(int idTest);
+	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idCandidate, Double mark);
 	
 }

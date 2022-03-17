@@ -17,22 +17,22 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
 	@Query("SELECT test FROM Test test WHERE test.subject = :subject")
 	public List<Test> findBySubject(@Param("subject") Integer subject);
 	
-	@Query("SELECT test FROM Test test WHERE test.is_done = :isdone")
-	List<Test> findByIsDone(@Param("isdone") Integer isdone);
+//	@Query("SELECT test FROM Test test WHERE test.is_done = :isdone")
+//	List<Test> findByIsDone(@Param("isdone") Integer isdone);
 	
 	@Query("SELECT test FROM Test test WHERE test.level = :level")
 	List<Test> findByLevel(@Param("level") Integer level);
 	
-	@Query("SELECT test FROM Test test WHERE test.code_test LIKE \":code\"")
+	@Query("SELECT test FROM Test test WHERE test.code_test LIKE :code")
 	Test findByCodeTest(@Param("code") String code);
 	
 	@Query("SELECT test FROM Test test WHERE test.name like %:name%")
 	List<Test> findByName(@Param("name") String name);
 	
-	@Transactional
-	@org.springframework.data.jpa.repository.Modifying
-	@org.springframework.data.jpa.repository.Query(value = "UPDATE Test test SET is_done = 1 WHERE id = ?1", nativeQuery = true)
-	void setTestIsDone(Integer id);
+//	@Transactional
+//	@org.springframework.data.jpa.repository.Modifying
+//	@org.springframework.data.jpa.repository.Query(value = "UPDATE Test test SET is_done = 1 WHERE id = ?1", nativeQuery = true)
+//	void setTestIsDone(Integer id);
 	
 //	@Query("SELECT test FROM Test test WHERE test.candidate = :candidate")
 //	List<Test> findByCandidates(@Param("candidate") Candidate candidate);

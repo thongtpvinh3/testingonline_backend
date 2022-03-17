@@ -37,8 +37,8 @@ public class URL {
 	public static final String STAFF_ADD_QUESTION = "/addquestion";
 	public static final String STAFF_DELETE_QUESTION = "/deletequestion/{id}";
 	public static final String STAFF_EDIT_QUESTION = "/editquestion/{id}";
-	public static final String STAFF_REVIEW_MC_QUESTION = "/reviewmcquestion/{idTest}";
-	public static final String STAFF_REVIEW_ESSAY_QUESTION = "/reviewessayquestion/{idTest}/{idEssay}/{mark}";
+	public static final String STAFF_REVIEW_MC_QUESTION = "/reviewmcquestion/{idTest}/{idCandidate}";
+	public static final String STAFF_REVIEW_ESSAY_QUESTION = "/reviewessayquestion/{idTest}/{idQuestion}/{mark}";
 	public static final String STAFF_SET_MARK_FOR_CANDIDATE = "/setmark/{idCandidate}";
 	public static final String STAFF_GET_ALL_RESULT = "/getallres";
 	public static final String STAFF_ADD_ANS_TO_QUESTION = "/addanswertoquestion/{idAnswer}/{idQuestion}";
@@ -59,7 +59,8 @@ public class URL {
 //-----------------------CANDIDATE---------------------------------------------------------------
 	public static final String CANDIDATE_JOIN_TEST = "/jointest";
 	public static final String CANDIDATE = "/testpage";
-	public static final String CANDIDATE_ALL_TEST = "/test/{id}";
+	public static final String CANDIDATE_GET_ALL_TEST = "/alltest";
+	public static final String CANDIDATE_GET_A_TEST = "/test/{code}/{idCandidate}";
 	public static final String CANDIDATE_SUBMIT = "/setisdone/{idTest}";
 	public static final String CANDIDATE_GET_TEST = "/gettest";
 	public static final String CANDIDATE_LOGOUT = "/logout";
