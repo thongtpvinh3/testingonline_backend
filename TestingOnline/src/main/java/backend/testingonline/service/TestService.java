@@ -3,6 +3,7 @@ package backend.testingonline.service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 
@@ -31,7 +32,7 @@ public interface TestService {
 	
 	ResponseEntity<ResponeObject> addQuestionTotest(Integer idTest, Integer idQuestion);
 
-	List<Test> findByCandidateId(Integer id);
+	Set<Test> findByCandidateId(Integer id);
 
 	ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate);
 

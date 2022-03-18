@@ -1,6 +1,7 @@
 package backend.testingonline.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,7 +96,7 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public List<Question> getByTestId(Integer idTest) {
+	public Set<Question> getByTestId(Integer idTest) {
 		Test foundTest = testRepository.getById(idTest);
 		return foundTest.getQuestions();
 	}

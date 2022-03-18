@@ -2,7 +2,9 @@ package backend.testingonline.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,7 +57,7 @@ public class Candidate implements Serializable {
 	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
 				inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-	private List<Test> tests = new ArrayList<>();
+	private Set<Test> tests = new HashSet<>();
 	
 	@Column
 	private String avatar;
@@ -149,11 +151,13 @@ public class Candidate implements Serializable {
 		this.knowledgeMark = knowledgeMark;
 	}
 	
-	public List<Test> getTests() {
+	
+
+	public Set<Test> getTests() {
 		return tests;
 	}
 
-	public void setTests(List<Test> tests) {
+	public void setTests(Set<Test> tests) {
 		this.tests = tests;
 	}
 

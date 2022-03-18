@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,7 +98,7 @@ public class TestServiceImpl implements TestService {
 
 		if (foundTest.getQuestions().size() == 0 && newQuestion.getLevel() == foundTest.getLevel()
 				&& newQuestion.getSubject() == foundTest.getSubject()) {
-			List<Question> newList = foundTest.getQuestions();
+			Set<Question> newList = foundTest.getQuestions();
 			newList.add(newQuestion);
 			foundTest.setQuestions(newList);
 			return ResponseEntity.status(HttpStatus.OK)
@@ -110,7 +111,7 @@ public class TestServiceImpl implements TestService {
 			if (foundTest.getQuestions().contains(newQuestion) == false
 					&& newQuestion.getLevel() == foundTest.getLevel()
 					&& newQuestion.getSubject() == foundTest.getSubject()) {
-				List<Question> newList = foundTest.getQuestions();
+				Set<Question> newList = foundTest.getQuestions();
 				newList.add(newQuestion);
 				foundTest.setQuestions(newList);
 				return ResponseEntity.status(HttpStatus.OK)
@@ -133,7 +134,7 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public List<Test> findByCandidateId(Integer id) {
+	public Set<Test> findByCandidateId(Integer id) {
 		Candidate foundCandidate = candidateRepository.getById(id);
 		return foundCandidate.getTests();
 	}
@@ -147,18 +148,17 @@ public class TestServiceImpl implements TestService {
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
 		}
 
-		List<Test> newList = foundCandidate.getTests();
-		for (int i = 0; i< newList.size();i++) {
-			System.out.println("\n\n\n"+newList.get(i).toString1()+"\n\n\n");
-		}
+		Set<Test> newList = foundCandidate.getTests();
+//		for (int i = 0; i< newList.size();i++) {
+//			System.out.println("\n\n\n"+newList..toString1()+"\n\n\n");
+//		}
 		if (foundCandidate.getTests().contains(newTest) == false) {
-			foundCandidate.setTests(null);
-			candidateRepository.save(foundCandidate);
+//			foundCandidate.setTests(null);
 			newList.add(newTest);
 			foundCandidate.setTests(newList);
-			for (int i1 = 0; i1< newList.size();i1++) {
-				System.out.println("\n\n\n"+newList.get(i1).toString1()+"\n\n\n");
-			}
+//			for (int i1 = 0; i1< newList.size();i1++) {
+//				System.out.println("\n\n\n"+newList.get(i1).toString1()+"\n\n\n");
+//			}
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
 		} else {
@@ -196,7 +196,7 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
 		Test foundTest = testRepository.getById(idTest);
-		List<Question> thisTestQuestion = foundTest.getQuestions();
+		Set<Question> thisTestQuestion = foundTest.getQuestions();
 //		Integer idCandidate = foundTest.getCandidate().getId();
 		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate,0);
 		int count = 0;
@@ -231,7 +231,7 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idCandidate,Double mark) {
 		Test foundTest = testRepository.getById(idTest);
-		List<Question> listQ = foundTest.getQuestions();
+		Set<Question> listQ = foundTest.getQuestions();
 		CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
 		int count = 0;
 		for (Question q: listQ) {

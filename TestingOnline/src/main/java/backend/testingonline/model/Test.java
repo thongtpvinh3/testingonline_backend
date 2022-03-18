@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,16 +69,16 @@ public class Test implements Serializable{
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
-	private List<Question> questions = new ArrayList<>(); // Bo cau hoi
+	private Set<Question> questions = new HashSet<>(); // Bo cau hoi
 
-	public List<Question> getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
-	}
-
+//	public List<Question> getQuestions() {
+//		return questions;
+//	}
+//
+//	public void setQuestions(List<Question> questions) {
+//		this.questions = questions;
+//	}
+	
 	public Test() {
 		super();
 	}
@@ -89,6 +91,14 @@ public class Test implements Serializable{
 //		this.isDone = isDone;
 //		this.codeTest = codeTest;
 //	}
+
+	public Set<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(Set<Question> questions) {
+		this.questions = questions;
+	}
 
 	public int getId() {
 		return id;

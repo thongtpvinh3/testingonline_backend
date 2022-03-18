@@ -1,6 +1,7 @@
 package backend.testingonline.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 
@@ -29,7 +30,7 @@ public interface QuestionService {
 
 	List<Question> findByLevel(Integer level);
 
-	List<Question> getByTestId(Integer idTest);
+	Set<Question> getByTestId(Integer idTest);
 	
 	ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion);
 

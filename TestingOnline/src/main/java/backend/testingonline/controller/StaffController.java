@@ -2,6 +2,7 @@ package backend.testingonline.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -165,7 +166,7 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.SATFF_GET_TEST_BY_CANDIDATEID)
-	List<Test> getTestByCandidateId(@PathVariable Integer id) {
+	Set<Test> getTestByCandidateId(@PathVariable Integer id) {
 		return testService.findByCandidateId(id);
 	}
 
@@ -276,7 +277,7 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.STAFF_GET_QUESTION_BY_TESTID)
-	public List<Question> getQuestionByTestId(@PathVariable Integer idTest) {
+	public Set<Question> getQuestionByTestId(@PathVariable Integer idTest) {
 		return questionService.getByTestId(idTest);
 	}
 

@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -58,10 +59,10 @@ public class CandidateController {
 	}
 	
 	@GetMapping(URL.CANDIDATE_GET_ALL_TEST)
-	public List<Test> getAllCandidateTest(HttpServletRequest req) {
+	public Set<Test> getAllCandidateTest(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
-		List<Test> candidateTest = candidate.getTests();
+		Set<Test> candidateTest = candidate.getTests();
 		return candidateTest;
 	}
 
