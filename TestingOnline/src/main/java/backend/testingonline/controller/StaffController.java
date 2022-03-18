@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.EssayQuestion;
@@ -40,6 +44,7 @@ import backend.testingonline.service.SubjectService;
 import backend.testingonline.service.TestService;
 import url.URL;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping(path = URL.STAFF)
 public class StaffController {
@@ -67,31 +72,9 @@ public class StaffController {
 
 	@Autowired
 	private EssayQuestionRepository essayQuestionRepository;
-	
+
 	@Autowired
 	private TempResultRepository tempResultRepository;
-//	
-//	private final RedisCandidateCacheValue valueCache;
-//	
-//	@Autowired
-//	public StaffController(final RedisCandidateCacheValue valueCache) {
-//		this.valueCache = valueCache;
-//	}
-//	
-//	@PostMapping("/cache")
-//	public void cacheCandidate(@RequestBody final Candidate c) {
-//		valueCache.cache(String.valueOf(c.getId()), c);
-//	}
-//	
-//	@GetMapping("/getcachecandidate/{id}")
-//	public Candidate getCandidate(@PathVariable final String id) {
-//		return (Candidate) valueCache.getCachedValue(id);
-//	}
-//	
-//	@DeleteMapping("/deletecachecandidate/{id}")
-//	public void deleteCandidate(@PathVariable final String id) {
-//		valueCache.deleteCachedValue(id);
-//	}
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
@@ -106,6 +89,8 @@ public class StaffController {
 		session.setAttribute("staff", null);
 		return "redirect:/login";
 	}
+	
+	// Get test have candidate id
 
 //----------------------CANDIDATE--------------------------------------------------------
 
@@ -118,7 +103,7 @@ public class StaffController {
 	}
 
 	// ADD CANDIDATE
-	@PostMapping(URL.STAFF_ADD_CANDIDATE)
+	@PostMapping(value = URL.STAFF_ADD_CANDIDATE)
 	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
 	}
@@ -128,8 +113,12 @@ public class StaffController {
 	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
 		return candidateService.deleteWithId(id);
 	}
+	
+	@GetMapping("/listcandidate/{idCandidate}")
+	public Candidate getCandidateById(@PathVariable Integer idCandidate) {
+		return candidateService.findById(idCandidate);
+	}
 
-//	@PostMapping("/")
 // --------------------TEST-------------------------------------------------------------------------------------
 
 	// ADD TEST
@@ -165,10 +154,10 @@ public class StaffController {
 		return testService.findById(id);
 	}
 
-	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
-	List<Test> getTestByDone(@PathVariable Integer done) {
-		return testService.findByDone(done);
-	}
+//	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
+//	List<Test> getTestByDone(@PathVariable Integer done) {
+//		return testService.findByDone(done);
+//	}
 
 	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
 	List<Test> getTestByLevel(@PathVariable Integer level) {
@@ -182,7 +171,12 @@ public class StaffController {
 
 	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
-		return staffService.createTest(newTest);
+		if (!newTest.getDateTest().isAfter(LocalDateTime.now())) {
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+					.body(new ResponeObject("FALSE", "Date khong hop le!", ""));
+		} else {
+			return staffService.createTest(newTest);
+		}
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
@@ -229,27 +223,28 @@ public class StaffController {
 //			@RequestBody LocalDateTime dateTest) {
 //		return testService.setDateTest(idTest, dateTest);
 //	}
-	
-	@PostMapping(URL.STAFF_REVIEW_MC_QUESTION)
-	public Double reviewMCQuestion(@PathVariable Integer idTest) {
-		return testService.reviewMCQuestion(idTest);
+
+	@PutMapping(URL.STAFF_REVIEW_MC_QUESTION)
+	public Double reviewMCQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate) {
+		return testService.reviewMCQuestion(idTest, idCandidate);
 	}
-	
+
 	@PutMapping(URL.STAFF_REVIEW_ESSAY_QUESTION)
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest,@PathVariable Integer idEssay,@PathVariable Double mark) {
-		return testService.reviewEssayQuestion(idTest,idEssay,mark);
+	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate,
+			@PathVariable Double mark) {
+		return testService.reviewEssayQuestion(idTest,idCandidate, mark);
 	}
-	
+
 	@PutMapping(URL.STAFF_SET_MARK_FOR_CANDIDATE)
 	public ResponseEntity<ResponeObject> setMark(@PathVariable Integer idCandidate) {
 		return candidateService.setMark(idCandidate);
 	}
-	
+
 	@GetMapping(URL.STAFF_GET_ALL_RESULT)
 	public List<TempResultOfCandidate> getAllRes() {
 		return tempResultRepository.findAll();
 	}
-	
+
 //-------------------------QUESTION-----------------------------------------------------------------------------
 
 	@GetMapping(URL.STAFF_GETALL_QUESTION)
@@ -314,8 +309,6 @@ public class StaffController {
 //		}
 //		return "Essay Question";
 //	}
-	
-	
 
 //------------------------------ANSWER------------------------------------------
 
@@ -330,9 +323,9 @@ public class StaffController {
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_MC_ANSWER_FROM_QUESTION)
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(
 			@PathVariable Integer idAnswer) {
-		return questionService.deleteMultipleAnswerFromQuestion(idQuestion, idAnswer);
+		return questionService.deleteMultipleAnswerFromQuestion(idAnswer);
 	}
 
 	@GetMapping(URL.STAFF_GET_ALL_MC_ANSWER)
@@ -382,7 +375,7 @@ public class StaffController {
 	@DeleteMapping(URL.STAFF_DELETE_LEVEL)
 	ResponseEntity<ResponeObject> deleteLevel(@PathVariable Integer id) {
 		return levelService.deleteById(id);
-	}
+	} 
 
 //-----------------------------Subject------------------------------------------
 

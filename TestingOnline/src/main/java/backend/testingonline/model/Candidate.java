@@ -1,20 +1,22 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -26,37 +28,38 @@ public class Candidate implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-//	@Column(name = "id_test")
-//	private String idTest; // Map bai test
 	@Column
 	private String name;// Ten cua bai test
-	@Column
+	@Column(nullable = true)
 	private int level; // 1 Fresher, 2 Junior, 3 Senior
 	@Column(unique = true)
 	private String phone; // SDT
 	@Column(unique = true)
 	private String email;
-	@Column
+	@Column(nullable = true)
 	private String position;// Vi tri ???
-	@Column(name = "test_time")
-	private Date testTime; // Thoi gian lam bai
-	@Column(name = "english_mark")
-	private double englishMark; // ??
-	@Column(name = "coding_mark")
-	private double codingMark;// ?
-	@Column(name = "knowledge_mark")
-	private double knowledgeMark;// ?
+	@Column(name = "english_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double englishMark; // ?? Diem english
+	@Column(name = "coding_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double codingMark;// ?? Diem Code
+	@Column(name = "knowledge_mark", columnDefinition = "DOUBLE DEFAULT 0")
+	private Double knowledgeMark;// ?? Diem KnowL
 
-	@OneToMany
-	@Cascade(value = CascadeType.ALL)
+//	@OneToMany(mappedBy = "candidate")// sua thanh Many to Many
+//	@Fetch(value = FetchMode.SUBSELECT)
+//	@Cascade(value = {CascadeType.ALL})
+//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//	@Cascade(value = CascadeType.)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
+				inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
-//	@JoinTable(name = "candidate_test",
-//	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id")} )
 	private List<Test> tests = new ArrayList<>();
 	
-//	@ManyToMany
-//	private List<Levels> levels;
-
+	@Column
+	private String avatar;
+	
 	public String getPhone() {
 		return phone;
 	}
@@ -78,14 +81,6 @@ public class Candidate implements Serializable {
 		this.phone = phone;
 	}
 
-//	public List<Levels> getLevels() {
-//		return levels;
-//	}
-//
-//	public void setLevels(List<Levels> levels) {
-//		this.levels = levels;
-//	}
-
 	public Candidate() {
 		super();
 	}
@@ -97,14 +92,6 @@ public class Candidate implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-
-//	public String getIdTest() {
-//		return idTest;
-//	}
-//
-//	public void setIdTest(String idTest) {
-//		this.idTest = idTest;
-//	}
 
 	public String getName() {
 		return name;
@@ -138,35 +125,27 @@ public class Candidate implements Serializable {
 		this.position = position;
 	}
 
-	public Date getTestTime() {
-		return testTime;
-	}
-
-	public void setTestTime(Date testTime) {
-		this.testTime = testTime;
-	}
-
-	public double getEnglishMark() {
+	public Double getEnglishMark() {
 		return englishMark;
 	}
 
-	public void setEnglishMark(double englishMark) {
+	public void setEnglishMark(Double englishMark) {
 		this.englishMark = englishMark;
 	}
 
-	public double getCodingMark() {
+	public Double getCodingMark() {
 		return codingMark;
 	}
 
-	public void setCodingMark(double codingMark) {
+	public void setCodingMark(Double codingMark) {
 		this.codingMark = codingMark;
 	}
 
-	public double getKnowledgeMark() {
+	public Double getKnowledgeMark() {
 		return knowledgeMark;
 	}
 
-	public void setKnowledgeMark(double knowledgeMark) {
+	public void setKnowledgeMark(Double knowledgeMark) {
 		this.knowledgeMark = knowledgeMark;
 	}
 	
@@ -178,6 +157,14 @@ public class Candidate implements Serializable {
 		this.tests = tests;
 	}
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	@Override
 	public String toString() {
 		return "Candidate "
@@ -187,7 +174,6 @@ public class Candidate implements Serializable {
 				+ ", phone=" + phone
 				+ ", email=" + email 
 				+ ", position=" + position 
-				+ ", testTime=" + testTime 
 				+ ", englishMark=" + englishMark 
 				+ ", codingMark=" + codingMark 
 				+ ", knowledgeMark=" + knowledgeMark 

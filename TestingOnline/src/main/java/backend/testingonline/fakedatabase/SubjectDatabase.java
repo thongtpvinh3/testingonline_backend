@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import backend.testingonline.model.Subject;
 import backend.testingonline.repository.SubjectRepository;
 
-@Configuration
+//@Configuration
 public class SubjectDatabase {
 	
 private static final Logger logger = LoggerFactory.getLogger(SubjectDatabase.class);

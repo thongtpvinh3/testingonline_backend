@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
 import url.URL;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class AppController { 
 
@@ -23,10 +25,10 @@ public class AppController {
 	@Autowired
 	private CandidateService candidateService;
 	
-	public AppController(CandidateService candidateService) {
-		this.candidateService = candidateService;
-	}
-	
+//	public AppController(CandidateService candidateService) {
+//		this.candidateService = candidateService;
+//	}
+//	
 	@Autowired
 	private TestService testService;
 	
@@ -36,10 +38,10 @@ public class AppController {
 	}
 	
 	@PostMapping(URL.CANDIDATE_JOIN_TEST)
-	public String joinTestWithCode(@RequestParam String code,HttpServletRequest req) {
-		if (candidateService.joinTestByCode(code)) {
+	public String joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
+		if (candidateService.findById(code) != null) {
 			HttpSession session = req.getSession();
-			session.setAttribute("test", testService.getWithCode(code));
+			session.setAttribute("candidate", candidateService.findById(code));
 			
 			return "redirect:/testpage";
 		}

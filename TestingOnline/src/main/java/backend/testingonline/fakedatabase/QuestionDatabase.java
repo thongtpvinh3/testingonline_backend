@@ -10,7 +10,7 @@ import backend.testingonline.model.Question;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
 
-@Configuration
+//@Configuration
 public class QuestionDatabase {
 	
 	private static final Logger logger = LoggerFactory.getLogger(QuestionDatabase.class);

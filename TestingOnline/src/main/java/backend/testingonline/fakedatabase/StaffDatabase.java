@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import backend.testingonline.model.Staff;
 import backend.testingonline.repository.StaffRepository;
 
-@Configuration
+//@Configuration
 public class StaffDatabase {
 
 	// logger ~= sysout

@@ -1,5 +1,7 @@
 package backend.testingonline.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,20 +18,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "e_question")
-public class EssayQuestion {
+public class EssayQuestion implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column
 	private int id;
-//	@Column(name = "id_type")
-//	private int idType; // ???
 	@Column
 	private String answer;
-	@Column
-	private String image;
-	@Column
-	private double mark;
+//	@Column
+//	private double mark;
 	
 	@OneToOne
 	@JoinColumn(name = "id_question")
@@ -64,29 +62,20 @@ public class EssayQuestion {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}
 	
-	public double getMark() {
-		return mark;
-	}
-
-	public void setMark(double mark) {
-		this.mark = mark;
-	}
+//	public double getMark() {
+//		return mark;
+//	}
+//
+//	public void setMark(double mark) {
+//		this.mark = mark;
+//	}
 
 	@Override
 	public String toString() {
 		return "EssayQuestion "
 				+ "[id=" + id 
 				+ ", answer=" + answer 
-				+ ", image=" + image 
 				+ ", question=" + question 
 				+ "]";
 	}
