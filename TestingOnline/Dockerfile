@@ -19,6 +19,7 @@ RUN ./mvnw dependency:go-offline -B
 # Copy the project source
 COPY src src
 
+RUN  chmod +x mvnw 
 # Package the application
 RUN ./mvnw package -DskipTests
 # RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
@@ -36,4 +37,4 @@ ARG DEPENDENCY=/app/target/testingonline-1.0
 COPY --from=build /app/target/testingonline-1.0.war /app
 
 
-ENTRYPOINT ["java","-jar","/app/testingonline-1.0.war"]
+ENTRYPOINT ["sleep","48h"]
