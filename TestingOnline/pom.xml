@@ -16,7 +16,8 @@
 	<name>TestingOnline</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>11</java.version>
+		<maven.compiler.source>1.8</maven.compiler.source>
+ 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -111,6 +112,12 @@
 			<artifactId>lettuce-core</artifactId>
 			<version>6.1.6.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
 
 	</dependencies>
 

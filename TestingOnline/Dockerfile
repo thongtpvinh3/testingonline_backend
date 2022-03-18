@@ -26,6 +26,8 @@ RUN ./mvnw package -DskipTests
 #### Stage 2: A minimal docker image with command to run the app 
 FROM openjdk:8-jre-alpine
 
+WORKDIR /app
+
 ARG DEPENDENCY=/app/target/testingonline-1.0
 
 # Copy project dependencies from the build stage
