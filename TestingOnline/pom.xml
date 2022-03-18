@@ -16,7 +16,10 @@
 	<name>TestingOnline</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+<<<<<<< HEAD
 		<java.version>8</java.version>
+=======
+>>>>>>> branch 'luatnc' of https://github.com/thongtpvinh3/testingonline_backend.git
 		<maven.compiler.source>1.8</maven.compiler.source>
  		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -113,6 +116,13 @@
 			<artifactId>lettuce-core</artifactId>
 			<version>6.1.6.RELEASE</version>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
