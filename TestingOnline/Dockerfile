@@ -19,6 +19,7 @@ RUN ./mvnw dependency:go-offline -B
 # Copy the project source
 COPY src src
 
+RUN  chmod +x mvnw
 # Package the application
 RUN ./mvnw package -DskipTests
 # RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
