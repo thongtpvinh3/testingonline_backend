@@ -37,7 +37,8 @@ services:
       - ./data/mysql:/var/lib/mysql
 
   testing-online:
-    image: luatnc2110/testingonline:v1.0
+    build: ./
+    image: testingonline:v1.1
     ports:
       - "8080:8080"
     depends_on:
