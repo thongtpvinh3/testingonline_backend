@@ -1,6 +1,7 @@
 package backend.testingonline.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,10 @@ public interface CandidateService {
 	ResponseEntity<ResponeObject> setMark(Integer id);
 
 	Test joinTestByCode(String code, Integer idCandidate);
+	
+	Set<Test> joinAllTest(Integer idCandidate);
+
+	void setIsDone(int i);
 
 	
 }

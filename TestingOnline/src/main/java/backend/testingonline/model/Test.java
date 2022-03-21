@@ -1,14 +1,12 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,12 +22,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
 @JsonIgnoreProperties(value = {"candidates"})
+@SuppressWarnings("serial")
 public class Test implements Serializable{
 
 	@Id
@@ -47,20 +45,17 @@ public class Test implements Serializable{
 	private LocalTime times;
 	
 
-	@Column(name = "date_test")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dates;
+//	@Column(name = "date_test")
+//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
+//	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//	private LocalDateTime dates;
 	
 	@Column
 	private String name;
-//	@Column(name = "is_done")
-//	private int isDone; // xong chua ? 
+	
 	@Column(name = "code_test", unique = true)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String codeTest; // code join vao
-//	@Column(name = "id_candidate")
-//	private int idCandidate;
 
 	@ManyToMany
 	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_candidate")})
@@ -71,6 +66,7 @@ public class Test implements Serializable{
 	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
 	private Set<Question> questions = new HashSet<>(); // Bo cau hoi
 
+	
 //	public List<Question> getQuestions() {
 //		return questions;
 //	}
@@ -156,13 +152,13 @@ public class Test implements Serializable{
 		this.times = times;
 	}
 
-	public LocalDateTime getDates() {
-		return dates;
-	}
-
-	public void setDates(LocalDateTime dates) {
-		this.dates = dates;
-	}
+//	public LocalDateTime getDates() {
+//		return dates;
+//	}
+//
+//	public void setDates(LocalDateTime dates) {
+//		this.dates = dates;
+//	}
 
 	public List<Candidate> getCandidates() {
 		return candidates;
@@ -187,14 +183,6 @@ public class Test implements Serializable{
 //	public void setMarks(double marks) {
 //		this.marks = marks;
 //	}
-	
-	public LocalDateTime getDateTest() {
-		return dates;
-	}
-
-	public void setDateTest(LocalDateTime dateTest) {
-		this.dates = dateTest;
-	}
 	
 	public int timeToSecond() {
 		return LocalTime.of(this.times.getHour(), this.times.getMinute(), this.times.getSecond()).toSecondOfDay();

@@ -1,12 +1,10 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,11 +17,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "candidate")
+@SuppressWarnings("serial")
 public class Candidate implements Serializable {
 
 	@Id
@@ -46,12 +48,15 @@ public class Candidate implements Serializable {
 	private Double codingMark;// ?? Diem Code
 	@Column(name = "knowledge_mark", columnDefinition = "DOUBLE DEFAULT 0")
 	private Double knowledgeMark;// ?? Diem KnowL
+	
+	@Column(name = "date_test")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime dates;
+	
+	@Column(name = "is_done", columnDefinition = "INT DEFAULT 0")
+	private int isDone;
 
-//	@OneToMany(mappedBy = "candidate")// sua thanh Many to Many
-//	@Fetch(value = FetchMode.SUBSELECT)
-//	@Cascade(value = {CascadeType.ALL})
-//	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//	@Cascade(value = CascadeType.)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
@@ -61,6 +66,14 @@ public class Candidate implements Serializable {
 	
 	@Column
 	private String avatar;
+	
+	public int CalculatorTotalTime(Set<Test> tests) {
+		int time = 0;
+		for (Test t: tests) {
+			time+=t.timeToSecond();
+		}
+		return time;
+	}
 	
 	public String getPhone() {
 		return phone;
@@ -151,8 +164,6 @@ public class Candidate implements Serializable {
 		this.knowledgeMark = knowledgeMark;
 	}
 	
-	
-
 	public Set<Test> getTests() {
 		return tests;
 	}
@@ -167,6 +178,22 @@ public class Candidate implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public LocalDateTime getDates() {
+		return dates;
+	}
+
+	public void setDates(LocalDateTime dates) {
+		this.dates = dates;
+	}
+
+	public int getIsDone() {
+		return isDone;
+	}
+
+	public void setIsDone(int isDone) {
+		this.isDone = isDone;
 	}
 
 	@Override

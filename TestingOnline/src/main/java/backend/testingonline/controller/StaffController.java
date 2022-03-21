@@ -151,14 +151,10 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.SATFF_GET_TEST_BY_ID)
-	Test getTestbyId(@PathVariable Integer id) {
+	Test getTestbyId(@PathVariable Integer id, Model model) {
+		model.addAttribute("candidates", testService.getCandidateOfTest(id));
 		return testService.findById(id);
 	}
-
-//	@GetMapping(URL.SATFF_GET_TEST_BY_DONE)
-//	List<Test> getTestByDone(@PathVariable Integer done) {
-//		return testService.findByDone(done);
-//	}
 
 	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
 	List<Test> getTestByLevel(@PathVariable Integer level) {
@@ -172,12 +168,7 @@ public class StaffController {
 
 	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
-		if (!newTest.getDateTest().isAfter(LocalDateTime.now())) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-					.body(new ResponeObject("FALSE", "Date khong hop le!", ""));
-		} else {
-			return staffService.createTest(newTest);
-		}
+		return staffService.createTest(newTest);
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
@@ -197,11 +188,6 @@ public class StaffController {
 		if (foundTest == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ResponeObject("FALSE", "Khong tim thay id: " + id, ""));
-		}
-
-		if (!test.getDateTest().isAfter(LocalDateTime.now())) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-					.body(new ResponeObject("FALSE", "Date khong hop le!", ""));
 		} else {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "update thanh cong", testService.updateTest(id, test)));
@@ -335,9 +321,9 @@ public class StaffController {
 	}
 
 	@PutMapping(URL.STAFF_UPDATE_MC_ANSWER_FOR_QUESTION)
-	public ResponseEntity<ResponeObject> updateMCAnswerForQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponeObject> updateMCAnswerForQuestion(@PathVariable Integer idAnswer,
 			@RequestBody MultipleChoiceQuestion answer) {
-		return questionService.updateMCAnswer(idQuestion, answer);
+		return questionService.updateMCAnswer(idAnswer, answer);
 	}
 
 	@PostMapping(URL.STAFF_ADD_E_ASNSWER_FOR_QUESTION)
@@ -359,6 +345,11 @@ public class StaffController {
 	@GetMapping(URL.STAFF_GET_ALL_ESSAY_ANSWER)
 	public List<EssayQuestion> getAllEssayAnswer() {
 		return essayQuestionRepository.findAll();
+	}
+	
+	@PutMapping("/removequestion/{idQuestion}/{idTest}")
+	public void removeQuestionFromTest(@PathVariable("idQuestion") Integer idQuestion,@PathVariable("idTest") Integer idTest) {
+		questionService.removeQuestionFromTest(idQuestion,idTest);
 	}
 
 //------------------------------Level-------------------------------------------

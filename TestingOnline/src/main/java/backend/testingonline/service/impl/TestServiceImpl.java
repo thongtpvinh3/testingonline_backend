@@ -84,7 +84,6 @@ public class TestServiceImpl implements TestService {
 		foundTest.setSubject(test.getSubject());
 		foundTest.setCodeTest(test.getCodeTest());
 		foundTest.setTime(test.getTime());
-		foundTest.setDateTest(test.getDateTest());
 
 		return testRepository.save(foundTest);
 
@@ -167,10 +166,10 @@ public class TestServiceImpl implements TestService {
 		}
 	}
 
-	@Override
-	public void setTestIsDone(Integer idTest, Integer idCandidate) {
-		candidateTestRepository.setIsDone(idTest,idCandidate);
-	}
+//	@Override
+//	public void setTestIsDone(Integer idTest, Integer idCandidate) {
+//		candidateTestRepository.setIsDone(idTest,idCandidate);
+//	}
 
 	@Override
 	public ResponseEntity<ResponeObject> setTestTime(Integer idTest, LocalTime time) {
@@ -180,18 +179,17 @@ public class TestServiceImpl implements TestService {
 				.body(new ResponeObject("OK", "Set test time success!", testRepository.save(foundTest)));
 	}
 
-	@Override
-	public ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest) {
-		Test foundTest = testRepository.getById(idTest);
-		if (dateTest.isAfter(LocalDateTime.now())) {
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("FAILED", "Thoi gian khong hop le!", ""));
-		} else {
-			foundTest.setDateTest(dateTest);
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Set date test success!", testRepository.save(foundTest)));
-		}
-	}
+//	@Override
+//	public ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest) {
+//		Test foundTest = testRepository.getById(idTest);
+//		if (dateTest.isAfter(LocalDateTime.now())) {
+//			return ResponseEntity.status(HttpStatus.OK)
+//					.body(new ResponeObject("FAILED", "Thoi gian khong hop le!", ""));
+//		} else {
+//			return ResponseEntity.status(HttpStatus.OK)
+//					.body(new ResponeObject("OK", "Set date test success!", testRepository.save(foundTest)));
+//		}
+//	}
 
 	@Override
 	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
@@ -214,8 +212,8 @@ public class TestServiceImpl implements TestService {
 			}
 		}
 
-		Double oneQuestionMark = 50.0/count;
-		DecimalFormat df = new DecimalFormat("#.##");
+		Double oneQuestionMark = 100.0/count;
+		DecimalFormat df = new DecimalFormat("##.##");
 		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
 		
 		Double lastResult = tmp * rightResult;
@@ -264,6 +262,12 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public List<Candidate> getCandidateOfTest(Integer idTest) {
 		return testRepository.getById(idTest).getCandidates();
+	}
+
+	@Override
+	public void setTestIsDone(Integer idTest, Integer idCandidate) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

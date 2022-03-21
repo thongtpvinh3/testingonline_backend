@@ -41,7 +41,7 @@ public interface TestService {
 
 	ResponseEntity<ResponeObject> setTestTime(Integer idTest,LocalTime time);
 
-	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
+//	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
 
 	Double reviewMCQuestion(Integer idTest, Integer idCandidate);
 

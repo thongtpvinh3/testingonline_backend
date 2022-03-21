@@ -26,8 +26,6 @@ public class CandidateTest implements Serializable {
 	private int testId;
 	@Column(name = "marks", columnDefinition = "DOUBLE DEFAULT 0")
 	private Double marks;
-	@Column(name = "is_done", columnDefinition = "INT DEFAULT 0")
-	private Integer isDone;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_candidate", insertable = false, updatable = false)
@@ -61,12 +59,7 @@ public class CandidateTest implements Serializable {
 	public void setMarks(Double marks) {
 		this.marks = marks;
 	}
-	public Integer getIsDone() {
-		return isDone;
-	}
-	public void setIsDone(Integer isDone) {
-		this.isDone = isDone;
-	}
+	
 	public CandidateTestCandidate getCandidate() {
 		return candidate;
 	}

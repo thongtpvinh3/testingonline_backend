@@ -2,8 +2,11 @@ package backend.testingonline.repository;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,9 +26,9 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	
 	@org.springframework.data.jpa.repository.Query(value = "SELECT * from Candidate candidate WHERE candidate.id = :id", nativeQuery = true)
 	List<Test> aaaCanidateTest(@Param("id") Integer id);
+	
+	@Transactional
+	@Modifying
+	@org.springframework.data.jpa.repository.Query("UPDATE Candidate c SET c.isDone = 1 WHERE c.id = :id")
+	void setIsDone(@Param("id") int id);
 }
-
-/*
- * SELECT * FROM mc_question
- * 
- * */

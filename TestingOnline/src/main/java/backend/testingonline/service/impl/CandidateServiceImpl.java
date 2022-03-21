@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -97,37 +98,68 @@ public class CandidateServiceImpl implements CandidateService {
 //			throw new RuntimeException("FAILED",e);
 //		}
 	}
+	
+	@Override
+	public Set<Test> joinAllTest(Integer idCandidate) {
+		Candidate candidate = candidateRepository.getById(idCandidate);
+		Set<Test> listTest = candidate.getTests();
+		int timenow = LocalDateTime.now().toLocalTime().toSecondOfDay();
+		int timeTest = 0;
+		
+		for (Test t: listTest) {
+			timeTest += t.timeToSecond();
+		}
+		int timeStart = candidate.getDates().toLocalTime().toSecondOfDay();
+		
+		if(candidate.getIsDone() == 0) {
+			if(candidate.getDates().toLocalDate().equals(LocalDate.now()) == false) {
+				System.out.println("Chua den hoac da qua ngay test!");
+				return null;
+			}
+			if (candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
+				System.out.println("chua den h!");
+				return null;
+			}
+			if(timenow-timeStart>timeTest) {
+				System.out.println("Da het gio lam bai");
+				return null;
+			}
+			return listTest;
+		}
+		return null;
+	}
+
 
 	@Override
 	public Test joinTestByCode(String code, Integer idCandidate) {
-		Test optionalTest = testRepository.findByCodeTest(code);
-		
-		if (optionalTest != null) {
-			Integer idTest = optionalTest.getId();
-			CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
-			int timeNow = LocalDateTime.now().toLocalTime().toSecondOfDay();
-			int timeTest = optionalTest.timeToSecond();
-			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
-
-			if (candidateTest.getIsDone() == 0) {
-				if (optionalTest.getDateTest().toLocalDate().equals(LocalDate.now()) == false) {
-					System.out.println("Chua den ngay hoac da qua ngay test");
-					return null;
-				}
-				if (optionalTest.getDateTest().toLocalTime().isAfter(LocalTime.now())) {
-					System.out.println("Chua den gio");
-					return null;
-				}
-				if (timeNow - timeStart > timeTest) {
-					System.out.println("Da het thoi gian lam bai");
-					return null;
-				}
-				return optionalTest;
-			} else {
-				System.out.println("Bai Thi Da Lam xong");
-				return null;
-			}
-		}
+//		Test optionalTest = testRepository.findByCodeTest(code);
+//		
+//		if (optionalTest != null) {
+//			Integer idTest = optionalTest.getId();
+//			CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
+//			int timeNow = LocalDateTime.now().toLocalTime().toSecondOfDay();
+//			int timeTest = optionalTest.timeToSecond();
+//			int timeStart = optionalTest.getDateTest().toLocalTime().toSecondOfDay();
+//
+//			if (candidateTest.getIsDone() == 0) {
+//				if (optionalTest.getDateTest().toLocalDate().equals(LocalDate.now()) == false) {
+//					System.out.println("Chua den ngay hoac da qua ngay test");
+//					return null;
+//				}
+//				if (optionalTest.getDateTest().toLocalTime().isAfter(LocalTime.now())) {
+//					System.out.println("Chua den gio");
+//					return null;
+//				}
+//				if (timeNow - timeStart > timeTest) {
+//					System.out.println("Da het thoi gian lam bai");
+//					return null;
+//				}
+//				return optionalTest;
+//			} else {
+//				System.out.println("Bai Thi Da Lam xong");
+//				return null;
+//			}
+//		}
 		return null;
 	}
 
@@ -172,5 +204,12 @@ public class CandidateServiceImpl implements CandidateService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponeObject("OK", "Set diem thanh cong", candidateRepository.save(foundCandidate)));
 	}
+
+	@Override
+	public void setIsDone(int idCandidate) {
+		candidateRepository.setIsDone(idCandidate);
+		
+	}
+
 
 }

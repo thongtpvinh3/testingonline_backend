@@ -61,7 +61,7 @@ public class URL {
 	public static final String CANDIDATE = "/testpage";
 	public static final String CANDIDATE_GET_ALL_TEST = "/alltest";
 	public static final String CANDIDATE_GET_A_TEST = "/test/{code}/{idCandidate}";
-	public static final String CANDIDATE_SUBMIT = "/setisdone/{idTest}";
+	public static final String CANDIDATE_SUBMIT = "/submit";
 	public static final String CANDIDATE_GET_TEST = "/gettest";
 	public static final String CANDIDATE_LOGOUT = "/logout";
 }

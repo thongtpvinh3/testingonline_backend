@@ -21,9 +21,9 @@ public interface CandidateTestRepository extends JpaRepository<CandidateTest, In
 	@Query("SELECT ct FROM CandidateTest ct WHERE ct.candidateId = :idCandidate")
 	List<CandidateTest> findByCandidateId(@Param("idCandidate") Integer id);
 	
-	@Transactional
-	@Modifying
-	@Query("UPDATE CandidateTest ct SET ct.isDone = 1 WHERE ct.candidateId = :idCandidate AND ct.testId = :idTest")
-	void setIsDone(@Param("idTest") Integer idTest,@Param("idCandidate") Integer idCandidate);
+//	@Transactional
+//	@Modifying
+//	@Query("UPDATE CandidateTest ct SET ct.isDone = 1 WHERE ct.candidateId = :idCandidate AND ct.testId = :idTest")
+//	void setIsDone(@Param("idTest") Integer idTest,@Param("idCandidate") Integer idCandidate);
 
 }

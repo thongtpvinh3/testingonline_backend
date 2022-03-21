@@ -51,39 +51,41 @@ public class CandidateController {
 		this.valueCache = valueCache;
 	}
 
-	@GetMapping(URL.CANDIDATE_GET_A_TEST)
-	public Test toCandidateTestView(@PathVariable String code,@PathVariable("idCandidate") Integer idCandidate,HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		session.setAttribute("test", testService.getWithCode(code));
-		return candidateService.joinTestByCode(code,idCandidate);
-	}
+//	@GetMapping(URL.CANDIDATE_GET_A_TEST)
+//	public Test toCandidateTestView(@PathVariable String code,@PathVariable("idCandidate") Integer idCandidate,HttpServletRequest req) {
+//		HttpSession session = req.getSession();
+//		session.setAttribute("test", testService.getWithCode(code));
+//		return candidateService.joinTestByCode(code,idCandidate);
+//	}
 	
 	@GetMapping(URL.CANDIDATE_GET_ALL_TEST)
 	public Set<Test> getAllCandidateTest(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		Set<Test> candidateTest = candidate.getTests();
-		return candidateTest;
+		session.setAttribute("listtest", candidateTest);
+		
+		return candidateService.joinAllTest(candidate.getId());
 	}
 
-	@GetMapping(URL.CANDIDATE_GET_TEST)
-	public Test getTest(HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		Test thisTest = (Test) session.getAttribute("test");
-		return thisTest;
-	}
+//	@GetMapping(URL.CANDIDATE_GET_TEST)
+//	public Test getTest(HttpServletRequest req) {
+//		HttpSession session = req.getSession();
+//		Test thisTest = (Test) session.getAttribute("test");
+//		return thisTest;
+//	}
 
 	@PostMapping("/doingtest")
 	public void cacheAnswer(HttpServletRequest req, @RequestBody TempResultOfCandidate tempAns) {
 		HttpSession session = req.getSession();
-		Test thisTest = (Test) session.getAttribute("test");
+		Set<Test> listTest = (Set<Test>) session.getAttribute("listtest");
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		int idCandidate = candidate.getId();
 
 		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
 		int timenow = (int) valueCache.getCachedValue("testtime");
-		int testtime = thisTest.timeToSecond();
-		int timestart = thisTest.getDateTest().toLocalTime().toSecondOfDay();
+		int testtime = candidate.CalculatorTotalTime(listTest);
+		int timestart = candidate.getDates().toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
 			if (tempAns.getType() == 0) {
 				valueCache.saveMultiple(tempAns);
@@ -98,7 +100,7 @@ public class CandidateController {
 				finalRes.add(e.getValue()); 
 			}
 			tempResultService.saveAll(finalRes);
-			testService.setTestIsDone(thisTest.getId(),idCandidate);
+			candidateService.setIsDone(idCandidate);
 			valueCache.delete("ans");
 		}
 	}
@@ -109,11 +111,11 @@ public class CandidateController {
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
-	public ResponseEntity<ResponeObject> setTestIsDone(@PathVariable Integer idTest, HttpServletRequest req) {
+	public ResponseEntity<ResponeObject> setTestIsDone(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		int idCandidate = candidate.getId();
-		testService.setTestIsDone(idTest,idCandidate);
+		candidateService.setIsDone(idCandidate);
 		List<TempResultOfCandidate> tempAnsResult = new ArrayList<>();
 		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
 				.getHashCacheAns("ans");
