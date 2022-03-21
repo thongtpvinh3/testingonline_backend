@@ -16,6 +16,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "e_question")
 public class EssayQuestion implements Serializable {

@@ -11,5 +11,5 @@ public interface MultipleChoiceQuestionRepository extends JpaRepository<Multiple
 	
 	@org.springframework.data.jpa.repository.Query(value = "SELECT * FROM mc_question m WHERE m.id = :idAnswer AND m.istrue = :isTrue", nativeQuery = true)
 	MultipleChoiceQuestion findWithIdAndisTrue(@Param("idAnswer") Integer idAnswer, @Param("isTrue") Integer isTrue);
-
+	
 }

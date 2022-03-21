@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +26,6 @@ import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.TempResultService;
-import backend.testingonline.service.TestService;
 import backend.testingonline.service.impl.RedisCandidateDoTestCache;
 import url.URL;
 
@@ -35,9 +33,6 @@ import url.URL;
 @RestController
 @RequestMapping(path = URL.CANDIDATE)
 public class CandidateController {
-
-	@Autowired
-	private TestService testService;
 
 	@Autowired
 	private TempResultService tempResultService;
@@ -78,6 +73,7 @@ public class CandidateController {
 	@PostMapping("/doingtest")
 	public void cacheAnswer(HttpServletRequest req, @RequestBody TempResultOfCandidate tempAns) {
 		HttpSession session = req.getSession();
+		@SuppressWarnings("unchecked")
 		Set<Test> listTest = (Set<Test>) session.getAttribute("listtest");
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		int idCandidate = candidate.getId();
@@ -94,6 +90,7 @@ public class CandidateController {
 			}
 		} else {
 			List<TempResultOfCandidate> finalRes = new ArrayList<>();
+			@SuppressWarnings("unchecked")
 			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
 					.getHashCacheAns("ans");
 			for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
@@ -106,6 +103,7 @@ public class CandidateController {
 	}
 
 	@GetMapping("/getcacheans")
+	@SuppressWarnings("unchecked")
 	public Map<Integer, TempResultOfCandidate> getTempAns() {
 		return (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
 	}
@@ -117,6 +115,7 @@ public class CandidateController {
 		int idCandidate = candidate.getId();
 		candidateService.setIsDone(idCandidate);
 		List<TempResultOfCandidate> tempAnsResult = new ArrayList<>();
+		@SuppressWarnings("unchecked")
 		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
 				.getHashCacheAns("ans");
 		for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {

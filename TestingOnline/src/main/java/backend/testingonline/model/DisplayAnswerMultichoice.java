@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 
+@SuppressWarnings("serial")
 public class DisplayAnswerMultichoice implements Serializable{
 	
 	@Column

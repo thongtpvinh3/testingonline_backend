@@ -1,6 +1,5 @@
 package backend.testingonline.service.impl;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;

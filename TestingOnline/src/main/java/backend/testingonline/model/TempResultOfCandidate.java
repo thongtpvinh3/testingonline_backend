@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "result_candidate")
+@SuppressWarnings("serial")
 public class TempResultOfCandidate implements Serializable {
 
 	@Id
@@ -25,6 +26,8 @@ public class TempResultOfCandidate implements Serializable {
 	private String answer;
 	@Column(name = "id_candidate")
 	private int idCandidate;
+	@Column(name = "id_test")
+	private int idTest;
 	
 	public TempResultOfCandidate() {
 		super();
@@ -75,6 +78,14 @@ public class TempResultOfCandidate implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+	
+	public int getIdTest() {
+		return idTest;
+	}
+
+	public void setIdTest(int idTest) {
+		this.idTest = idTest;
 	}
 
 	@Override

@@ -18,15 +18,18 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
-@JsonIgnoreProperties(value = {"candidates"})
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @SuppressWarnings("serial")
 public class Test implements Serializable{
 
@@ -44,12 +47,6 @@ public class Test implements Serializable{
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
 	private LocalTime times;
 	
-
-//	@Column(name = "date_test")
-//	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
-//	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//	private LocalDateTime dates;
-	
 	@Column
 	private String name;
 	
@@ -58,35 +55,19 @@ public class Test implements Serializable{
 	private String codeTest; // code join vao
 
 	@ManyToMany
+	@JsonIgnore
 	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_candidate")})
 	private List<Candidate> candidates = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
 	private Set<Question> questions = new HashSet<>(); // Bo cau hoi
-
-	
-//	public List<Question> getQuestions() {
-//		return questions;
-//	}
-//
-//	public void setQuestions(List<Question> questions) {
-//		this.questions = questions;
-//	}
 	
 	public Test() {
 		super();
 	}
-
-//	public Test(int subject, int level, String name, int isDone, String codeTest) {
-//		super();
-//		this.subject = subject;
-//		this.level = level;
-//		this.name = name;
-//		this.isDone = isDone;
-//		this.codeTest = codeTest;
-//	}
 
 	public Set<Question> getQuestions() {
 		return questions;
@@ -136,14 +117,6 @@ public class Test implements Serializable{
 		this.name = name;
 	}
 
-//	public int getIsDone() {
-//		return isDone;
-//	}
-//
-//	public void setIsDone(int isDone) {
-//		this.isDone = isDone;
-//	}
-
 	public LocalTime getTimes() {
 		return times;
 	}
@@ -151,14 +124,6 @@ public class Test implements Serializable{
 	public void setTimes(LocalTime times) {
 		this.times = times;
 	}
-
-//	public LocalDateTime getDates() {
-//		return dates;
-//	}
-//
-//	public void setDates(LocalDateTime dates) {
-//		this.dates = dates;
-//	}
 
 	public List<Candidate> getCandidates() {
 		return candidates;
@@ -175,14 +140,6 @@ public class Test implements Serializable{
 	public void setCodeTest(String codeTest) {
 		this.codeTest = codeTest;
 	}
-
-//	public double getMarks() {
-//		return marks;
-//	}
-//
-//	public void setMarks(double marks) {
-//		this.marks = marks;
-//	}
 	
 	public int timeToSecond() {
 		return LocalTime.of(this.times.getHour(), this.times.getMinute(), this.times.getSecond()).toSecondOfDay();

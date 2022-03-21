@@ -22,12 +22,12 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "question")
 @JsonIgnoreProperties(value = {"tests"})
+@SuppressWarnings("serial")
 public class Question implements Serializable {
 	
 	@Id
@@ -48,7 +48,6 @@ public class Question implements Serializable {
 	@ManyToMany
 	@Fetch(value = FetchMode.SUBSELECT)
 	@Cascade(value = {CascadeType.MERGE})
-//	@JsonIgnore
 	@JoinTable(name = "test_question",
 	joinColumns = {@JoinColumn(name = "id_question")}, inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	protected List<Test> tests = new ArrayList<>();

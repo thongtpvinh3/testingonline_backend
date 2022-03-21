@@ -126,6 +126,7 @@ public class CandidateServiceImpl implements CandidateService {
 			}
 			return listTest;
 		}
+		System.out.println("Bai thi da lam xong!");
 		return null;
 	}
 
@@ -180,13 +181,13 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> setMark(Integer id) {
-		Candidate foundCandidate = candidateRepository.getById(id);
+	public ResponseEntity<ResponeObject> setMark(Integer idCandidate) {
+		Candidate foundCandidate = candidateRepository.getById(idCandidate);
 		
-		for (CandidateTest ct: candidateTestRepository.findByCandidateId(id)) {
-//			Double marks = ct.getMarks();
-//			if(marks.isEmpty()) ct.setMarks(0.0);
-			switch (testRepository.getById(id).getSubject()) {
+		for (CandidateTest ct: candidateTestRepository.findByCandidateId(idCandidate)) {
+			Double marks = ct.getMarks();
+			if(marks == null) ct.setMarks(0.0);
+			switch (testRepository.getById(ct.getId()).getSubject()) {
 			case 1:
 				foundCandidate.setEnglishMark(ct.getMarks());
 				break;

@@ -1,7 +1,6 @@
 package backend.testingonline.service.impl;
 
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
@@ -71,7 +70,7 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public Test findById(Integer id) {
-		return testRepository.findById(id).get();
+		return testRepository.getById(id);
 	}
 
 	@Override
@@ -148,16 +147,9 @@ public class TestServiceImpl implements TestService {
 		}
 
 		Set<Test> newList = foundCandidate.getTests();
-//		for (int i = 0; i< newList.size();i++) {
-//			System.out.println("\n\n\n"+newList..toString1()+"\n\n\n");
-//		}
 		if (foundCandidate.getTests().contains(newTest) == false) {
-//			foundCandidate.setTests(null);
 			newList.add(newTest);
 			foundCandidate.setTests(newList);
-//			for (int i1 = 0; i1< newList.size();i1++) {
-//				System.out.println("\n\n\n"+newList.get(i1).toString1()+"\n\n\n");
-//			}
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
 		} else {
@@ -165,11 +157,6 @@ public class TestServiceImpl implements TestService {
 					.body(new ResponeObject("FAILED", "Bai test bi trung !", ""));
 		}
 	}
-
-//	@Override
-//	public void setTestIsDone(Integer idTest, Integer idCandidate) {
-//		candidateTestRepository.setIsDone(idTest,idCandidate);
-//	}
 
 	@Override
 	public ResponseEntity<ResponeObject> setTestTime(Integer idTest, LocalTime time) {
@@ -195,8 +182,7 @@ public class TestServiceImpl implements TestService {
 	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
 		Test foundTest = testRepository.getById(idTest);
 		Set<Question> thisTestQuestion = foundTest.getQuestions();
-//		Integer idCandidate = foundTest.getCandidate().getId();
-		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidate(idCandidate,0);
+		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidateInTest(idCandidate,0,idTest);
 		int count = 0;
 		int rightResult = 0;
 
@@ -205,22 +191,26 @@ public class TestServiceImpl implements TestService {
 				count++;
 			}
 		}
+		
 		for (TempResultOfCandidate res : result) {
 			if (multipleChoiceQuestionRepository.findWithIdAndisTrue(res.getIdAnswer(),
-					Integer.parseInt(res.getAnswer())) != null) {
+					Integer.parseInt(res.getAnswer())) != null && res.getIdTest() == idTest && res.getIdCandidate() == idCandidate) {
 				rightResult++;
 			}
 		}
+		
+		System.out.println("\n"+"tong so cau hoi trong bai test: "+count);
+		System.out.println("\n"+"tong so cau dung trong bai test: "+rightResult);
 
 		Double oneQuestionMark = 100.0/count;
 		DecimalFormat df = new DecimalFormat("##.##");
 		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
+		System.out.println("\n"+tmp+"\n");
 		
 		Double lastResult = tmp * rightResult;
 		CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate,idTest);
 		candidateTest.setMarks(lastResult+candidateTest.getMarks());
 		candidateTestRepository.save(candidateTest);
-//		foundTest.setMarks(lastResult);
 		testRepository.save(foundTest);
 
 		return lastResult;
@@ -238,8 +228,8 @@ public class TestServiceImpl implements TestService {
 			}
 		}
 		
-		Double oneQuestionMark = 50.0/count;
-		DecimalFormat df = new DecimalFormat("#.##");
+		Double oneQuestionMark = 100.0/count;
+		DecimalFormat df = new DecimalFormat("##.##");
 		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
 		
 		if(mark>tmp) {
@@ -247,9 +237,6 @@ public class TestServiceImpl implements TestService {
 					new ResponeObject("FAILED!", "Diem vuot qua max cau hoi! (" + tmp + ")", "")
 					);
 		} else {
-//			EssayQuestion e = essayQuestionRepository.getById(idEssay);
-//			e.setMark(mark);
-//			Double x = foundTest.getMarks()+mark;
 			Double x = candidateTest.getMarks()+mark;
 			candidateTest.setMarks(x);
 			candidateTestRepository.save(candidateTest);
@@ -266,7 +253,6 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public void setTestIsDone(Integer idTest, Integer idCandidate) {
-		// TODO Auto-generated method stub
 		
 	}
 
