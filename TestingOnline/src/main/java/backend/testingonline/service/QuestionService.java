@@ -43,6 +43,8 @@ public interface QuestionService {
 	ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer);
 
 	ResponseEntity<ResponeObject> updateMCAnswer(Integer idQuestion, MultipleChoiceQuestion answer);
+
+	void removeQuestionFromTest(Integer idQuestion, Integer idTest);
 	
 	
 }

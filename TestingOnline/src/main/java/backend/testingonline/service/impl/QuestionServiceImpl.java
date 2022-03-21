@@ -149,19 +149,19 @@ public class QuestionServiceImpl implements QuestionService {
 //	}
 
 	@Override
-	public ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer) {
-		Question question = questionRepository.getById(idQuestion);
-		essayQuestionRepository.save(answer);
-		question.setEssayQuestion(answer);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("", "", questionRepository.save(question)));
+	public ResponseEntity<ResponeObject> updateEssayAnswer(Integer idAnswer, EssayQuestion answer) {
+		EssayQuestion a = essayQuestionRepository.getById(idAnswer);
+		a.setAnswer(answer.getAnswer());
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("", "", essayQuestionRepository.save(answer)));
 
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> updateMCAnswer(Integer idQuestion, MultipleChoiceQuestion answer) {
-		Question question = questionRepository.getById(idQuestion);
-		multipleChoiceQuestionRepository.save(answer);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("", "", questionRepository.save(question)));
+	public ResponseEntity<ResponeObject> updateMCAnswer(Integer idAnswer, MultipleChoiceQuestion answer) {
+		MultipleChoiceQuestion a = multipleChoiceQuestionRepository.getById(idAnswer);
+		a.setAnswer(answer.getAnswer());
+		a.setIsTrue(answer.getIsTrue());
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Update thanh cong!", multipleChoiceQuestionRepository.save(a)));
 	}
 
 	@Override
@@ -169,5 +169,15 @@ public class QuestionServiceImpl implements QuestionService {
 		multipleChoiceQuestionRepository.deleteById(idAnswer);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponeObject("OK", "Remove success!", ""));
+	}
+
+	@Override
+	public void removeQuestionFromTest(Integer idQuestion, Integer idTest) {
+		Test test = testRepository.getById(idTest);
+		Question question = questionRepository.getById(idQuestion);
+		
+		Set<Question> newList = test.getQuestions();
+		newList.remove(question);
+		testRepository.save(test);
 	}
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -26,6 +28,14 @@ public class CandidateTest implements Serializable {
 	private Double marks;
 	@Column(name = "is_done", columnDefinition = "INT DEFAULT 0")
 	private Integer isDone;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_candidate", insertable = false, updatable = false)
+	private CandidateTestCandidate candidate;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_test", insertable = false, updatable = false)
+	private CandidateTestTest test;
 	
 	public int getId() {
 		return id;
@@ -56,6 +66,18 @@ public class CandidateTest implements Serializable {
 	}
 	public void setIsDone(Integer isDone) {
 		this.isDone = isDone;
+	}
+	public CandidateTestCandidate getCandidate() {
+		return candidate;
+	}
+	public void setCandidate(CandidateTestCandidate candidate) {
+		this.candidate = candidate;
+	}
+	public CandidateTestTest getTest() {
+		return test;
+	}
+	public void setTest(CandidateTestTest test) {
+		this.test = test;
 	}
 	
 }

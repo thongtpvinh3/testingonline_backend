@@ -261,4 +261,9 @@ public class TestServiceImpl implements TestService {
 		}
 	}
 
+	@Override
+	public List<Candidate> getCandidateOfTest(Integer idTest) {
+		return testRepository.getById(idTest).getCandidates();
+	}
+
 }

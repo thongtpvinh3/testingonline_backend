@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 
+import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 
@@ -45,5 +46,7 @@ public interface TestService {
 	Double reviewMCQuestion(Integer idTest, Integer idCandidate);
 
 	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idCandidate, Double mark);
+	
+	List<Candidate> getCandidateOfTest(Integer idTest);
 	
 }

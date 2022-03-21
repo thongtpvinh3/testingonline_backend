@@ -54,7 +54,7 @@ public class Candidate implements Serializable {
 //	@Cascade(value = CascadeType.)
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
+	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
 				inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private Set<Test> tests = new HashSet<>();

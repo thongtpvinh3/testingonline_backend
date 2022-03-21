@@ -154,7 +154,7 @@ public class CandidateServiceImpl implements CandidateService {
 		for (CandidateTest ct: candidateTestRepository.findByCandidateId(id)) {
 //			Double marks = ct.getMarks();
 //			if(marks.isEmpty()) ct.setMarks(0.0);
-			switch (testRepository.getById(ct.getTestId()).getSubject()) {
+			switch (testRepository.getById(id).getSubject()) {
 			case 1:
 				foundCandidate.setEnglishMark(ct.getMarks());
 				break;

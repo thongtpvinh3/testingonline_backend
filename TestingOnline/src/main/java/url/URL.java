@@ -45,7 +45,7 @@ public class URL {
 	public static final String STAFF_ADD_MCQ_FOR_QUESTION = "/addmultiplechoiceanswer/{idQuestion}";
 	public static final String STAFF_DELETE_MC_ANSWER_FROM_QUESTION = "/deletemultipleanswer/{idAnswer}";
 	public static final String STAFF_GET_ALL_MC_ANSWER = "/getallmcanswer";
-	public static final String STAFF_UPDATE_MC_ANSWER_FOR_QUESTION = "/updatemcanswer/{idQuestion}";
+	public static final String STAFF_UPDATE_MC_ANSWER_FOR_QUESTION = "/updatemcanswer/{idAnswer}";
 	public static final String STAFF_ADD_E_ASNSWER_FOR_QUESTION = "/addessayanswer/{idQuestion}";
 	public static final String STAFF_UPDATE_ESSAY_ANSWER = "/updateessayanswer/{idQuestion}";
 	public static final String STAFF_GET_ALL_ESSAY_ANSWER = "/getallessayanswer";

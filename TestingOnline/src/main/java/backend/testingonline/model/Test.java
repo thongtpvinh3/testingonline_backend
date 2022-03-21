@@ -63,7 +63,7 @@ public class Test implements Serializable{
 //	private int idCandidate;
 
 	@ManyToMany
-	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_candidate")})
+	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_candidate")})
 	private List<Candidate> candidates = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
