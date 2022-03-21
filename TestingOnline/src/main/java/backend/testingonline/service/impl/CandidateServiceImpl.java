@@ -116,7 +116,7 @@ public class CandidateServiceImpl implements CandidateService {
 				System.out.println("Chua den hoac da qua ngay test!");
 				return null;
 			}
-			if (!candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
+			if (candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
 				System.out.println("chua den h!");
 				return null;
 			}
