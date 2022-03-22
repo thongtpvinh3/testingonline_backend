@@ -112,18 +112,20 @@ public class CandidateServiceImpl implements CandidateService {
 		int timeStart = candidate.getDates().toLocalTime().toSecondOfDay();
 		
 		if(candidate.getIsDone() == 0) {
-			if(candidate.getDates().toLocalDate().equals(LocalDate.now()) == false) {
-				System.out.println("Chua den hoac da qua ngay test!");
-				return null;
-			}
-			if (candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
-				System.out.println("chua den h!");
-				return null;
-			}
-			if(timenow-timeStart>timeTest) {
-				System.out.println("Da het gio lam bai");
-				return null;
-			}
+//			if(candidate.getDates().toLocalDate().equals(LocalDate.now()) == false) {
+//				System.out.println("Chua den hoac da qua ngay test!");
+//				return null;
+//			}
+//			if (candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
+				System.out.print(candidate.getDates().toLocalTime().isAfter(LocalTime.now()));
+				System.out.println(candidate.getDates().toLocalTime());
+//				System.out.println("chua den h!");
+//				return null;
+//			}
+//			if(timenow-timeStart>timeTest) {
+//				System.out.println("Da het gio lam bai");
+//				return null;
+//			}
 			return listTest;
 		}
 		System.out.println("Bai thi da lam xong!");

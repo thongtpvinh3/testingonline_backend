@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
@@ -44,6 +45,13 @@ public class CandidateController {
 
 	public CandidateController(final RedisCandidateDoTestCache valueCache) {
 		this.valueCache = valueCache;
+	}
+	
+	@GetMapping("/")
+	@ResponseBody
+	public Candidate toTestPage(HttpServletRequest req) {
+		Candidate candidate = (Candidate) req.getSession().getAttribute("candidate");
+		return candidate;
 	}
 
 //	@GetMapping(URL.CANDIDATE_GET_A_TEST)

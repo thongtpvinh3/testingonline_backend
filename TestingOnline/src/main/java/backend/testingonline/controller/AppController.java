@@ -25,13 +25,6 @@ public class AppController {
 	@Autowired
 	private CandidateService candidateService;
 	
-//	public AppController(CandidateService candidateService) {
-//		this.candidateService = candidateService;
-//	}
-//	
-	@Autowired
-	private TestService testService;
-	
 	@GetMapping(URL.ALL_HOMEPAGE)
 	public String toWebPage() {
 		return "homepage";
@@ -43,7 +36,7 @@ public class AppController {
 			HttpSession session = req.getSession();
 			session.setAttribute("candidate", candidateService.findById(code));
 			
-			return "redirect:/testpage";
+			return "redirect:/testpage/";
 		}
 		return "redirect:/testingonline";
 	}
