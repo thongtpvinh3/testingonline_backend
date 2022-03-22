@@ -30,13 +30,13 @@ public class AppController {
 		return "homepage";
 	}
 	
-	@PostMapping(URL.CANDIDATE_JOIN_TEST)
-	public String joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
+	@GetMapping(URL.CANDIDATE_JOIN_TEST)
+	public Object joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
 		if (candidateService.findById(code) != null) {
 			HttpSession session = req.getSession();
 			session.setAttribute("candidate", candidateService.findById(code));
 			
-			return "redirect:/testpage/";
+			return candidateService.findById(code);
 		}
 		return "redirect:/testingonline";
 	}
