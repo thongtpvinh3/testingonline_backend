@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
@@ -188,6 +189,11 @@ public class StaffController {
 			return ResponseEntity.status(HttpStatus.OK)
 					.body(new ResponeObject("OK", "update thanh cong", testService.updateTest(id, test)));
 		}
+	}
+	
+	@PutMapping("/addquestiontotest/{idTest}")
+	public Test addNewQuestionToTest(@PathVariable("idTest") Integer idTest,@RequestBody Question newQuestion) {
+		return testService.addNewQuestion(idTest, newQuestion);
 	}
 
 	@PutMapping(URL.STAFF_ADD_TEST_FOR_CANDIDATE)

@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.CandidateTest;
+import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
@@ -254,6 +257,18 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public void setTestIsDone(Integer idTest, Integer idCandidate) {
 		
+	}
+
+	@Override
+	public Test addNewQuestion(Integer idTest, Question newQuestion) {
+		Test foundTest = testRepository.getById(idTest);
+		Set<Question> thisListQuestion = foundTest.getQuestions();
+		questionRepository.save(newQuestion);
+		for (MultipleChoiceQuestion m: newQuestion.getMultipleChoiceQuestions()) {
+			m.setQuestion(newQuestion);
+		}
+		thisListQuestion.add(newQuestion);
+		return testRepository.save(foundTest);
 	}
 
 }
