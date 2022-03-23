@@ -3,6 +3,7 @@ package backend.testingonline.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,9 +67,9 @@ public class Question implements Serializable {
 		super();
 	}
 	
-	public Question(int id, int subject, String content, int level) {
+	public Question(int type, int subject, String content, int level) {
 		super();
-		this.id = id;
+		this.type = type;
 		this.subject = subject;
 		this.content = content;
 		this.level = level;
@@ -157,5 +158,29 @@ public class Question implements Serializable {
 				+ ", multipleChoiceQuestions=" + multipleChoiceQuestions
 				+ ", essayQuestion=" + essayQuestion + "]";
 	}
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(content, level, subject, type);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Question other = (Question) obj;
+		return Objects.equals(content, other.content) && level == other.level && subject == other.subject
+				&& type == other.type;
+	}
+//	
+//	public static void main(String[] args) {
+//		Question q = new Question(0, 2, "abc", 1);
+//		Question q2 = new Question(0, 1, "abc", 1);
+//		
+//		System.out.println(q.equals(q2));
+//	}
 }

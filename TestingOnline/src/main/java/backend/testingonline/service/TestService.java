@@ -1,10 +1,12 @@
 package backend.testingonline.service;
 
+import java.io.IOException;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Question;
@@ -50,5 +52,7 @@ public interface TestService {
 	List<Candidate> getCandidateOfTest(Integer idTest);
 
 	Test addNewQuestion(Integer idTest, Question newQuestion);
-	
+
+	List<Question> addQuestionInXlsFile(String xlsFilePath) throws IOException;
+
 }

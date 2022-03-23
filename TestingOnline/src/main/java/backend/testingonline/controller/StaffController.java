@@ -1,5 +1,7 @@
 package backend.testingonline.controller;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.EssayQuestion;
@@ -40,6 +43,7 @@ import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.SubjectService;
 import backend.testingonline.service.TestService;
+import backend.testingonline.service.UploadFileService;
 import url.URL;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -73,6 +77,9 @@ public class StaffController {
 
 	@Autowired
 	private TempResultRepository tempResultRepository;
+	
+	@Autowired
+	private UploadFileService uploadFileService;
 
 	@GetMapping(URL.STAFF_TO_STAFFVIEW)
 	public String toStaffView(HttpServletRequest req, Model model) {
@@ -387,4 +394,17 @@ public class StaffController {
 	ResponseEntity<ResponeObject> deleteSubjectById(@PathVariable Integer id) {
 		return subjectService.deleteById(id);
 	}
+	
+//-----------------------------OTHER-------------------------------------------
+	
+	@PutMapping("/importdata")
+	List<Question> importData(@RequestParam("file") MultipartFile file) throws Exception {
+		System.out.println(file.getOriginalFilename());
+		Path storageFolder = Paths.get("uploads");
+		uploadFileService.upload(file);
+		String originalName = file.getOriginalFilename();
+		Path filePath = storageFolder.resolve(Paths.get(originalName)).normalize().toAbsolutePath();
+		return testService.addQuestionInXlsFile(filePath.toString());
+	}
+	
 }
