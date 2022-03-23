@@ -385,6 +385,7 @@ public class TestServiceImpl implements TestService {
 					}
 					multipleChoiceQuestionRepository.saveAll(m);
 					listQuestions.add(newQuestion);
+					continue;
 				} else continue;
 			}
 			subject++;
@@ -401,7 +402,6 @@ public class TestServiceImpl implements TestService {
 		} else {
 			throw new IllegalArgumentException("The specified file is not Excel file");
 		}
-
 		return workbook;
 	}
 

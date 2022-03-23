@@ -66,11 +66,11 @@ public class QuestionServiceImpl implements QuestionService {
 	public Question editQuestion(Integer id, Question newQuestion) {
 		Question foundQuestion = questionRepository.getById(id);
 
-//		foundQuestion.setId(newQuestion.getId());
 		foundQuestion.setContent(newQuestion.getContent());
 		foundQuestion.setLevel(newQuestion.getLevel());
 		foundQuestion.setSubject(newQuestion.getSubject());
 		foundQuestion.setType(newQuestion.getType());
+		foundQuestion.setMultipleChoiceQuestions(newQuestion.getMultipleChoiceQuestions());
 
 		return questionRepository.save(foundQuestion);
 	}

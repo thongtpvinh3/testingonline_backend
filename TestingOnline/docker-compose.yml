@@ -37,6 +37,7 @@ services:
       - ./data/mysql:/var/lib/mysql
 
   testing-online:
+    restart: always
     build: ./
     image: testingonline:v1.1
     ports:
@@ -46,10 +47,13 @@ services:
       - redis
     volumes:
       - ./application.properties:/app/application.properties
+    environment:
+      - REDIS_URL=redis://redis:6379
 
   redis:
     image: redis:6-alpine
+    hostname: redis
     ports:
-      - 6380:6380
+      - 6380:6379
     volumes:
       - ./data/redis:/data
