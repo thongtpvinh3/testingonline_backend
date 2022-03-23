@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -293,6 +294,7 @@ public class TestServiceImpl implements TestService {
 		FileInputStream file = new FileInputStream(xlsFilePath);
 		Workbook wb = getWorkbook(file, xlsFilePath);
 		Iterator<Sheet> sheet = wb.iterator();
+		DataFormatter formatter = new DataFormatter();
 		// sheet
 		while (sheet.hasNext()) {
 			Iterator<Row> row = sheet.next().iterator();
@@ -321,24 +323,24 @@ public class TestServiceImpl implements TestService {
 						int columnIndex = cell.getColumnIndex();
 						switch (columnIndex) {
 						case COLUMN_INDEX_CONTENT:
-							newQuestion.setContent(cell.getStringCellValue());
+							newQuestion.setContent((String)cell.getStringCellValue());
 //							System.out.println("\n" + newQuestion.toString() + "\n");
 //							System.out.println("\n" + cell.getStringCellValue() + "\n");
 							continue;
 						case COLUMN_INDEX_ANSWER_A:
-							A.setAnswer(cell.getStringCellValue());
+							A.setAnswer(formatter.formatCellValue(cell));
 //							System.out.println(cell.getStringCellValue());
 							continue;
 						case COLUMN_INDEX_ANSWER_B:
-							B.setAnswer(cell.getStringCellValue());
+							B.setAnswer(formatter.formatCellValue(cell));
 //							System.out.println(cell.getStringCellValue());
 							continue;
 						case COLUMN_INDEX_ANSWER_C:
-							C.setAnswer(cell.getStringCellValue());
+							C.setAnswer(formatter.formatCellValue(cell));
 //							System.out.println(cell.getStringCellValue());
 							continue;
 						case COLUMN_INDEX_ANSWER_D:
-							D.setAnswer(cell.getStringCellValue());
+							D.setAnswer(formatter.formatCellValue(cell));
 //							System.out.println(cell.getStringCellValue());
 							continue;
 						case COLUMN_INDEX_TRUE:
@@ -375,6 +377,7 @@ public class TestServiceImpl implements TestService {
 					}
 				}
 				System.out.println("\n\n\nxong 1 hang\n\n\n");
+				System.out.println("\n"+presentList.contains(newQuestion)+"\n");
 				if (!presentList.contains(newQuestion)) {
 					questionRepository.save(newQuestion);
 					for (MultipleChoiceQuestion ans : m) {
@@ -382,7 +385,7 @@ public class TestServiceImpl implements TestService {
 					}
 					multipleChoiceQuestionRepository.saveAll(m);
 					listQuestions.add(newQuestion);
-				}
+				} else continue;
 			}
 			subject++;
 		}

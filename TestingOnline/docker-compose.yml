@@ -50,6 +50,6 @@ services:
   redis:
     image: redis:6-alpine
     ports:
-      - 6380:6379
+      - 6380:6380
     volumes:
       - ./data/redis:/data
