@@ -323,7 +323,7 @@ public class TestServiceImpl implements TestService {
 						int columnIndex = cell.getColumnIndex();
 						switch (columnIndex) {
 						case COLUMN_INDEX_CONTENT:
-							newQuestion.setContent((String)cell.getStringCellValue());
+							newQuestion.setContent((String) cell.getStringCellValue());
 //							System.out.println("\n" + newQuestion.toString() + "\n");
 //							System.out.println("\n" + cell.getStringCellValue() + "\n");
 							continue;
@@ -377,16 +377,13 @@ public class TestServiceImpl implements TestService {
 					}
 				}
 				System.out.println("\n\n\nxong 1 hang\n\n\n");
-				System.out.println("\n"+presentList.contains(newQuestion)+"\n");
-				if (!presentList.contains(newQuestion)) {
-					questionRepository.save(newQuestion);
-					for (MultipleChoiceQuestion ans : m) {
-						ans.setQuestion(newQuestion);
-					}
-					multipleChoiceQuestionRepository.saveAll(m);
-					listQuestions.add(newQuestion);
-					continue;
-				} else continue;
+				System.out.println("\n" + presentList.contains(newQuestion) + "\n");
+				questionRepository.save(newQuestion);
+				for (MultipleChoiceQuestion ans : m) {
+					ans.setQuestion(newQuestion);
+				}
+				multipleChoiceQuestionRepository.saveAll(m);
+				listQuestions.add(newQuestion);
 			}
 			subject++;
 		}
