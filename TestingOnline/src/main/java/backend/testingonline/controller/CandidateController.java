@@ -82,10 +82,10 @@ public class CandidateController {
 	public void cacheAnswer(HttpServletRequest req, @RequestBody TempResultOfCandidate tempAns) {
 		HttpSession session = req.getSession();
 		@SuppressWarnings("unchecked")
-		Set<Test> listTest = (Set<Test>) session.getAttribute("listtest");
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
+		Set<Test> listTest = (Set<Test>) candidate.getTests();
 		int idCandidate = candidate.getId();
-
+		System.out.println(listTest);
 		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
 		int timenow = (int) valueCache.getCachedValue("testtime");
 		int testtime = candidate.CalculatorTotalTime(listTest);

@@ -1,5 +1,7 @@
 package backend.testingonline.controller;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Test;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
 import backend.testingonline.service.TestService;
@@ -34,9 +38,9 @@ public class AppController {
 	public Object joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
 		if (candidateService.findById(code) != null) {
 			HttpSession session = req.getSession();
-			session.setAttribute("candidate", candidateService.findById(code));
-			
-			return candidateService.findById(code);
+			Candidate candidate = candidateService.findById(code);
+			session.setAttribute("candidate", candidate);
+			return candidate;
 		}
 		return "redirect:/testingonline";
 	}
