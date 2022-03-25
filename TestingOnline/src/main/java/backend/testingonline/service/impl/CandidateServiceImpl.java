@@ -1,6 +1,5 @@
 package backend.testingonline.service.impl;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -189,7 +188,7 @@ public class CandidateServiceImpl implements CandidateService {
 		for (CandidateTest ct: candidateTestRepository.findByCandidateId(idCandidate)) {
 			Double marks = ct.getMarks();
 			if(marks == null) ct.setMarks(0.0);
-			switch (testRepository.getById(ct.getId()).getSubject()) {
+			switch (testRepository.getById(ct.getTestId()).getSubject()) {
 			case 1:
 				foundCandidate.setEnglishMark(ct.getMarks());
 				break;
@@ -198,6 +197,7 @@ public class CandidateServiceImpl implements CandidateService {
 				break;
 			case 3:
 				foundCandidate.setKnowledgeMark(ct.getMarks());
+				break;
 			default:
 				break;
 			}

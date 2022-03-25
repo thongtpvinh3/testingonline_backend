@@ -180,4 +180,6 @@ public class QuestionServiceImpl implements QuestionService {
 		newList.remove(question);
 		testRepository.save(test);
 	}
+	
+	// So sanh subject
 }

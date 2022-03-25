@@ -1,7 +1,5 @@
 package backend.testingonline.controller;
 
-import java.util.Set;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
-import backend.testingonline.model.Test;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
-import backend.testingonline.service.TestService;
 import url.URL;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -37,6 +33,9 @@ public class AppController {
 	@GetMapping(URL.CANDIDATE_JOIN_TEST)
 	public Object joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
 		if (candidateService.findById(code) != null) {
+			if (candidateService.findById(code).getIsDone() == 1) {
+				return "Mày làm xong rồi mà ???";
+			}
 			HttpSession session = req.getSession();
 			Candidate candidate = candidateService.findById(code);
 			session.setAttribute("candidate", candidate);
@@ -58,10 +57,8 @@ public class AppController {
 		if (checkLogin) {
 			HttpSession session = req.getSession();
 			session.setAttribute("staff", staffService.findByUsernameAndPassword(username, password));
-//			model.addAttribute("staff", staffService.findByUsernameAndPassword(username, password));
 			return "redirect:/staff/home";
 		} else {
-//			model.addAttribute("ERROR", "Sai ten tai khoan hoac mat khau!");
 			return "redirect:/login";
 		}
 	}

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,7 @@ import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
+import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.TempResultService;
 import backend.testingonline.service.impl.RedisCandidateDoTestCache;
 import url.URL;
@@ -40,6 +42,9 @@ public class CandidateController {
 	
 	@Autowired
 	private CandidateService candidateService;
+	
+	@Autowired
+	private QuestionService questionService;
 
 	private final RedisCandidateDoTestCache valueCache;
 
@@ -71,68 +76,81 @@ public class CandidateController {
 		return candidateService.joinAllTest(candidate.getId());
 	}
 
-//	@GetMapping(URL.CANDIDATE_GET_TEST)
-//	public Test getTest(HttpServletRequest req) {
-//		HttpSession session = req.getSession();
-//		Test thisTest = (Test) session.getAttribute("test");
-//		return thisTest;
-//	}
-
-	@PostMapping("/doingtest")
-	public void cacheAnswer(HttpServletRequest req, @RequestBody TempResultOfCandidate tempAns) {
+	@PostMapping("/doingtest/{idQuestion}")
+	public void cacheAnswer(HttpServletRequest req, @RequestBody TempResultOfCandidate tempAns,@PathVariable Integer idQuestion) {
 		HttpSession session = req.getSession();
-		@SuppressWarnings("unchecked")
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		Set<Test> listTest = (Set<Test>) candidate.getTests();
-		int idCandidate = candidate.getId();
-		System.out.println(listTest);
+		Integer idCandidate = candidate.getId();
+		tempAns.setIdCandidate(idCandidate);
+		tempAns.setAnswer("1");
+		if (questionService.findById(idQuestion).getType() == 0) {
+			tempAns.setType(0);
+		} else {
+			tempAns.setType(1);
+		}
 		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
 		int timenow = (int) valueCache.getCachedValue("testtime");
 		int testtime = candidate.CalculatorTotalTime(listTest);
 		int timestart = candidate.getDates().toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
 			if (tempAns.getType() == 0) {
-				valueCache.saveMultiple(tempAns);
+				valueCache.saveMultiple(tempAns,idCandidate,idQuestion);
 			} else {
-				valueCache.saveEssay(tempAns);
+				valueCache.saveEssay(tempAns,idCandidate,idQuestion);
 			}
 		} else {
 			List<TempResultOfCandidate> finalRes = new ArrayList<>();
 			@SuppressWarnings("unchecked")
-			Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
+			Map<String, TempResultOfCandidate> finalRes1 = (Map<String, TempResultOfCandidate>) valueCache
 					.getHashCacheAns("ans");
-			for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
-				finalRes.add(e.getValue()); 
+			for (Map.Entry<String, TempResultOfCandidate> e : finalRes1.entrySet()) {
+				String thisKey = e.getKey();
+				String[] str = thisKey.split(":");
+				if (str[1].equals(idCandidate.toString())) {
+					finalRes.add(e.getValue());
+				}
 			}
 			tempResultService.saveAll(finalRes);
 			candidateService.setIsDone(idCandidate);
-			valueCache.delete("ans");
+			valueCache.delete("ans",idCandidate);
 		}
 	}
 
 	@GetMapping("/getcacheans")
+	@ResponseBody
 	@SuppressWarnings("unchecked")
-	public Map<Integer, TempResultOfCandidate> getTempAns() {
-		return (Map<Integer, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+	public Map<String, TempResultOfCandidate> getTempAns() {
+		return (Map<String, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
 	public ResponseEntity<ResponeObject> setTestIsDone(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
-		int idCandidate = candidate.getId();
+		Integer idCandidate = candidate.getId();
 		candidateService.setIsDone(idCandidate);
-		List<TempResultOfCandidate> tempAnsResult = new ArrayList<>();
+		List<TempResultOfCandidate> finalRes = new ArrayList<>();
 		@SuppressWarnings("unchecked")
-		Map<Integer, TempResultOfCandidate> finalRes1 = (Map<Integer, TempResultOfCandidate>) valueCache
+		Map<String, TempResultOfCandidate> finalRes1 = (Map<String, TempResultOfCandidate>) valueCache
 				.getHashCacheAns("ans");
-		for (Map.Entry<Integer, TempResultOfCandidate> e : finalRes1.entrySet()) {
-			tempAnsResult.add(e.getValue());
+		for (Map.Entry<String, TempResultOfCandidate> e : finalRes1.entrySet()) {
+			String thisKey = e.getKey();
+			String[] str = thisKey.split(":");
+			if (str[1].equals(idCandidate.toString())) {
+				finalRes.add(e.getValue());
+			}
 		}
-		tempResultService.saveAll(tempAnsResult);
-		valueCache.delete("ans");
+		tempResultService.saveAll(finalRes);
+		candidateService.setIsDone(idCandidate);
+		valueCache.delete("ans",idCandidate);
 		session.setAttribute("test", null);
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Nop bai thanh cong", ""));
+	}
+	
+	@PostMapping("/delallcache")
+	public void deleteAllCache() {
+		valueCache.deleteAll();
 	}
 
 	@PutMapping(URL.CANDIDATE_LOGOUT)

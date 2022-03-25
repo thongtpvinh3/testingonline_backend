@@ -154,20 +154,24 @@ public class TestServiceImpl implements TestService {
 		Test newTest = testRepository.getById(idTest);
 		Candidate foundCandidate = candidateRepository.getById(idCandidate);
 
-		if (newTest.getLevel() != foundCandidate.getLevel()) {
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
-		}
+		if (newTest.getTime() != null) {
+			if (newTest.getLevel() != foundCandidate.getLevel()) {
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
+			}
 
-		Set<Test> newList = foundCandidate.getTests();
-		if (foundCandidate.getTests().contains(newTest) == false) {
-			newList.add(newTest);
-			foundCandidate.setTests(newList);
-			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-					.body(new ResponeObject("FAILED", "Bai test bi trung !", ""));
+			Set<Test> newList = foundCandidate.getTests();
+			if (foundCandidate.getTests().contains(newTest) == false) {
+				newList.add(newTest);
+				foundCandidate.setTests(newList);
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+						.body(new ResponeObject("FAILED", "Bai test bi trung !", ""));
+			}
 		}
+		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
+				.body(new ResponeObject("FAILED", "Bạn phải add thời gian vào đã chứ !", ""));
 	}
 
 	@Override
@@ -318,6 +322,7 @@ public class TestServiceImpl implements TestService {
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
 					if (cell.getColumnIndex() == 0) {
+//						if() break;
 						continue;
 					} else {
 						int columnIndex = cell.getColumnIndex();
@@ -375,17 +380,20 @@ public class TestServiceImpl implements TestService {
 						m.add(C);
 						m.add(D);
 					}
+					System.out.println("\n\n\nxong 1 hang\n\n\n");
+					System.out.println("\n" + presentList.contains(newQuestion) + "\n");
+					if (presentList.contains(newQuestion) == false) {
+						questionRepository.save(newQuestion);
+						for (MultipleChoiceQuestion ans : m) {
+							ans.setQuestion(newQuestion);
+						}
+						multipleChoiceQuestionRepository.saveAll(m);
+						listQuestions.add(newQuestion);
+					}
 				}
-				System.out.println("\n\n\nxong 1 hang\n\n\n");
-				System.out.println("\n" + presentList.contains(newQuestion) + "\n");
-				questionRepository.save(newQuestion);
-				for (MultipleChoiceQuestion ans : m) {
-					ans.setQuestion(newQuestion);
-				}
-				multipleChoiceQuestionRepository.saveAll(m);
-				listQuestions.add(newQuestion);
 			}
 			subject++;
+			continue;
 		}
 		wb.close();
 		file.close();

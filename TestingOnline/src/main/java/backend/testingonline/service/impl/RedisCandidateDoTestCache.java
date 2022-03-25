@@ -1,29 +1,22 @@
 package backend.testingonline.service.impl;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.TempResultOfCandidate;
-import backend.testingonline.repository.EssayQuestionRepository;
-import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 
 @Service
 public class RedisCandidateDoTestCache {
 
 	private ValueOperations<String, Object> valueOps;
 
-	private HashOperations<String, Integer, TempResultOfCandidate> hashOps;
-
-	@Autowired
-	private MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
-
-	@Autowired
-	private EssayQuestionRepository essayQuestionRepository;
+	private HashOperations<String, String, TempResultOfCandidate> hashOps;
 
 	public RedisCandidateDoTestCache(final RedisTemplate<String, Object> redisTemplate) {
 		valueOps = redisTemplate.opsForValue();
@@ -32,20 +25,25 @@ public class RedisCandidateDoTestCache {
 
 	// ---------------------Dung Hash Map ------------------
 	
-	public void saveEssay(TempResultOfCandidate temp) {
+	public void saveEssay(TempResultOfCandidate temp, Integer idCandidate, Integer idQuestion) {
 		try {
-			int idEQuestion = essayQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
-			hashOps.put("ans", idEQuestion, temp);
-			System.out.println(idEQuestion);
+			String keyGen = idQuestion.toString()+":"+idCandidate.toString();
+//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//			String json = ow.writeValueAsString(ct);
+//			int idEQuestion = essayQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
+			hashOps.put("ans", keyGen, temp);
 		} catch (Exception e) {
 			System.out.println("Ko tim thay cau tra loi");
 		}
 	}
 	
-	public void saveMultiple(TempResultOfCandidate temp) {
+	public void saveMultiple(TempResultOfCandidate temp, Integer idCandidate, Integer idQuestion) {
 		try {
-			int idQuestion = multipleChoiceQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
-			hashOps.put("ans", idQuestion, temp);
+			String keyGen = idQuestion.toString()+":"+idCandidate.toString();
+//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//			String json = ow.writeValueAsString(ct);
+//			int idQuestion = multipleChoiceQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
+			hashOps.put("ans", keyGen, temp);
 			System.out.println(idQuestion);
 		} catch (Exception e) {
 			System.out.println("khong tim thay cau tra loi");
@@ -56,8 +54,33 @@ public class RedisCandidateDoTestCache {
 		return hashOps.entries(key);
 	}
 
-	public void delete(String key) {
+	public void delete(String key, Integer idCandidate) {
+		Map<String, TempResultOfCandidate> cacheAns = hashOps.entries(key);
+		
+//		for (Iterator<Entry<String, TempResultOfCandidate>> it = cacheAns.entrySet().iterator(); it.hasNext();) {
+//			Entry<String, TempResultOfCandidate> m = it.next();
+//			String thisKey = m.getKey();
+//			String[] str = thisKey.split(":");
+//			if (str[1].equals(idCandidate.toString())) {
+//				cacheAns.remove(thisKey);
+//			}
+//			
+//		}
+		Map<String, TempResultOfCandidate> toRemove = new LinkedHashMap<>();
+		for (Map.Entry<String, TempResultOfCandidate> e: cacheAns.entrySet()) {
+			String thisKey = e.getKey();
+			String[] str = thisKey.split(":");
+			if (str[1].equals(idCandidate.toString())) {
+				toRemove.put(thisKey, e.getValue());
+			}
+		}
+		cacheAns.entrySet().removeAll(toRemove.entrySet());
 		hashOps.getOperations().delete(key);
+		hashOps.putAll("ans", cacheAns);
+	}
+	
+	public void deleteAll() {
+		hashOps.getOperations().delete("ans");
 	}
 
 	// --------------- Dung List ------------------------
