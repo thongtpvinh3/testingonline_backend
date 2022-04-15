@@ -413,4 +413,9 @@ public class StaffController {
 		return candidateService.fixIsDone(idCandidate);
 	}
 	
+	@DeleteMapping("/deleteresult/{idCandidate}")
+	void deleteResult(@PathVariable("idCandidate") Integer idCandidate) {
+		tempResultRepository.deleteResult(idCandidate);
+	}
+	
 }

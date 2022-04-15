@@ -23,12 +23,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.CandidateTest;
+import backend.testingonline.model.Result;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
+import backend.testingonline.repository.CandidateTestRepository;
 import backend.testingonline.responeexception.ResponeObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.TempResultService;
+import backend.testingonline.service.TestService;
 import backend.testingonline.service.impl.RedisCandidateDoTestCache;
 import url.URL;
 
@@ -45,6 +49,12 @@ public class CandidateController {
 	
 	@Autowired
 	private QuestionService questionService;
+	
+	@Autowired
+	private TestService testService;
+	
+	@Autowired
+	private CandidateTestRepository candidateTestRepository;
 
 	private final RedisCandidateDoTestCache valueCache;
 
@@ -144,8 +154,25 @@ public class CandidateController {
 		tempResultService.saveAll(finalRes);
 		candidateService.setIsDone(idCandidate);
 		valueCache.delete("ans",idCandidate);
+		Set<Test> listTest = (Set<Test>) candidate.getTests();
+		Result result = new Result();
+		for (Test t: listTest) {
+			testService.reviewMCQuestion(t.getId(), idCandidate);
+			CandidateTest ct = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, t.getId());
+			switch (t.getSubject()) {
+			case 1:
+				result.setEnglishMark(ct.getMarks());
+				break;
+			case 2:
+				result.setCodingMark(ct.getMarks());
+				break;
+			case 3:
+				result.setKnowledgeMark(ct.getMarks());
+				break;
+			}
+		}
 		session.setAttribute("test", null);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Nop bai thanh cong", ""));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Nop bai thanh cong", result));
 	}
 	
 	@PostMapping("/delallcache")

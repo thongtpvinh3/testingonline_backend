@@ -26,4 +26,9 @@ public class TempResultServiceImpl implements TempResultService {
 		tempResultRepository.saveAll(tempResultOfCandidate);
 	}
 
+	@Override
+	public void deleteResult(Integer idCandidate) {
+		tempResultRepository.deleteResult(idCandidate);
+	}
+
 }
