@@ -3,6 +3,7 @@ package backend.testingonline.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -211,5 +212,13 @@ public class Candidate implements Serializable {
 				+ "}";
 	}
 	
+	public String generatedId(Integer count) {
+		Random r = new Random();
+		Integer x = r.nextInt(9999);
+		String prefix = "UV";
+		Integer newCount = count+1;
+		String surfix = newCount.toString(); 
+		return prefix+x.toString()+surfix;
+	}
 
 }

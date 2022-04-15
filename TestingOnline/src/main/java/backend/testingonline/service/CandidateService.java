@@ -30,4 +30,6 @@ public interface CandidateService {
 	Set<Test> joinAllTest(Integer idCandidate);
 
 	void setIsDone(int i);
+
+	ResponseEntity<ResponeObject> fixIsDone(Integer idCandidate);
 }

@@ -30,7 +30,7 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Autowired
 	private CandidateTestRepository candidateTestRepository;
-
+	
 	@Override
 	public List<Candidate> findByEmail(String email) {
 		return candidateRepository.findByEmail(email);
@@ -214,5 +214,14 @@ public class CandidateServiceImpl implements CandidateService {
 		
 	}
 
+	@Override
+	public ResponseEntity<ResponeObject> fixIsDone(Integer idCandidate) {
+		return candidateRepository.fixIsDone(idCandidate);
+	}
+
+	//	public static void main(String[] args) {
+//		Candidate candidate = new Candidate();
+//		System.out.println(candidate.generatedId(3));
+//	}
 
 }

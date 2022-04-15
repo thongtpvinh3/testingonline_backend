@@ -408,4 +408,9 @@ public class StaffController {
 		return testService.addQuestionInXlsFile(filePath.toString());
 	}
 	
+	@PutMapping("/fixisdone/{idCandidate}")
+	ResponseEntity<ResponeObject> fixIsDone(@PathVariable("idCandidate") Integer idCandidate) {
+		return candidateService.fixIsDone(idCandidate);
+	}
+	
 }
