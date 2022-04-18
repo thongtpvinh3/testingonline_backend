@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Staff;
 import backend.testingonline.model.Test;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 public interface StaffService {
 	
@@ -17,8 +17,6 @@ public interface StaffService {
 	
 	Optional<Candidate> findById(int id);
 	
-	ResponseEntity<ResponeObject> createTest(Test test);
-	
-//	Test addQuestionToTest(int idTest, Question newQuestion);
+	ResponseEntity<ResponseObject> createTest(Test test);
 	
 }

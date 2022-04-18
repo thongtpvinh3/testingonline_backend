@@ -2,7 +2,6 @@ package backend.testingonline;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.List;
 
@@ -135,7 +134,7 @@ public class StaffControllerTest extends AbstractTest {
 	public void testAddQuestion() throws Exception {
 		String url = "/staff/addquestion";
 
-		Question newQuestion = new Question(8, 2, "code", 1);
+		Question newQuestion = new Question();
 		String inputJson = super.mapToJson(newQuestion);
 
 		MvcResult mvcResult = mvc.perform(

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,16 +34,15 @@ public class Question implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	protected int id;
+	@ManyToOne
+	protected QuestionType type;
+	@ManyToOne
+	protected Subject subject;
 	@Column
-	protected int type; // 0 multichoice , 1 essay
-	@Column
-	protected int subject; // 1 english, 2 coding, 3 knowledge
-	@Column
-	protected String content; // noi dung
-	@Column
-	protected int level; // 1 Fresher, 2 Junior, 3 Senior
+	protected String content;
+	@ManyToOne
+	protected Levels level;
 	@Column(name = "img")
 	protected String image;
 	
@@ -67,14 +67,6 @@ public class Question implements Serializable {
 		super();
 	}
 	
-	public Question(int type, int subject, String content, int level) {
-		super();
-		this.type = type;
-		this.subject = subject;
-		this.content = content;
-		this.level = level;
-	}
-
 	public int getId() {
 		return id;
 	}
@@ -83,43 +75,12 @@ public class Question implements Serializable {
 		this.id = id;
 	}
 	
-	public int getType() {
-		return type;
-	}
-	
-	public String getTypeToString() {
-		if (type == 0) {
-			return "Multiple Choice Question";
-		}
-		return "Essay Question";
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public int getSubject() {
-		return subject;
-	}
-
-	public void setSubject(int subject) {
-		this.subject = subject;
-	}
-
 	public String getContent() {
 		return content;
 	}
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
 	}
 
 	public List<Test> getTests() {
@@ -145,18 +106,37 @@ public class Question implements Serializable {
 	public void setEssayQuestion(EssayQuestion essayQuestion) {
 		this.essayQuestion = essayQuestion;
 	}
-	
-	@Override
-	public String toString() {
-		return "Question "
-				+ "[id=" + id 
-				+ ", type=" + type 
-				+ ", subject=" + subject 
-				+ ", content=" + content 
-				+ ", level=" + level 
-				+ ", tests=" + tests 
-				+ ", multipleChoiceQuestions=" + multipleChoiceQuestions
-				+ ", essayQuestion=" + essayQuestion + "]";
+
+	public QuestionType getType() {
+		return type;
+	}
+
+	public void setType(QuestionType type) {
+		this.type = type;
+	}
+
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public void setSubject(Subject subject) {
+		this.subject = subject;
+	}
+
+	public Levels getLevel() {
+		return level;
+	}
+
+	public void setLevel(Levels level) {
+		this.level = level;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 	@Override

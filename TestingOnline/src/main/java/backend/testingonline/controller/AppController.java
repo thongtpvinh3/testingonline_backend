@@ -15,15 +15,24 @@ import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.StaffService;
 import url.URL;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 public class AppController { 
 
 	@Autowired
 	private StaffService staffService;
 	
+//	@Autowired
+//	private StaffServiceImpl impl;
+	
 	@Autowired
 	private CandidateService candidateService;
+	
+//	@Autowired
+//	private AuthenticationManager authenticationManager;
+//	
+//	@Autowired
+//	private JwtUtil jwtUtil;
 	
 	@GetMapping(URL.ALL_HOMEPAGE)
 	public String toWebPage() {
@@ -43,11 +52,21 @@ public class AppController {
 		}
 		return "redirect:/testingonline";
 	}
-
-	@GetMapping(URL.STAFF_TO_LOGIN)
-	public String toLoginView() {
-		return "login";
-	}
+	
+//	@PostMapping("/auth/login")
+//	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+//		try {
+//			authenticationManager.authenticate(
+//					new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+//					);
+//		} catch (BadCredentialsException e) {
+//			throw new Exception("Invalid username or password",e);
+//		}
+//		final UserDetails userDetails = impl.loadUserByUsername(authenticationRequest.getUsername());
+//		final String jwt = jwtUtil.generateToken(userDetails);
+//		
+//		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+//	}
 
 	@PostMapping(value = URL.STAFF_CHECK_LOGIN)
 	public String checkLogin(@RequestParam String username, @RequestParam String password, HttpServletRequest req) {

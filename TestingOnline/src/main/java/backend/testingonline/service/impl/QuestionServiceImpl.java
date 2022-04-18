@@ -16,7 +16,7 @@ import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
 import backend.testingonline.repository.TestRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.QuestionService;
 
 @Service
@@ -40,21 +40,21 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> save(Question newQuestion) {
+	public ResponseEntity<ResponseObject> save(Question newQuestion) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Add success", questionRepository.save(newQuestion)));
+				.body(new ResponseObject("OK", "Add success", questionRepository.save(newQuestion)));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteById(Integer id) {
+	public ResponseEntity<ResponseObject> deleteById(Integer id) {
 		try {
 			questionRepository.deleteById(id);
 		} catch (Exception e) {
 			System.out.println("noooo!");
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponeObject("NO!!!", "Delete K noi!", ""));
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponseObject("NO!!!", "Delete K noi!", ""));
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public Integer getType(Integer idQuestion) {
-		return questionRepository.findById(idQuestion).get().getType();
+		return questionRepository.findById(idQuestion).get().getType().getId();
 	}
 
 	@Override
@@ -102,43 +102,43 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion) {
+	public ResponseEntity<ResponseObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion) {
 		Question foundQuestion = questionRepository.getById(idQuestion);
-		if (foundQuestion.getType() == 0) {
+		if (foundQuestion.getType().getId() == 1) {
 			MultipleChoiceQuestion mq = multipleChoiceQuestionRepository.getById(idAnswer);
 			List<MultipleChoiceQuestion> newListMC = foundQuestion.getMultipleChoiceQuestions();
 			newListMC.add(mq);
 			foundQuestion.setMultipleChoiceQuestions(newListMC);
 			mq.setQuestion(foundQuestion);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Add success !", questionRepository.save(foundQuestion)));
+					.body(new ResponseObject("OK", "Add success !", questionRepository.save(foundQuestion)));
 		} else {
 			EssayQuestion essayQuestion = essayQuestionRepository.getById(idAnswer);
 			essayQuestion.setQuestion(foundQuestion);
 			foundQuestion.setEssayQuestion(essayQuestion);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Add success !", questionRepository.save(foundQuestion)));
+					.body(new ResponseObject("OK", "Add success !", questionRepository.save(foundQuestion)));
 		}
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> addMultipleAnswer(Integer idQuestion, MultipleChoiceQuestion ans) {
+	public ResponseEntity<ResponseObject> addMultipleAnswer(Integer idQuestion, MultipleChoiceQuestion ans) {
 		Question foundQuestion = questionRepository.getById(idQuestion);
 		ans.setQuestion(foundQuestion);
 		List<MultipleChoiceQuestion> newList = foundQuestion.getMultipleChoiceQuestions();
 		newList.add(ans);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK",
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK",
 				"Add answer to question id: " + foundQuestion.getId(), questionRepository.save(foundQuestion)));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans) {
+	public ResponseEntity<ResponseObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans) {
 
 		Question foundQuestion = questionRepository.getById(idQuestion);
 		ans.setQuestion(foundQuestion);
 		foundQuestion.setEssayQuestion(ans);
 		essayQuestionRepository.save(ans);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK",
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK",
 				"Add answer to question id: " + foundQuestion.getId(), questionRepository.save(foundQuestion)));
 	}
 
@@ -149,26 +149,26 @@ public class QuestionServiceImpl implements QuestionService {
 //	}
 
 	@Override
-	public ResponseEntity<ResponeObject> updateEssayAnswer(Integer idAnswer, EssayQuestion answer) {
+	public ResponseEntity<ResponseObject> updateEssayAnswer(Integer idAnswer, EssayQuestion answer) {
 		EssayQuestion a = essayQuestionRepository.getById(idAnswer);
 		a.setAnswer(answer.getAnswer());
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("", "", essayQuestionRepository.save(answer)));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("", "", essayQuestionRepository.save(answer)));
 
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> updateMCAnswer(Integer idAnswer, MultipleChoiceQuestion answer) {
+	public ResponseEntity<ResponseObject> updateMCAnswer(Integer idAnswer, MultipleChoiceQuestion answer) {
 		MultipleChoiceQuestion a = multipleChoiceQuestionRepository.getById(idAnswer);
 		a.setAnswer(answer.getAnswer());
 		a.setIsTrue(answer.getIsTrue());
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Update thanh cong!", multipleChoiceQuestionRepository.save(a)));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Update thanh cong!", multipleChoiceQuestionRepository.save(a)));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idAnswer) {
+	public ResponseEntity<ResponseObject> deleteMultipleAnswerFromQuestion(Integer idAnswer) {
 		multipleChoiceQuestionRepository.deleteById(idAnswer);
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Remove success!", ""));
+				.body(new ResponseObject("OK", "Remove success!", ""));
 	}
 
 	@Override
@@ -181,5 +181,4 @@ public class QuestionServiceImpl implements QuestionService {
 		testRepository.save(test);
 	}
 	
-	// So sanh subject
 }

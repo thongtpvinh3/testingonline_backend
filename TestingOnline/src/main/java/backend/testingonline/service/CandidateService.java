@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 public interface CandidateService {
 
@@ -19,11 +19,11 @@ public interface CandidateService {
 	
 	Candidate findById(Integer id);
 
-	ResponseEntity<ResponeObject> save(Candidate newCandidate);
+	ResponseEntity<ResponseObject> save(Candidate newCandidate);
 	
-	ResponseEntity<ResponeObject> deleteWithId(Integer id);
+	ResponseEntity<ResponseObject> deleteWithId(Integer id);
 	
-	ResponseEntity<ResponeObject> setMark(Integer id);
+	ResponseEntity<ResponseObject> setMark(Integer id);
 
 	Test joinTestByCode(String code, Integer idCandidate);
 	
@@ -31,5 +31,5 @@ public interface CandidateService {
 
 	void setIsDone(int i);
 
-	ResponseEntity<ResponeObject> fixIsDone(Integer idCandidate);
+	ResponseEntity<ResponseObject> fixIsDone(Integer idCandidate);
 }

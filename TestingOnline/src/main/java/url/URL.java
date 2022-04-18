@@ -17,10 +17,10 @@ public class URL {
 	public static final String STAFF_ADD_TEST = "/addtest";
 	public static final String STAFF_TO_TESTVIEW = "/test";
 	public static final String STAFF_GETALL_TEST = "/getalltest";
-	public static final String STAFF_GET_TEST_BY_LELVEL = "/gettestbylevel/{level}";
+	public static final String STAFF_GET_TEST_BY_LELVEL = "/gettestbylevel";
 	public static final String SATFF_GET_TEST_BY_NAME = "/gettestbyname/{name}";
 	public static final String SATFF_GET_TEST_BY_CODE = "/gettestbycode/{code}";
-	public static final String SATFF_GET_TEST_BY_SUBJECT = "/gettestbysubject/{subject}";
+	public static final String SATFF_GET_TEST_BY_SUBJECT = "/gettestbysubject";
 	public static final String SATFF_GET_TEST_BY_ID = "/gettestbyid/{id}";
 	public static final String SATFF_GET_TEST_BY_DONE = "/gettestbydone/{done}";
 	public static final String SATFF_GET_TEST_BY_CANDIDATEID = "/gettestbycandidateid/{id}";

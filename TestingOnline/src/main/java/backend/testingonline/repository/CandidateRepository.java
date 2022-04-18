@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.Test;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 @Repository
 public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
@@ -37,5 +37,5 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	@Transactional
 	@Modifying
 	@org.springframework.data.jpa.repository.Query("UPDATE Candidate c SET c.isDone = 1, c.englishMark = 0, c.codingMark=0, c.knowledgeMark=0 WHERE c.id = :idCandidate")
-	ResponseEntity<ResponeObject> fixIsDone(@Param("idCandidate") Integer idCandidate);
+	ResponseEntity<ResponseObject> fixIsDone(@Param("idCandidate") Integer idCandidate);
 }

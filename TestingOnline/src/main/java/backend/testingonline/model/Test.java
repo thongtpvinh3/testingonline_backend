@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -29,50 +30,49 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "test")
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 @SuppressWarnings("serial")
-public class Test implements Serializable{
+public class Test implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
-	@Column
-	private int subject; // 1 english, 2 coding, 3 knowledge
-	@Column
-	private int level; // 1 FR, 2 JR, 3 SR
+	@ManyToOne
+	private Subject subject;
+	@ManyToOne
+	private Levels level;
 
 	@Column(name = "time")
 	@DateTimeFormat(pattern = "HH:mm:ss", iso = ISO.TIME)
-	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
 	private LocalTime times;
-	
+
 	@Column
 	private String name;
-	
+
 	@Column(name = "code_test", unique = true)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private String codeTest; // code join vao
 
 	@ManyToMany
 	@JsonIgnore
-	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_candidate")})
+	@JoinTable(name = "candidate_Test", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_candidate") })
 	private List<Candidate> candidates = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@Fetch(FetchMode.SUBSELECT)
-	@JoinTable(name = "test_question",
-	joinColumns = {@JoinColumn(name = "id_test")}, inverseJoinColumns = {@JoinColumn(name = "id_question")})
+	@JoinTable(name = "test_question", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_question") })
 	private Set<Question> questions = new HashSet<>(); // Bo cau hoi
-	
+
 	public Test() {
-		super();
 	}
 
 	public Set<Question> getQuestions() {
 		return questions;
 	}
-	
+
 	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
 	}
@@ -85,19 +85,19 @@ public class Test implements Serializable{
 		this.id = id;
 	}
 
-	public int getSubject() {
+	public Subject getSubject() {
 		return subject;
 	}
 
-	public void setSubject(int subject) {
+	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
 
-	public int getLevel() {
+	public Levels getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Levels level) {
 		this.level = level;
 	}
 
@@ -140,14 +140,8 @@ public class Test implements Serializable{
 	public void setCodeTest(String codeTest) {
 		this.codeTest = codeTest;
 	}
-	
+
 	public int timeToSecond() {
 		return LocalTime.of(this.times.getHour(), this.times.getMinute(), this.times.getSecond()).toSecondOfDay();
 	}
-
-	public String toString1() {
-		return "Test [id=" + id + ", subject=" + subject + ", level=" + level + ", time=" + times + ", name=" + name
-				 + ", codeTest=" + "]";
-	}
-
 }

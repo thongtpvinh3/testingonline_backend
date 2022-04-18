@@ -28,7 +28,7 @@ import backend.testingonline.model.Result;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateTestRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.QuestionService;
 import backend.testingonline.service.TempResultService;
@@ -36,7 +36,7 @@ import backend.testingonline.service.TestService;
 import backend.testingonline.service.impl.RedisCandidateDoTestCache;
 import url.URL;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = URL.CANDIDATE)
 public class CandidateController {
@@ -94,7 +94,7 @@ public class CandidateController {
 		Integer idCandidate = candidate.getId();
 		tempAns.setIdCandidate(idCandidate);
 		tempAns.setAnswer("1");
-		if (questionService.findById(idQuestion).getType() == 0) {
+		if (questionService.findById(idQuestion).getType().getId() == 0) {
 			tempAns.setType(0);
 		} else {
 			tempAns.setType(1);
@@ -135,7 +135,7 @@ public class CandidateController {
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
-	public ResponseEntity<ResponeObject> setTestIsDone(HttpServletRequest req) {
+	public ResponseEntity<ResponseObject> setTestIsDone(HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		Candidate candidate = (Candidate) session.getAttribute("candidate");
 		Integer idCandidate = candidate.getId();
@@ -159,7 +159,7 @@ public class CandidateController {
 		for (Test t: listTest) {
 			testService.reviewMCQuestion(t.getId(), idCandidate);
 			CandidateTest ct = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, t.getId());
-			switch (t.getSubject()) {
+			switch (t.getSubject().getId()) {
 			case 1:
 				result.setEnglishMark(ct.getMarks());
 				break;
@@ -172,7 +172,7 @@ public class CandidateController {
 			}
 		}
 		session.setAttribute("test", null);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Nop bai thanh cong", result));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Nop bai thanh cong", result));
 	}
 	
 	@PostMapping("/delallcache")

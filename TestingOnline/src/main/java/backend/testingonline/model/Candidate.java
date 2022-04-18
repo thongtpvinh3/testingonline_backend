@@ -3,7 +3,6 @@ package backend.testingonline.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -31,24 +31,23 @@ public class Candidate implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
 	@Column
-	private String name;// Ten cua bai test
-	@Column(nullable = true)
-	private int level; // 1 Fresher, 2 Junior, 3 Senior
+	private String name;
+	@ManyToOne
+	private Levels level;
 	@Column(unique = true)
-	private String phone; // SDT
+	private String phone;
 	@Column(unique = true)
 	private String email;
 	@Column(nullable = true)
-	private String position;// Vi tri ???
+	private String position;
 	@Column(name = "english_mark", columnDefinition = "DOUBLE DEFAULT 0")
-	private Double englishMark; // ?? Diem english
+	private Double englishMark; 
 	@Column(name = "coding_mark", columnDefinition = "DOUBLE DEFAULT 0")
-	private Double codingMark;// ?? Diem Code
+	private Double codingMark;
 	@Column(name = "knowledge_mark", columnDefinition = "DOUBLE DEFAULT 0")
-	private Double knowledgeMark;// ?? Diem KnowL
+	private Double knowledgeMark;
 	
 	@Column(name = "date_test")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
@@ -80,12 +79,6 @@ public class Candidate implements Serializable {
 		return phone;
 	}
 
-	public Candidate(String name, int level) {
-		super();
-		this.name = name;
-		this.level = level;
-	}
-	
 	public Candidate(String name, String phone, String email) {
 		super();
 		this.name = name;
@@ -117,11 +110,11 @@ public class Candidate implements Serializable {
 		this.name = name;
 	}
 
-	public int getLevel() {
+	public Levels getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Levels level) {
 		this.level = level;
 	}
 
@@ -196,29 +189,4 @@ public class Candidate implements Serializable {
 	public void setIsDone(int isDone) {
 		this.isDone = isDone;
 	}
-
-	@Override
-	public String toString() {
-		return "Candidate "
-				+ "{id=" + id + ","
-				+ ", name=" + name 
-				+ ", level=" + level 
-				+ ", phone=" + phone
-				+ ", email=" + email 
-				+ ", position=" + position 
-				+ ", englishMark=" + englishMark 
-				+ ", codingMark=" + codingMark 
-				+ ", knowledgeMark=" + knowledgeMark 
-				+ "}";
-	}
-	
-	public String generatedId(Integer count) {
-		Random r = new Random();
-		Integer x = r.nextInt(9999);
-		String prefix = "UV";
-		Integer newCount = count+1;
-		String surfix = newCount.toString(); 
-		return prefix+x.toString()+surfix;
-	}
-
 }

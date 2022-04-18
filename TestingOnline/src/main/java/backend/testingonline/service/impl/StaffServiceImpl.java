@@ -12,7 +12,7 @@ import backend.testingonline.model.Staff;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.StaffRepository;
 import backend.testingonline.repository.TestRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.StaffService;
 
 @Service
@@ -32,7 +32,6 @@ public class StaffServiceImpl implements StaffService {
 
 	@Override
 	public Staff findByUsernameAndPassword(String username, String password) {
-		// TODO Auto-generated method stub
 		return staffRepository.findByUsernameAndPassword(username, password);
 	}
 
@@ -48,23 +47,8 @@ public class StaffServiceImpl implements StaffService {
 	}
 	
 	@Override
-	public ResponseEntity<ResponeObject> createTest(Test newTest) {
+	public ResponseEntity<ResponseObject> createTest(Test newTest) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Add success!", testRepository.save(newTest)));
+				.body(new ResponseObject("OK", "Add success!", testRepository.save(newTest)));
 	}
-
-//	@Override
-//	public Test addQuestionToTest(int idTest, Question newQuestion) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
-//	@Override
-//	public Test addQuestionToTest(int idTest, Question newQuestion) {
-//		Test foudTest = testRepository.getById(idTest);
-//		List<Question> newListQuestion = foudTest.getQuestions();
-//		newListQuestion.add(newQuestion);
-//		foudTest.setQuestions(newListQuestion);
-//		return testRepository.save(foudTest);
-//	}
 }

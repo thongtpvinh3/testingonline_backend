@@ -16,7 +16,7 @@ import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.repository.CandidateTestRepository;
 import backend.testingonline.repository.TestRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.CandidateService;
 
 @Service
@@ -54,13 +54,13 @@ public class CandidateServiceImpl implements CandidateService {
 //	}
 
 	@Override
-	public ResponseEntity<ResponeObject> save(Candidate newCandidate) {
+	public ResponseEntity<ResponseObject> save(Candidate newCandidate) {
 
 		List<Candidate> foundCandidateEmail = candidateRepository.findByEmail(newCandidate.getEmail());
 		List<Candidate> foundCandidatePhone = candidateRepository.findByPhone(newCandidate.getPhone());
 		if (foundCandidateEmail.size() > 0 || foundCandidatePhone.size() > 0) {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-					.body(new ResponeObject("FAILED", "Email or Phone duplicate", ""));
+					.body(new ResponseObject("FAILED", "Email or Phone duplicate", ""));
 		}
 
 //		try {
@@ -92,7 +92,7 @@ public class CandidateServiceImpl implements CandidateService {
 //			newCandidate.setAvatar(generatedFileName);
 
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Add success", candidateRepository.save(newCandidate)));
+				.body(new ResponseObject("OK", "Add success", candidateRepository.save(newCandidate)));
 //		} catch (Exception e) {
 //			throw new RuntimeException("FAILED",e);
 //		}
@@ -166,14 +166,14 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteWithId(Integer id) {
+	public ResponseEntity<ResponseObject> deleteWithId(Integer id) {
 		boolean exits = candidateRepository.existsById(id);
 		if (exits) {
 			candidateRepository.deleteById(id);
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 		}
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
-				.body(new ResponeObject("FAILED", "Cannot find candidate delete", ""));
+				.body(new ResponseObject("FAILED", "Cannot find candidate delete", ""));
 	}
 
 	@Override
@@ -182,13 +182,13 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> setMark(Integer idCandidate) {
+	public ResponseEntity<ResponseObject> setMark(Integer idCandidate) {
 		Candidate foundCandidate = candidateRepository.getById(idCandidate);
 		
 		for (CandidateTest ct: candidateTestRepository.findByCandidateId(idCandidate)) {
 			Double marks = ct.getMarks();
 			if(marks == null) ct.setMarks(0.0);
-			switch (testRepository.getById(ct.getTestId()).getSubject()) {
+			switch (testRepository.getById(ct.getTestId()).getSubject().getId()) {
 			case 1:
 				foundCandidate.setEnglishMark(ct.getMarks());
 				break;
@@ -205,7 +205,7 @@ public class CandidateServiceImpl implements CandidateService {
 		}
 
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Set diem thanh cong", candidateRepository.save(foundCandidate)));
+				.body(new ResponseObject("OK", "Set diem thanh cong", candidateRepository.save(foundCandidate)));
 	}
 
 	@Override
@@ -215,13 +215,8 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> fixIsDone(Integer idCandidate) {
+	public ResponseEntity<ResponseObject> fixIsDone(Integer idCandidate) {
 		return candidateRepository.fixIsDone(idCandidate);
 	}
-
-	//	public static void main(String[] args) {
-//		Candidate candidate = new Candidate();
-//		System.out.println(candidate.generatedId(3));
-//	}
 
 }

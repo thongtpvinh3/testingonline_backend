@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 
 import backend.testingonline.model.Levels;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 public interface LevelService {
 
 	List<Levels> getAll();
 
-	ResponseEntity<ResponeObject> save(Levels level);
+	ResponseEntity<ResponseObject> save(Levels level);
 
-	ResponseEntity<ResponeObject> deleteById(Integer id);
+	ResponseEntity<ResponseObject> deleteById(Integer id);
 
 }

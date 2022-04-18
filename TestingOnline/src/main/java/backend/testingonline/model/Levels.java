@@ -1,61 +1,65 @@
 package backend.testingonline.model;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "levels")
-public class Levels {
+public class Levels implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
+
 	@Column
 	private String name;
 	
-	@ManyToMany
+	@OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Candidate> candidates;
+	private Set<Candidate> candidates = new HashSet<>();
 	
-	@ManyToMany
+	@OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Question> questions;
+	private Set<Question> questions = new HashSet<>();
 	
-	@ManyToMany
+	@OneToMany(mappedBy = "level")
 	@JsonIgnore
-	private List<Test> tests;
+	private Set<Test> tests = new HashSet<>();
 	
-	public List<Candidate> getCandidates() {
+	public Set<Candidate> getCandidates() {
 		return candidates;
 	}
 
-	public void setCandidates(List<Candidate> candidates) {
+	public void setCandidates(Set<Candidate> candidates) {
 		this.candidates = candidates;
 	}
 
-	public List<Question> getQuestions() {
+	public Set<Question> getQuestions() {
 		return questions;
 	}
 
-	public void setQuestions(List<Question> questions) {
+	public void setQuestions(Set<Question> questions) {
 		this.questions = questions;
 	}
 
-	public List<Test> getTests() {
+	public Set<Test> getTests() {
 		return tests;
 	}
 
-	public void setTests(List<Test> tests) {
+	public void setTests(Set<Test> tests) {
 		this.tests = tests;
 	}
 
@@ -78,18 +82,4 @@ public class Levels {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	@Override
-	public String toString() {
-		return "Levels "
-				+ "[id=" + id 
-				+ ", name=" + name 
-				+ ", candidates=" + candidates 
-				+ ", questions=" + questions
-				+ ", tests=" + tests 
-				+ "]";
-	}
-	
-	
-	
 }

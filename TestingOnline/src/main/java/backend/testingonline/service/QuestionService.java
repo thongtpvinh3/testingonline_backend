@@ -8,15 +8,15 @@ import org.springframework.http.ResponseEntity;
 import backend.testingonline.model.EssayQuestion;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 public interface QuestionService {
 
 	List<Question> findAll();
 
-	ResponseEntity<ResponeObject> save(Question newQuestion);
+	ResponseEntity<ResponseObject> save(Question newQuestion);
 
-	ResponseEntity<ResponeObject> deleteById(Integer id);
+	ResponseEntity<ResponseObject> deleteById(Integer id);
 
 	Question findById(Integer id);
 
@@ -32,17 +32,17 @@ public interface QuestionService {
 
 	Set<Question> getByTestId(Integer idTest);
 	
-	ResponseEntity<ResponeObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion);
+	ResponseEntity<ResponseObject> addAnswerToQuestion(Integer idAnswer, Integer idQuestion);
 
-	ResponseEntity<ResponeObject> addMultipleAnswer(Integer idQuestion, MultipleChoiceQuestion ans);
+	ResponseEntity<ResponseObject> addMultipleAnswer(Integer idQuestion, MultipleChoiceQuestion ans);
 
-	ResponseEntity<ResponeObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans);
+	ResponseEntity<ResponseObject> addEssayAnswer(Integer idQuestion, EssayQuestion ans);
 
-	ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(Integer idAnswer);
+	ResponseEntity<ResponseObject> deleteMultipleAnswerFromQuestion(Integer idAnswer);
 
-	ResponseEntity<ResponeObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer);
+	ResponseEntity<ResponseObject> updateEssayAnswer(Integer idQuestion, EssayQuestion answer);
 
-	ResponseEntity<ResponeObject> updateMCAnswer(Integer idQuestion, MultipleChoiceQuestion answer);
+	ResponseEntity<ResponseObject> updateMCAnswer(Integer idQuestion, MultipleChoiceQuestion answer);
 
 	void removeQuestionFromTest(Integer idQuestion, Integer idTest);
 	

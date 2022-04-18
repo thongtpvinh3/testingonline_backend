@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Subject;
 import backend.testingonline.repository.SubjectRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.SubjectService;
 
 @Service
@@ -24,15 +24,15 @@ public class SubjectServiceImpl implements SubjectService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> save(Subject subject) {
+	public ResponseEntity<ResponseObject> save(Subject subject) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK!", "Add success!", subjectRepository.save(subject)));
+				.body(new ResponseObject("OK!", "Add success!", subjectRepository.save(subject)));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteById(Integer id) {
+	public ResponseEntity<ResponseObject> deleteById(Integer id) {
 		subjectRepository.deleteById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 	}
 
 }

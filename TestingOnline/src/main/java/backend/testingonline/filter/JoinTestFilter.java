@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import backend.testingonline.model.Candidate;
-import backend.testingonline.model.Test;
 
 public class JoinTestFilter implements Filter {
 

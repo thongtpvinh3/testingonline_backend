@@ -36,7 +36,7 @@ import backend.testingonline.model.Test;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.TempResultRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.CandidateService;
 import backend.testingonline.service.LevelService;
 import backend.testingonline.service.QuestionService;
@@ -46,7 +46,7 @@ import backend.testingonline.service.TestService;
 import backend.testingonline.service.UploadFileService;
 import url.URL;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = URL.STAFF)
 public class StaffController {
@@ -81,13 +81,6 @@ public class StaffController {
 	@Autowired
 	private UploadFileService uploadFileService;
 
-	@GetMapping(URL.STAFF_TO_STAFFVIEW)
-	public String toStaffView(HttpServletRequest req, Model model) {
-		HttpSession session = req.getSession();
-		model.addAttribute("staff", session.getAttribute("staff"));
-		return "staffhome";
-	}
-
 	@PostMapping(URL.STAFF_LOGOUT)
 	public String logout(HttpServletRequest req, HttpServletResponse resp) {
 		HttpSession session = req.getSession();
@@ -109,13 +102,13 @@ public class StaffController {
 
 	// ADD CANDIDATE
 	@PostMapping(value = URL.STAFF_ADD_CANDIDATE)
-	ResponseEntity<ResponeObject> addCandidate(@RequestBody Candidate newCandidate) {
+	ResponseEntity<ResponseObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
 	}
 
 	// DELETE A CANDIDATE
 	@DeleteMapping(URL.STAFF_DELETE_CANDIDATE)
-	ResponseEntity<ResponeObject> deleteCandidate(@PathVariable Integer id) {
+	ResponseEntity<ResponseObject> deleteCandidate(@PathVariable Integer id) {
 		return candidateService.deleteWithId(id);
 	}
 	
@@ -151,18 +144,18 @@ public class StaffController {
 	}
 
 	@GetMapping(URL.SATFF_GET_TEST_BY_SUBJECT)
-	List<Test> getTestBySubject(@PathVariable Integer subject) {
+	List<Test> getTestBySubject(@RequestBody Subject subject) {
 		return testService.findBySubject(subject);
 	}
 
 	@GetMapping(URL.SATFF_GET_TEST_BY_ID)
-	Test getTestbyId(@PathVariable Integer id, Model model) {
-		model.addAttribute("candidates", testService.getCandidateOfTest(id));
+	Test getTestbyId(@PathVariable Integer id) {
+//		model.addAttribute("candidates", testService.getCandidateOfTest(id));
 		return testService.findById(id);
 	}
 
 	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
-	List<Test> getTestByLevel(@PathVariable Integer level) {
+	List<Test> getTestByLevel(@RequestBody Levels level) {
 		return testService.findByLevel(level);
 	}
 
@@ -172,30 +165,30 @@ public class StaffController {
 	}
 
 	@PostMapping(URL.STAFF_ADD_TEST)
-	public ResponseEntity<ResponeObject> addTest(@RequestBody Test newTest) {
+	public ResponseEntity<ResponseObject> addTest(@RequestBody Test newTest) {
 		return staffService.createTest(newTest);
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_TEST_BY_ID)
-	public ResponseEntity<ResponeObject> deleteTestbyId(@PathVariable Integer id) {
+	public ResponseEntity<ResponseObject> deleteTestbyId(@PathVariable Integer id) {
 		return testService.deleteById(id);
 	}
 
 	@PutMapping(URL.STAFF_ADD_QUESTION_TO_TEST)
-	public ResponseEntity<ResponeObject> addQuestionToTest(@PathVariable Integer idTest,
+	public ResponseEntity<ResponseObject> addQuestionToTest(@PathVariable Integer idTest,
 			@PathVariable Integer idQuestion) {
 		return testService.addQuestionTotest(idTest, idQuestion);
 	}
 
 	@PutMapping(URL.STAFF_UPDATE_TEST)
-	public ResponseEntity<ResponeObject> updateTest(@PathVariable Integer id, @RequestBody Test test) {
+	public ResponseEntity<ResponseObject> updateTest(@PathVariable Integer id, @RequestBody Test test) {
 		Test foundTest = testService.findById(id);
 		if (foundTest == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new ResponeObject("FALSE", "Khong tim thay id: " + id, ""));
+					.body(new ResponseObject("FALSE", "Khong tim thay id: " + id, ""));
 		} else {
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "update thanh cong", testService.updateTest(id, test)));
+					.body(new ResponseObject("OK", "update thanh cong", testService.updateTest(id, test)));
 		}
 	}
 	
@@ -205,7 +198,7 @@ public class StaffController {
 	}
 
 	@PutMapping(URL.STAFF_ADD_TEST_FOR_CANDIDATE)
-	public ResponseEntity<ResponeObject> addTestForCandidate(@PathVariable Integer idTest,
+	public ResponseEntity<ResponseObject> addTestForCandidate(@PathVariable Integer idTest,
 			@PathVariable Integer idCandidate) {
 		return testService.addTestForCandidate(idTest, idCandidate);
 	}
@@ -227,13 +220,13 @@ public class StaffController {
 	}
 
 	@PutMapping(URL.STAFF_REVIEW_ESSAY_QUESTION)
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate,
+	public ResponseEntity<ResponseObject> reviewEssayQuestion(@PathVariable Integer idTest, @PathVariable Integer idCandidate,
 			@PathVariable Double mark) {
 		return testService.reviewEssayQuestion(idTest,idCandidate, mark);
 	}
 
 	@PutMapping(URL.STAFF_SET_MARK_FOR_CANDIDATE)
-	public ResponseEntity<ResponeObject> setMark(@PathVariable Integer idCandidate) {
+	public ResponseEntity<ResponseObject> setMark(@PathVariable Integer idCandidate) {
 		return candidateService.setMark(idCandidate);
 	}
 
@@ -278,23 +271,23 @@ public class StaffController {
 	}
 
 	@PostMapping(URL.STAFF_ADD_QUESTION)
-	public ResponseEntity<ResponeObject> addQuestion(@RequestBody Question newQuestion) {
+	public ResponseEntity<ResponseObject> addQuestion(@RequestBody Question newQuestion) {
 		return questionService.save(newQuestion);
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_QUESTION)
-	public ResponseEntity<ResponeObject> deleteQuestionbyId(@PathVariable Integer id) {
+	public ResponseEntity<ResponseObject> deleteQuestionbyId(@PathVariable Integer id) {
 		return questionService.deleteById(id);
 	}
 
 	@PutMapping(URL.STAFF_EDIT_QUESTION)
-	public ResponseEntity<ResponeObject> editQuestion(@PathVariable Integer id, @RequestBody Question newQuestion) {
+	public ResponseEntity<ResponseObject> editQuestion(@PathVariable Integer id, @RequestBody Question newQuestion) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "update thanh cong", questionService.editQuestion(id, newQuestion)));
+				.body(new ResponseObject("OK", "update thanh cong", questionService.editQuestion(id, newQuestion)));
 	}
 
 	@PutMapping(URL.STAFF_ADD_ANS_TO_QUESTION)
-	public ResponseEntity<ResponeObject> addAnswerToTest(@PathVariable Integer idAnswer,
+	public ResponseEntity<ResponseObject> addAnswerToTest(@PathVariable Integer idAnswer,
 			@PathVariable Integer idQuestion) {
 		return questionService.addAnswerToQuestion(idAnswer, idQuestion);
 	}
@@ -310,17 +303,17 @@ public class StaffController {
 //------------------------------ANSWER------------------------------------------
 
 	@PostMapping(URL.STAFF_ADD_MCQ_FOR_QUESTION)
-	public ResponseEntity<ResponeObject> addMultipleChoiceAnswerForQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponseObject> addMultipleChoiceAnswerForQuestion(@PathVariable Integer idQuestion,
 			@RequestBody MultipleChoiceQuestion ans) {
-		if (questionService.findById(idQuestion).getType() == 0) {
+		if (questionService.findById(idQuestion).getType().getId() == 1) {
 			return questionService.addMultipleAnswer(idQuestion, ans);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-				.body(new ResponeObject("FAILED", "Khong dung loai cau hoi !", ""));
+				.body(new ResponseObject("FAILED", "Khong dung loai cau hoi !", ""));
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_MC_ANSWER_FROM_QUESTION)
-	public ResponseEntity<ResponeObject> deleteMultipleAnswerFromQuestion(
+	public ResponseEntity<ResponseObject> deleteMultipleAnswerFromQuestion(
 			@PathVariable Integer idAnswer) {
 		return questionService.deleteMultipleAnswerFromQuestion(idAnswer);
 	}
@@ -331,23 +324,23 @@ public class StaffController {
 	}
 
 	@PutMapping(URL.STAFF_UPDATE_MC_ANSWER_FOR_QUESTION)
-	public ResponseEntity<ResponeObject> updateMCAnswerForQuestion(@PathVariable Integer idAnswer,
+	public ResponseEntity<ResponseObject> updateMCAnswerForQuestion(@PathVariable Integer idAnswer,
 			@RequestBody MultipleChoiceQuestion answer) {
 		return questionService.updateMCAnswer(idAnswer, answer);
 	}
 
 	@PostMapping(URL.STAFF_ADD_E_ASNSWER_FOR_QUESTION)
-	public ResponseEntity<ResponeObject> addEssayAnswerForQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponseObject> addEssayAnswerForQuestion(@PathVariable Integer idQuestion,
 			@RequestBody EssayQuestion ans) {
-		if (questionService.findById(idQuestion).getType() == 1) {
+		if (questionService.findById(idQuestion).getType().getId() == 2) {
 			return questionService.addEssayAnswer(idQuestion, ans);
 		}
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-				.body(new ResponeObject("FAILED", "Khong dung loai cau hoi !", ""));
+				.body(new ResponseObject("FAILED", "Khong dung loai cau hoi !", ""));
 	}
 
 	@PutMapping(URL.STAFF_UPDATE_ESSAY_ANSWER)
-	public ResponseEntity<ResponeObject> updateEssayAnswerForQuestion(@PathVariable Integer idQuestion,
+	public ResponseEntity<ResponseObject> updateEssayAnswerForQuestion(@PathVariable Integer idQuestion,
 			@RequestBody EssayQuestion answer) {
 		return questionService.updateEssayAnswer(idQuestion, answer);
 	}
@@ -370,12 +363,12 @@ public class StaffController {
 	}
 
 	@PostMapping(URL.STAFF_ADD_NEW_LEVEL)
-	ResponseEntity<ResponeObject> addNewLevel(@RequestBody Levels level) {
+	ResponseEntity<ResponseObject> addNewLevel(@RequestBody Levels level) {
 		return levelService.save(level);
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_LEVEL)
-	ResponseEntity<ResponeObject> deleteLevel(@PathVariable Integer id) {
+	ResponseEntity<ResponseObject> deleteLevel(@PathVariable Integer id) {
 		return levelService.deleteById(id);
 	} 
 
@@ -387,12 +380,12 @@ public class StaffController {
 	}
 
 	@PostMapping(URL.STAFF_ADD_NEW_SUBJECT)
-	ResponseEntity<ResponeObject> addNewSubject(@RequestBody Subject subject) {
+	ResponseEntity<ResponseObject> addNewSubject(@RequestBody Subject subject) {
 		return subjectService.save(subject);
 	}
 
 	@DeleteMapping(URL.STAFF_DELETE_SUBJECT)
-	ResponseEntity<ResponeObject> deleteSubjectById(@PathVariable Integer id) {
+	ResponseEntity<ResponseObject> deleteSubjectById(@PathVariable Integer id) {
 		return subjectService.deleteById(id);
 	}
 	
@@ -409,7 +402,7 @@ public class StaffController {
 	}
 	
 	@PutMapping("/fixisdone/{idCandidate}")
-	ResponseEntity<ResponeObject> fixIsDone(@PathVariable("idCandidate") Integer idCandidate) {
+	ResponseEntity<ResponseObject> fixIsDone(@PathVariable("idCandidate") Integer idCandidate) {
 		return candidateService.fixIsDone(idCandidate);
 	}
 	

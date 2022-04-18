@@ -16,7 +16,6 @@ public class TempResultOfCandidate implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
 	@Column(name = "id_answer")
 	private int idAnswer;
@@ -30,11 +29,9 @@ public class TempResultOfCandidate implements Serializable {
 	private int idTest;
 	
 	public TempResultOfCandidate() {
-		super();
 	}
 
 	public TempResultOfCandidate(int idAnswer, String answer,int idCandidate) {
-		super();
 		this.idAnswer = idAnswer;
 		this.answer = answer;
 		this.idCandidate = idCandidate;
@@ -87,12 +84,4 @@ public class TempResultOfCandidate implements Serializable {
 	public void setIdTest(int idTest) {
 		this.idTest = idTest;
 	}
-
-	@Override
-	public String toString() {
-		return "TempResultOfCandidate {id=" + id + ", idAnswer=" + idAnswer + ", answer=" + answer + ", idCandidate="
-				+ idCandidate + "}";
-	}
-	
-	
 }

@@ -23,17 +23,23 @@ import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.CandidateTest;
+import backend.testingonline.model.Levels;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.QuestionType;
+import backend.testingonline.model.Subject;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.CandidateRepository;
 import backend.testingonline.repository.CandidateTestRepository;
+import backend.testingonline.repository.LevelRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.QuestionRepository;
+import backend.testingonline.repository.QuestionTypeRepository;
+import backend.testingonline.repository.SubjectRepository;
 import backend.testingonline.repository.TempResultRepository;
 import backend.testingonline.repository.TestRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.TestService;
 
 @Service
@@ -56,6 +62,15 @@ public class TestServiceImpl implements TestService {
 
 	@Autowired
 	private CandidateTestRepository candidateTestRepository;
+	
+	@Autowired
+	private SubjectRepository subjectRepository;
+	
+	@Autowired
+	private LevelRepository levelRepository;
+	
+	@Autowired
+	private QuestionTypeRepository questionTypeRepository;
 
 	@Override
 	public List<Test> getAllTest() {
@@ -68,16 +83,16 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public List<Test> findByLevel(Integer level) {
+	public List<Test> findByLevel(Levels level) {
 		return testRepository.findByLevel(level);
 	}
 
 //	-
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteById(Integer id) {
+	public ResponseEntity<ResponseObject> deleteById(Integer id) {
 		testRepository.deleteById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 	}
 
 	@Override
@@ -101,7 +116,7 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> addQuestionTotest(Integer idTest, Integer idQuestion) {
+	public ResponseEntity<ResponseObject> addQuestionTotest(Integer idTest, Integer idQuestion) {
 
 		Question newQuestion = questionRepository.findById(idQuestion).get();
 		Test foundTest = testRepository.getById(idTest);
@@ -112,11 +127,11 @@ public class TestServiceImpl implements TestService {
 			newList.add(newQuestion);
 			foundTest.setQuestions(newList);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
+					.body(new ResponseObject("OK", "Add success !", testRepository.save(foundTest)));
 		} else {
 			if (newQuestion.getLevel() != foundTest.getLevel() || newQuestion.getSubject() != foundTest.getSubject()) {
 				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-						.body(new ResponeObject("FAILED", "Subject or Level is not equals", ""));
+						.body(new ResponseObject("FAILED", "Subject or Level is not equals", ""));
 			}
 			if (foundTest.getQuestions().contains(newQuestion) == false
 					&& newQuestion.getLevel() == foundTest.getLevel()
@@ -125,10 +140,10 @@ public class TestServiceImpl implements TestService {
 				newList.add(newQuestion);
 				foundTest.setQuestions(newList);
 				return ResponseEntity.status(HttpStatus.OK)
-						.body(new ResponeObject("OK", "Add success !", testRepository.save(foundTest)));
+						.body(new ResponseObject("OK", "Add success !", testRepository.save(foundTest)));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-						.body(new ResponeObject("FAILED", "Duplicate question", ""));
+						.body(new ResponseObject("FAILED", "Duplicate question", ""));
 			}
 		}
 	}
@@ -139,7 +154,7 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public List<Test> findBySubject(Integer subject) {
+	public List<Test> findBySubject(Subject subject) {
 		return testRepository.findBySubject(subject);
 	}
 
@@ -150,13 +165,13 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate) {
+	public ResponseEntity<ResponseObject> addTestForCandidate(Integer idTest, Integer idCandidate) {
 		Test newTest = testRepository.getById(idTest);
 		Candidate foundCandidate = candidateRepository.getById(idCandidate);
 
 		if (newTest.getTime() != null) {
 			if (newTest.getLevel() != foundCandidate.getLevel()) {
-				return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("FAILED", "Level khong phu hop!", ""));
+				return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("FAILED", "Level khong phu hop!", ""));
 			}
 
 			Set<Test> newList = foundCandidate.getTests();
@@ -164,22 +179,22 @@ public class TestServiceImpl implements TestService {
 				newList.add(newTest);
 				foundCandidate.setTests(newList);
 				return ResponseEntity.status(HttpStatus.OK)
-						.body(new ResponeObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
+						.body(new ResponseObject("OK", "Add success !", candidateRepository.save(foundCandidate)));
 			} else {
 				return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-						.body(new ResponeObject("FAILED", "Bai test bi trung !", ""));
+						.body(new ResponseObject("FAILED", "Bai test bi trung !", ""));
 			}
 		}
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-				.body(new ResponeObject("FAILED", "Bạn phải add thời gian vào đã chứ !", ""));
+				.body(new ResponseObject("FAILED", "Bạn phải add thời gian vào đã chứ !", ""));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> setTestTime(Integer idTest, LocalTime time) {
+	public ResponseEntity<ResponseObject> setTestTime(Integer idTest, LocalTime time) {
 		Test foundTest = testRepository.getById(idTest);
 		foundTest.setTime(time);
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK", "Set test time success!", testRepository.save(foundTest)));
+				.body(new ResponseObject("OK", "Set test time success!", testRepository.save(foundTest)));
 	}
 
 //	@Override
@@ -203,7 +218,7 @@ public class TestServiceImpl implements TestService {
 		int rightResult = 0;
 
 		for (Question q : thisTestQuestion) {
-			if (q.getType() == 0) {
+			if (q.getType().getId() == 1) {
 				count++;
 			}
 		}
@@ -234,13 +249,13 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest, Integer idCandidate, Double mark) {
+	public ResponseEntity<ResponseObject> reviewEssayQuestion(Integer idTest, Integer idCandidate, Double mark) {
 		Test foundTest = testRepository.getById(idTest);
 		Set<Question> listQ = foundTest.getQuestions();
 		CandidateTest candidateTest = candidateTestRepository.findByCandidateIdAndTestId(idCandidate, idTest);
 		int count = 0;
 		for (Question q : listQ) {
-			if (q.getType() == 1) {
+			if (q.getType().getId() == 2) {
 				count++;
 			}
 		}
@@ -251,13 +266,13 @@ public class TestServiceImpl implements TestService {
 
 		if (mark > tmp) {
 			return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
-					.body(new ResponeObject("FAILED!", "Diem vuot qua max cau hoi! (" + tmp + ")", ""));
+					.body(new ResponseObject("FAILED!", "Diem vuot qua max cau hoi! (" + tmp + ")", ""));
 		} else {
 			Double x = candidateTest.getMarks() + mark;
 			candidateTest.setMarks(x);
 			candidateTestRepository.save(candidateTest);
 			return ResponseEntity.status(HttpStatus.OK)
-					.body(new ResponeObject("OK", "Cham Diem thanh cong!", testRepository.save(foundTest)));
+					.body(new ResponseObject("OK", "Cham Diem thanh cong!", testRepository.save(foundTest)));
 		}
 	}
 
@@ -292,7 +307,10 @@ public class TestServiceImpl implements TestService {
 		final int COLUMN_INDEX_ANSWER_C = 4;
 		final int COLUMN_INDEX_ANSWER_D = 5;
 		final int COLUMN_INDEX_TRUE = 6;
-		int subject = 1;
+		int idSubject = 1;
+		Subject subject = subjectRepository.getById(idSubject);
+		Levels level = levelRepository.getById(1);
+		QuestionType type = questionTypeRepository.getById(1);
 		List<Question> presentList = questionRepository.findAll();
 		List<Question> listQuestions = new ArrayList<>();
 		FileInputStream file = new FileInputStream(xlsFilePath);
@@ -315,9 +333,9 @@ public class TestServiceImpl implements TestService {
 				MultipleChoiceQuestion B = new MultipleChoiceQuestion();
 				MultipleChoiceQuestion C = new MultipleChoiceQuestion();
 				MultipleChoiceQuestion D = new MultipleChoiceQuestion();
-				newQuestion.setType(0);
+				newQuestion.setType(type);
 				newQuestion.setSubject(subject);
-				newQuestion.setLevel(1);
+				newQuestion.setLevel(level);
 				// cell
 				while (cellIterator.hasNext()) {
 					Cell cell = cellIterator.next();
@@ -392,7 +410,7 @@ public class TestServiceImpl implements TestService {
 					}
 				}
 			}
-			subject++;
+			idSubject++;
 			continue;
 		}
 		wb.close();
@@ -414,5 +432,4 @@ public class TestServiceImpl implements TestService {
 //		final String filename = "C:/Users/thong/OneDrive/Desktop/a.xlsx";
 //		final List<Question> newList = addQuestionInXlsFile(filename);
 //	}
-
 }

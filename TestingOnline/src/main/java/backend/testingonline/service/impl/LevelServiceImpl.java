@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Levels;
 import backend.testingonline.repository.LevelRepository;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 import backend.testingonline.service.LevelService;
 
 @Service
@@ -24,15 +24,15 @@ public class LevelServiceImpl implements LevelService {
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> save(Levels level) {
+	public ResponseEntity<ResponseObject> save(Levels level) {
 		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponeObject("OK!", "Add success!", levelRepository.save(level)));
+				.body(new ResponseObject("OK!", "Add success!", levelRepository.save(level)));
 	}
 
 	@Override
-	public ResponseEntity<ResponeObject> deleteById(Integer id) {
+	public ResponseEntity<ResponseObject> deleteById(Integer id) {
 		levelRepository.deleteById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponeObject("OK", "Delete Success!", ""));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 	}
 
 }

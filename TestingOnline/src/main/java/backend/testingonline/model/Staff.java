@@ -12,11 +12,10 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "staff")
-public class Staff implements Serializable{
+public class Staff implements Serializable {
 
-	@Id // PK
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //AI
-	@Column //Cot
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column
 	private String name;
@@ -32,27 +31,12 @@ public class Staff implements Serializable{
 	private String avatar;
 
 	public Staff() {
-		super();
 	}
 
-	public Staff(int id, String name, String username, String password) {
-		super();
-		this.id = id;
+	public Staff(String name, String username, String password) {
 		this.name = name;
 		this.username = username;
 		this.password = password;
-	}
-
-	public Staff(int id, String name, String username, String password, String email, String department,
-			String avatar) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.department = department;
-		this.avatar = avatar;
 	}
 
 	public int getId() {
@@ -111,19 +95,29 @@ public class Staff implements Serializable{
 		this.avatar = avatar;
 	}
 
-	@Override
-	public String toString() {
-		return "Staff {id=" + id + ","
-				+ " name=" + name + 
-				", username=" + username + 
-				", password=" + password + 
-				", email=" + email + 
-				", department=" + department + 
-				", avatar=" + avatar + "}";
-	}
-	
-	
-	
-	
+//	@Override
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//		return null;
+//	}
+//
+//	@Override
+//	public boolean isAccountNonExpired() {
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isAccountNonLocked() {
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isCredentialsNonExpired() {
+//		return true;
+//	}
+//
+//	@Override
+//	public boolean isEnabled() {
+//		return true;
+//	}
 
 }

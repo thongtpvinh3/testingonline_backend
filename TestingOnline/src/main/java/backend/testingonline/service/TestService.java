@@ -8,9 +8,11 @@ import java.util.Set;
 import org.springframework.http.ResponseEntity;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.Levels;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.Subject;
 import backend.testingonline.model.Test;
-import backend.testingonline.responeexception.ResponeObject;
+import backend.testingonline.responseException.ResponseObject;
 
 public interface TestService {
 	
@@ -20,33 +22,31 @@ public interface TestService {
 	
 	List<Test> findByName(String name);
 
-	List<Test> findByLevel(Integer level);
+	List<Test> findByLevel(Levels level);
 	
-//	List<Test> findByDone(Integer done);
-
-	List<Test> findBySubject(Integer subject);
+	List<Test> findBySubject(Subject subject);
 	
-	ResponseEntity<ResponeObject> deleteById(Integer id);
+	ResponseEntity<ResponseObject> deleteById(Integer id);
 
 	Test findById(Integer id);
 	
 	Test updateTest(Integer id,Test test);
 	
-	ResponseEntity<ResponeObject> addQuestionTotest(Integer idTest, Integer idQuestion);
+	ResponseEntity<ResponseObject> addQuestionTotest(Integer idTest, Integer idQuestion);
 
 	Set<Test> findByCandidateId(Integer id);
 
-	ResponseEntity<ResponeObject> addTestForCandidate(Integer idTest, Integer idCandidate);
+	ResponseEntity<ResponseObject> addTestForCandidate(Integer idTest, Integer idCandidate);
 
 	void setTestIsDone(Integer idTest, Integer idCandidate);
 
-	ResponseEntity<ResponeObject> setTestTime(Integer idTest,LocalTime time);
+	ResponseEntity<ResponseObject> setTestTime(Integer idTest,LocalTime time);
 
 //	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
 
 	Double reviewMCQuestion(Integer idTest, Integer idCandidate);
 
-	ResponseEntity<ResponeObject> reviewEssayQuestion(Integer idTest,Integer idCandidate, Double mark);
+	ResponseEntity<ResponseObject> reviewEssayQuestion(Integer idTest,Integer idCandidate, Double mark);
 	
 	List<Candidate> getCandidateOfTest(Integer idTest);
 

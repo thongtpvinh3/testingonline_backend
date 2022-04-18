@@ -17,24 +17,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "mc_question")
 public class MultipleChoiceQuestion implements Serializable {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	private int id;
+
 	@Column(name = "istrue")
-	private int isTrue; // Dung ko ?
+	private int isTrue;
+
 	@Column
-	private String answer;// cac cau tra loi
-	
+	private String answer;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Question question;
-	
+
 	public MultipleChoiceQuestion() {
-		super();
 	}
-	
+
 	public Question getQuestion() {
 		return question;
 	}
@@ -66,23 +66,4 @@ public class MultipleChoiceQuestion implements Serializable {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-
-	@Override
-	public String toString() {
-		return "MultipleChoiceQuestion "
-				+ "[id=" + id 
-				+ ", isTrue=" + isTrue 
-				+ ", answer=" + answer 
-				+ ", question=" + question 
-				+ "]";
-	}
-
-//	public int getIdQuestion() {
-//		return idQuestion;
-//	}
-//
-//	public void setIdQuestion(int idQuestion) {
-//		this.idQuestion = idQuestion;
-//	}
-	
 }

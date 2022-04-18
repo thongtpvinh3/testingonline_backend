@@ -7,20 +7,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import backend.testingonline.model.Levels;
+import backend.testingonline.model.Subject;
 import backend.testingonline.model.Test;
 
 @Repository
 public interface TestRepository extends JpaRepository<Test, Integer> {
 	
-	//Read
 	@Query("SELECT test FROM Test test WHERE test.subject = :subject")
-	public List<Test> findBySubject(@Param("subject") Integer subject);
+	public List<Test> findBySubject(@Param("subject") Subject subject);
 	
 //	@Query("SELECT test FROM Test test WHERE test.is_done = :isdone")
 //	List<Test> findByIsDone(@Param("isdone") Integer isdone);
 	
 	@Query("SELECT test FROM Test test WHERE test.level = :level")
-	List<Test> findByLevel(@Param("level") Integer level);
+	List<Test> findByLevel(@Param("level") Levels level);
 	
 	@Query("SELECT test FROM Test test WHERE test.code_test LIKE :code")
 	Test findByCodeTest(@Param("code") String code);
