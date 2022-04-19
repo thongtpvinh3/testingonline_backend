@@ -101,14 +101,6 @@ public class Test implements Serializable {
 		this.level = level;
 	}
 
-	public LocalTime getTime() {
-		return times;
-	}
-
-	public void setTime(LocalTime time) {
-		this.times = time;
-	}
-
 	public String getName() {
 		return name;
 	}

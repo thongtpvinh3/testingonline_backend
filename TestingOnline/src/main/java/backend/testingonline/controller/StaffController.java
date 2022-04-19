@@ -119,12 +119,6 @@ public class StaffController {
 
 // --------------------TEST-------------------------------------------------------------------------------------
 
-	// ADD TEST
-	@GetMapping(URL.STAFF_TO_TESTVIEW)
-	public String toTestView() {
-		return "testview";
-	}
-
 	@GetMapping(URL.STAFF_GETALL_TEST)
 	public List<Test> getAllTest(HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -201,6 +195,21 @@ public class StaffController {
 	public ResponseEntity<ResponseObject> addTestForCandidate(@PathVariable Integer idTest,
 			@PathVariable Integer idCandidate) {
 		return testService.addTestForCandidate(idTest, idCandidate);
+	}
+	
+	@GetMapping("/candidate/outofdate")
+	public List<Candidate> getOutOfDateTest() {
+		return testService.getOutOfDateTest();
+	}
+	
+	@GetMapping("/candidate/today")
+	public List<Candidate> getTodayTest() {
+		return testService.getTodayTest();
+	}
+	
+	@GetMapping("/candidate/undue")
+	public List<Candidate> getUndueTest() {
+		return testService.getUndueTest();
 	}
 
 //	@PostMapping(value = "/settesttime/{idTest}", consumes = MediaType.APPLICATION_JSON_VALUE)

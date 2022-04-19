@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,7 +111,7 @@ public class TestServiceImpl implements TestService {
 		foundTest.setQuestions(test.getQuestions());
 		foundTest.setSubject(test.getSubject());
 		foundTest.setCodeTest(test.getCodeTest());
-		foundTest.setTime(test.getTime());
+		foundTest.setTimes(test.getTimes());
 
 		return testRepository.save(foundTest);
 
@@ -169,7 +171,7 @@ public class TestServiceImpl implements TestService {
 		Test newTest = testRepository.getById(idTest);
 		Candidate foundCandidate = candidateRepository.getById(idCandidate);
 
-		if (newTest.getTime() != null) {
+		if (newTest.getTimes() != null) {
 			if (newTest.getLevel() != foundCandidate.getLevel()) {
 				return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("FAILED", "Level khong phu hop!", ""));
 			}
@@ -192,7 +194,7 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public ResponseEntity<ResponseObject> setTestTime(Integer idTest, LocalTime time) {
 		Test foundTest = testRepository.getById(idTest);
-		foundTest.setTime(time);
+		foundTest.setTimes(time);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponseObject("OK", "Set test time success!", testRepository.save(foundTest)));
 	}
@@ -426,6 +428,43 @@ public class TestServiceImpl implements TestService {
 			throw new IllegalArgumentException("The specified file is not Excel file");
 		}
 		return workbook;
+	}
+
+	@Override
+	public List<Candidate> getOutOfDateTest() {
+		List<Candidate> foundCandidate = new ArrayList<>();
+		List<Candidate> allCandidate = candidateRepository.findAll();
+		for(Candidate c: allCandidate) {
+			if (c.getDates().isAfter(LocalDateTime.now())) {
+				foundCandidate.add(c);
+			}
+		}
+		return foundCandidate;
+	}
+
+	@Override
+	public List<Candidate> getTodayTest() {
+		List<Candidate> foundCandidate = new ArrayList<>();
+		List<Candidate> allCandidate = candidateRepository.findAll();
+		for(Candidate c: allCandidate) {
+			LocalDate date = c.getDates().toLocalDate();
+			if (date.equals(LocalDate.now())) {
+				foundCandidate.add(c);
+			}
+		}
+		return foundCandidate;
+	}
+
+	@Override
+	public List<Candidate> getUndueTest() {
+		List<Candidate> foundCandidate = new ArrayList<>();
+		List<Candidate> allCandidate = candidateRepository.findAll();
+		for(Candidate c: allCandidate) {
+			if (c.getDates().isBefore(LocalDateTime.now())) {
+				foundCandidate.add(c);
+			}
+		}
+		return foundCandidate;
 	}
 
 //	public static void main(String[] args) throws IOException {
