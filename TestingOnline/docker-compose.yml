@@ -39,7 +39,7 @@ services:
   testing-online:
     restart: always
     build: ./
-    image: testingonline:v1.1
+    image: nguyenddthong/testingonline:v1.1
     ports:
       - "8080:8080"
     depends_on:
