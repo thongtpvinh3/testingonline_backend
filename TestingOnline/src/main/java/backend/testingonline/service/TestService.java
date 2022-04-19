@@ -8,6 +8,7 @@ import java.util.Set;
 import org.springframework.http.ResponseEntity;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.DateCandidate;
 import backend.testingonline.model.Levels;
 import backend.testingonline.model.Question;
 import backend.testingonline.model.Subject;
@@ -54,10 +55,10 @@ public interface TestService {
 
 	List<Question> addQuestionInXlsFile(String xlsFilePath) throws IOException;
 
-	List<Candidate> getOutOfDateTest();
+	Set<DateCandidate> getOutOfDateTest();
 
-	List<Candidate> getTodayTest();
-
-	List<Candidate> getUndueTest();
+//	DateCandidate getTodayTest();
+//
+//	DateCandidate getUndueTest();
 
 }

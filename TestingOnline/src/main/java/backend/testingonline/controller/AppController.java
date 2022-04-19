@@ -22,9 +22,6 @@ public class AppController {
 	@Autowired
 	private StaffService staffService;
 	
-//	@Autowired
-//	private StaffServiceImpl impl;
-	
 	@Autowired
 	private CandidateService candidateService;
 	
@@ -34,16 +31,11 @@ public class AppController {
 //	@Autowired
 //	private JwtUtil jwtUtil;
 	
-	@GetMapping(URL.ALL_HOMEPAGE)
-	public String toWebPage() {
-		return "homepage";
-	}
-	
 	@GetMapping(URL.CANDIDATE_JOIN_TEST)
 	public Object joinTestWithCode(@RequestParam Integer code,HttpServletRequest req) {
 		if (candidateService.findById(code) != null) {
 			if (candidateService.findById(code).getIsDone() == 1) {
-				return "Mày làm xong rồi mà ???";
+				return "làm xong rồi mà ???";
 			}
 			HttpSession session = req.getSession();
 			Candidate candidate = candidateService.findById(code);

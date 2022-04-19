@@ -1,7 +1,8 @@
 package backend.testingonline.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,9 +51,14 @@ public class Candidate implements Serializable {
 	private Double knowledgeMark;
 	
 	@Column(name = "date_test")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = ISO.DATE_TIME)
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime dates;
+	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private LocalDate dates;
+	
+	@Column(name = "time")
+	@DateTimeFormat(pattern = "HH:mm:ss", iso = ISO.TIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+	private LocalTime times;
 	
 	@Column(name = "is_done", columnDefinition = "INT DEFAULT 0")
 	private int isDone;
@@ -66,6 +72,9 @@ public class Candidate implements Serializable {
 	
 	@Column
 	private String avatar;
+	
+//	@Transient
+//	private Integer timeInt;
 	
 	public int CalculatorTotalTime(Set<Test> tests) {
 		int time = 0;
@@ -174,12 +183,20 @@ public class Candidate implements Serializable {
 		this.avatar = avatar;
 	}
 
-	public LocalDateTime getDates() {
+	public LocalDate getDates() {
 		return dates;
 	}
 
-	public void setDates(LocalDateTime dates) {
+	public void setDates(LocalDate dates) {
 		this.dates = dates;
+	}
+	
+	public LocalTime getTimes() {
+		return times;
+	}
+
+	public void setTimes(LocalTime times) {
+		this.times = times;
 	}
 
 	public int getIsDone() {

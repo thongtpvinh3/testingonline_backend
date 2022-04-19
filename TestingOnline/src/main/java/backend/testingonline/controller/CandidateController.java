@@ -1,5 +1,6 @@
 package backend.testingonline.controller;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ public class CandidateController {
 		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
 		int timenow = (int) valueCache.getCachedValue("testtime");
 		int testtime = candidate.CalculatorTotalTime(listTest);
-		int timestart = candidate.getDates().toLocalTime().toSecondOfDay();
+		int timestart = LocalDateTime.of(candidate.getDates(), candidate.getTimes()).toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
 			if (tempAns.getType() == 0) {
 				valueCache.saveMultiple(tempAns,idCandidate,idQuestion);

@@ -1,6 +1,8 @@
 #### Stage 1: Build the application
 FROM openjdk:8-jdk-alpine as build
 
+ENV TZ=Asia/Ho_Chi_Minh
+
 # Set the current working directory inside the image
 WORKDIR /app
 

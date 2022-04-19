@@ -26,10 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.DateCandidate;
 import backend.testingonline.model.EssayQuestion;
 import backend.testingonline.model.Levels;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.QuestionType;
 import backend.testingonline.model.Subject;
 import backend.testingonline.model.TempResultOfCandidate;
 import backend.testingonline.model.Test;
@@ -197,20 +199,22 @@ public class StaffController {
 		return testService.addTestForCandidate(idTest, idCandidate);
 	}
 	
-	@GetMapping("/candidate/outofdate")
-	public List<Candidate> getOutOfDateTest() {
+	@GetMapping("/candidate/bydate")
+	public Set<DateCandidate> getOutOfDateTest() {
 		return testService.getOutOfDateTest();
 	}
 	
-	@GetMapping("/candidate/today")
-	public List<Candidate> getTodayTest() {
-		return testService.getTodayTest();
-	}
-	
-	@GetMapping("/candidate/undue")
-	public List<Candidate> getUndueTest() {
-		return testService.getUndueTest();
-	}
+//	@GetMapping("/candidate/today")
+//	public DateCandidate getTodayTest() {
+//		return testService.getTodayTest();
+//	}
+//	
+//	@GetMapping("/candidate/undue")
+//	public DateCandidate getUndueTest() {
+//		return testService.getUndueTest();
+//	}
+//	
+//	@GetMapping("/")
 
 //	@PostMapping(value = "/settesttime/{idTest}", consumes = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<ResponeObject> setTestTime(@PathVariable Integer idTest, @RequestBody LocalTime time) {
@@ -300,6 +304,8 @@ public class StaffController {
 			@PathVariable Integer idQuestion) {
 		return questionService.addAnswerToQuestion(idAnswer, idQuestion);
 	}
+	
+	
 
 //	@GetMapping("/type/{id}")
 //	String testType(@PathVariable Integer id) {
@@ -399,6 +405,11 @@ public class StaffController {
 	}
 	
 //-----------------------------OTHER-------------------------------------------
+
+	@PostMapping("/addtype")
+	public ResponseEntity<ResponseObject> addType(@RequestBody QuestionType questionType) {
+		return staffService.creaeteType(questionType);
+	}
 	
 	@PutMapping("/importdata")
 	List<Question> importData(@RequestParam("file") MultipartFile file) throws Exception {
@@ -419,5 +430,4 @@ public class StaffController {
 	void deleteResult(@PathVariable("idCandidate") Integer idCandidate) {
 		tempResultRepository.deleteResult(idCandidate);
 	}
-	
 }

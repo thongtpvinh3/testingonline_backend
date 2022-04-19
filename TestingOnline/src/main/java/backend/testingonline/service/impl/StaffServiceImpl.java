@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.Candidate;
+import backend.testingonline.model.QuestionType;
 import backend.testingonline.model.Staff;
 import backend.testingonline.model.Test;
+import backend.testingonline.repository.QuestionTypeRepository;
 import backend.testingonline.repository.StaffRepository;
 import backend.testingonline.repository.TestRepository;
 import backend.testingonline.responseException.ResponseObject;
@@ -24,6 +26,9 @@ public class StaffServiceImpl implements StaffService {
 	@Autowired
 	private TestRepository testRepository;
 
+	@Autowired
+	private QuestionTypeRepository questionTypeRepository;
+	
 	@Override
 	public Optional<Candidate> findById(int id) {
 		// TODO Auto-generated method stub
@@ -50,5 +55,15 @@ public class StaffServiceImpl implements StaffService {
 	public ResponseEntity<ResponseObject> createTest(Test newTest) {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponseObject("OK", "Add success!", testRepository.save(newTest)));
+	}
+
+	@Override
+	public ResponseEntity<ResponseObject> creaeteType(QuestionType questionType) {
+		try {
+			return ResponseEntity.ok(new ResponseObject("OK!","them thanh cong loai cau hoi: " + questionType.getName(),questionTypeRepository.save(questionType)));
+			
+		} catch (Exception e) {
+			throw new RuntimeException("Failed",e);
+		}
 	}
 }

@@ -108,7 +108,7 @@ public class CandidateServiceImpl implements CandidateService {
 		for (Test t: listTest) {
 			timeTest += t.timeToSecond();
 		}
-		int timeStart = candidate.getDates().toLocalTime().toSecondOfDay();
+		int timeStart = candidate.getTimes().toSecondOfDay();
 		
 		if(candidate.getIsDone() == 0) {
 //			if(candidate.getDates().toLocalDate().equals(LocalDate.now()) == false) {
@@ -116,8 +116,8 @@ public class CandidateServiceImpl implements CandidateService {
 //				return null;
 //			}
 //			if (candidate.getDates().toLocalTime().isAfter(LocalTime.now())) {
-				System.out.print(candidate.getDates().toLocalTime().isAfter(LocalTime.now()));
-				System.out.println(candidate.getDates().toLocalTime());
+//				System.out.print(candidate.getDates().toLocalTime().isAfter(LocalTime.now()));
+//				System.out.println(candidate.getDates().toLocalTime());
 //				System.out.println("chua den h!");
 //				return null;
 //			}
