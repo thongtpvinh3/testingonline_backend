@@ -19,8 +19,6 @@ public interface TestService {
 	
 	List<Test> getAllTest();
 	
-	Test getWithCode(String code);
-	
 	List<Test> findByName(String name);
 
 	List<Test> findByLevel(Levels level);

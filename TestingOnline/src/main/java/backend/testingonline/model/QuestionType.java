@@ -27,7 +27,7 @@ public class QuestionType implements Serializable {
 	@Column
 	private String name;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "type" , cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
 	

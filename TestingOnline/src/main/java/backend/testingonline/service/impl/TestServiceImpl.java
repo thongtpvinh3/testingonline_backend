@@ -81,11 +81,6 @@ public class TestServiceImpl implements TestService {
 	}
 
 	@Override
-	public Test getWithCode(String code) {
-		return testRepository.findByCodeTest(code);
-	}
-
-	@Override
 	public List<Test> findByLevel(Levels level) {
 		return testRepository.findByLevel(level);
 	}
@@ -94,8 +89,13 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public ResponseEntity<ResponseObject> deleteById(Integer id) {
-		testRepository.deleteById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
+		boolean exits = testRepository.existsById(id);
+		if (exits) {
+			testRepository.deleteById(id);
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ResponseObject("FAILED", "Cannot find candidate delete", ""));
 	}
 
 	@Override
@@ -111,7 +111,6 @@ public class TestServiceImpl implements TestService {
 		foundTest.setName(test.getName());
 		foundTest.setQuestions(test.getQuestions());
 		foundTest.setSubject(test.getSubject());
-		foundTest.setCodeTest(test.getCodeTest());
 		foundTest.setTimes(test.getTimes());
 		foundTest.setCandidates(test.getCandidates());
 
@@ -122,7 +121,7 @@ public class TestServiceImpl implements TestService {
 	@Override
 	public ResponseEntity<ResponseObject> addQuestionTotest(Integer idTest, Integer idQuestion) {
 
-		Question newQuestion = questionRepository.findById(idQuestion).get();
+		Question newQuestion = questionRepository.getById(idQuestion);
 		Test foundTest = testRepository.getById(idTest);
 
 		if (foundTest.getQuestions().size() == 0 && newQuestion.getLevel() == foundTest.getLevel()
@@ -315,9 +314,9 @@ public class TestServiceImpl implements TestService {
 		final int COLUMN_INDEX_ANSWER_D = 5;
 		final int COLUMN_INDEX_TRUE = 6;
 		int idSubject = 1;
-		Subject subject = subjectRepository.getById(idSubject);
-		Levels level = levelRepository.getById(1);
-		QuestionType type = questionTypeRepository.getById(1);
+		Subject subject = subjectRepository.findById(idSubject).get();
+		Levels level = levelRepository.findById(1).get();
+		QuestionType type = questionTypeRepository.findById(1).get();
 		List<Question> presentList = questionRepository.findAll();
 		List<Question> listQuestions = new ArrayList<>();
 		FileInputStream file = new FileInputStream(xlsFilePath);
@@ -440,20 +439,21 @@ public class TestServiceImpl implements TestService {
 		Set<DateCandidate> foundCandidate = new HashSet<>();
 		Set<LocalDate> dates = new HashSet<>();
 		List<Candidate> allCandidate = candidateRepository.findAll();
-		for (Candidate c: allCandidate) {
-			if(c.getDates().isBefore(LocalDate.now())) {continue;}
-			else {
+		for (Candidate c : allCandidate) {
+			if (c.getDates().isBefore(LocalDate.now())) {
+				continue;
+			} else {
 				dates.add(c.getDates());
 				System.out.println(dates);
 			}
 		}
-		for (LocalDate d: dates) {
+		for (LocalDate d : dates) {
 			foundCandidate.add(new DateCandidate(d));
 			System.out.println(foundCandidate);
 		}
-		for (DateCandidate dc: foundCandidate) {
+		for (DateCandidate dc : foundCandidate) {
 			Set<Candidate> can = new HashSet<>();
-			for (Candidate c: allCandidate) {
+			for (Candidate c : allCandidate) {
 				if (c.getDates().equals(dc.getDate())) {
 					can.add(c);
 				}

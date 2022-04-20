@@ -36,6 +36,7 @@ public class Test implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private int id;
 	@ManyToOne
 	private Subject subject;
@@ -50,10 +51,6 @@ public class Test implements Serializable {
 	@Column
 	private String name;
 
-	@Column(name = "code_test", unique = true)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private String codeTest; // code join vao
-
 	@ManyToMany
 	@JsonIgnore
 	@JoinTable(name = "candidate_Test", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
@@ -64,7 +61,7 @@ public class Test implements Serializable {
 	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "test_question", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_question") })
-	private Set<Question> questions = new HashSet<>(); // Bo cau hoi
+	private Set<Question> questions = new HashSet<>();
 
 	public Test() {
 	}
@@ -123,14 +120,6 @@ public class Test implements Serializable {
 
 	public void setCandidates(List<Candidate> candidates) {
 		this.candidates = candidates;
-	}
-
-	public String getCodeTest() {
-		return codeTest;
-	}
-
-	public void setCodeTest(String codeTest) {
-		this.codeTest = codeTest;
 	}
 
 	public int timeToSecond() {

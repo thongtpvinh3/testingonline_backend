@@ -1,6 +1,8 @@
 package backend.testingonline.responseException;
 
-public class ResponseObject {
+import java.io.Serializable;
+
+public class ResponseObject implements Serializable {
 	private String status;
 	private String message;
 	private Object data;

@@ -16,7 +16,7 @@ public interface QuestionService {
 
 	ResponseEntity<ResponseObject> save(Question newQuestion);
 
-	ResponseEntity<ResponseObject> deleteById(Integer id);
+	ResponseEntity<ResponseObject> deleteWithId(Integer id);
 
 	Question findById(Integer id);
 

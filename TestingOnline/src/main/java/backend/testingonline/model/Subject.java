@@ -26,11 +26,11 @@ public class Subject implements Serializable {
 	@Column
 	private String name;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "subject", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "subject", cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
 	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "subject", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER,mappedBy = "subject", cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Set<Test> tests = new HashSet<>();
 	

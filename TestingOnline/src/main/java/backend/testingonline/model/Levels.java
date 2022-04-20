@@ -27,11 +27,11 @@ public class Levels implements Serializable {
 	@Column
 	private String name;
 	
-	@OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "level", cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Set<Candidate> candidates = new HashSet<>();
 	
-	@OneToMany(mappedBy = "level", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "level", cascade = CascadeType.MERGE)
 	@JsonIgnore
 	private Set<Question> questions = new HashSet<>();
 	

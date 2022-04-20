@@ -90,8 +90,6 @@ public class StaffController {
 		return "redirect:/login";
 	}
 	
-	// Get test have candidate id
-
 //----------------------CANDIDATE--------------------------------------------------------
 
 	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
@@ -131,12 +129,6 @@ public class StaffController {
 	@GetMapping(URL.SATFF_GET_TEST_BY_NAME)
 	List<Test> getTestByName(@PathVariable String name) {
 		return testService.findByName(name);
-	}
-
-	@GetMapping(URL.SATFF_GET_TEST_BY_CODE)
-	Test getTestByCode(@PathVariable String code) {
-		// Them ung vien vao
-		return testService.getWithCode(code);
 	}
 
 	@GetMapping(URL.SATFF_GET_TEST_BY_SUBJECT)
@@ -290,7 +282,7 @@ public class StaffController {
 
 	@DeleteMapping(URL.STAFF_DELETE_QUESTION)
 	public ResponseEntity<ResponseObject> deleteQuestionbyId(@PathVariable Integer id) {
-		return questionService.deleteById(id);
+		return questionService.deleteWithId(id);
 	}
 
 	@PutMapping(URL.STAFF_EDIT_QUESTION)

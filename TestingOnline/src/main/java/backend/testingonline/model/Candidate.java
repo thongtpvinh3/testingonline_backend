@@ -32,10 +32,12 @@ public class Candidate implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private int id;
 	@Column
 	private String name;
 	@ManyToOne
+	@JoinColumn(name = "id_level")
 	private Levels level;
 	@Column(unique = true)
 	private String phone;
@@ -50,7 +52,7 @@ public class Candidate implements Serializable {
 	@Column(name = "knowledge_mark", columnDefinition = "DOUBLE DEFAULT 0")
 	private Double knowledgeMark;
 	
-	@Column(name = "date_test")
+	@Column(name = "date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE)
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate dates;

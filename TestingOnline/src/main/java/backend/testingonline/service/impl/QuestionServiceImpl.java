@@ -41,20 +41,23 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public ResponseEntity<ResponseObject> save(Question newQuestion) {
+		questionRepository.save(newQuestion);
+		for (MultipleChoiceQuestion m: newQuestion.getMultipleChoiceQuestions()) {
+			m.setQuestion(newQuestion);
+		}
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponseObject("OK", "Add success", questionRepository.save(newQuestion)));
 	}
 
 	@Override
-	public ResponseEntity<ResponseObject> deleteById(Integer id) {
-		try {
+	public ResponseEntity<ResponseObject> deleteWithId(Integer id) {
+		boolean exits = questionRepository.existsById(id);
+		if (exits) {
 			questionRepository.deleteById(id);
-		} catch (Exception e) {
-			System.out.println("noooo!");
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new ResponseObject("NO!!!", "Delete K noi!", ""));
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Delete Success!", ""));
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new ResponseObject("FAILED", "Cannot find question delete", ""));
 	}
 
 	@Override

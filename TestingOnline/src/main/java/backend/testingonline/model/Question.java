@@ -34,17 +34,20 @@ public class Question implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	protected int id;
+	private int id;
 	@ManyToOne
-	protected QuestionType type;
+	@JoinColumn(name = "id_type")
+	private QuestionType type;
 	@ManyToOne
-	protected Subject subject;
+	@JoinColumn(name = "id_subject")
+	private Subject subject;
 	@Column
-	protected String content;
+	private String content;
 	@ManyToOne
-	protected Levels level;
+	@JoinColumn(name = "id_level")
+	private Levels level;
 	@Column(name = "img")
-	protected String image;
+	private String image;
 	
 	@ManyToMany
 	@Fetch(value = FetchMode.SUBSELECT)
