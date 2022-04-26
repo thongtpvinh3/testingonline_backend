@@ -4,11 +4,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -131,7 +133,7 @@ public class StaffController {
 		return testService.findByName(name);
 	}
 
-	@GetMapping(URL.SATFF_GET_TEST_BY_SUBJECT)
+	@PostMapping(URL.SATFF_GET_TEST_BY_SUBJECT)
 	List<Test> getTestBySubject(@RequestBody Subject subject) {
 		return testService.findBySubject(subject);
 	}
@@ -142,7 +144,7 @@ public class StaffController {
 		return testService.findById(id);
 	}
 
-	@GetMapping(URL.STAFF_GET_TEST_BY_LELVEL)
+	@PostMapping(URL.STAFF_GET_TEST_BY_LELVEL)
 	List<Test> getTestByLevel(@RequestBody Levels level) {
 		return testService.findByLevel(level);
 	}
@@ -191,22 +193,20 @@ public class StaffController {
 		return testService.addTestForCandidate(idTest, idCandidate);
 	}
 	
-	@GetMapping("/candidate/bydate")
+	@GetMapping("/candidate/outofdate")
 	public Set<DateCandidate> getOutOfDateTest() {
 		return testService.getOutOfDateTest();
 	}
 	
-//	@GetMapping("/candidate/today")
-//	public DateCandidate getTodayTest() {
-//		return testService.getTodayTest();
-//	}
-//	
-//	@GetMapping("/candidate/undue")
-//	public DateCandidate getUndueTest() {
-//		return testService.getUndueTest();
-//	}
-//	
-//	@GetMapping("/")
+	@GetMapping("/candidate/today")
+	public DateCandidate getTodayTest() {
+		return testService.getTodayTest();
+	}
+
+	@GetMapping("/candidate/undue")
+	public Set<DateCandidate> getUndueTest() {
+		return testService.getUndueTest();
+	}
 
 //	@PostMapping(value = "/settesttime/{idTest}", consumes = MediaType.APPLICATION_JSON_VALUE)
 //	public ResponseEntity<ResponeObject> setTestTime(@PathVariable Integer idTest, @RequestBody LocalTime time) {
@@ -260,13 +260,13 @@ public class StaffController {
 		return questionService.findByType(type);
 	}
 
-	@GetMapping(URL.STAFF_GET_QUESTION_BY_SUBJECT)
-	public List<Question> getQuestionBySubject(@PathVariable Integer subject) {
+	@PostMapping(URL.STAFF_GET_QUESTION_BY_SUBJECT)
+	public List<Question> getQuestionBySubject(@RequestBody Subject subject) {
 		return questionService.findBySubject(subject);
 	}
 
-	@GetMapping(URL.STAFF_GET_QUESTION_BY_LEVEL)
-	public List<Question> getQuestionByLevel(@PathVariable Integer level) {
+	@PostMapping(URL.STAFF_GET_QUESTION_BY_LEVEL)
+	public List<Question> getQuestionByLevel(@RequestBody Levels level) {
 		return questionService.findByLevel(level);
 	}
 
@@ -409,7 +409,10 @@ public class StaffController {
 		Path storageFolder = Paths.get("uploads");
 		uploadFileService.upload(file);
 		String originalName = file.getOriginalFilename();
-		Path filePath = storageFolder.resolve(Paths.get(originalName)).normalize().toAbsolutePath();
+		String fileSuffix = FilenameUtils.getExtension(originalName);
+		String generatedFileName = UUID.randomUUID().toString().replace("-","");
+		generatedFileName = generatedFileName+"."+fileSuffix;
+		Path filePath = storageFolder.resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
 		return testService.addQuestionInXlsFile(filePath.toString());
 	}
 	

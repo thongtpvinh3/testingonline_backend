@@ -6,8 +6,10 @@ import java.util.Set;
 import org.springframework.http.ResponseEntity;
 
 import backend.testingonline.model.EssayQuestion;
+import backend.testingonline.model.Levels;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.Subject;
 import backend.testingonline.responseException.ResponseObject;
 
 public interface QuestionService {
@@ -26,9 +28,9 @@ public interface QuestionService {
 	
 	List<Question> findByType(Integer type);
 
-	List<Question> findBySubject(Integer subject);
+	List<Question> findBySubject(Subject subject);
 
-	List<Question> findByLevel(Integer level);
+	List<Question> findByLevel(Levels level);
 
 	Set<Question> getByTestId(Integer idTest);
 	

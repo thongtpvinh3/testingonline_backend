@@ -1,49 +1,42 @@
-package backend.testingonline.model;
+package backend.testingonline.elasticsearch.indices;
 
-import java.io.Serializable;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@SuppressWarnings("serial")
-@Entity
-@Table(name = "staff")
-public class Staff implements Serializable {
+@Document(indexName = "staff")
+@Setting(settingPath = "static/es-settings.json")
+public class IndexStaff {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Column
+	@Field(type = FieldType.Keyword)
+	private Integer id;
+	
+	@Field(type = FieldType.Text)
 	private String name;
-	@Column
+	
+	@Field(type = FieldType.Text)
 	private String username;
-	@Column
+	
+	@Field(type = FieldType.Text)
 	private String password;
-	@Column
+	
+	@Field(type = FieldType.Text)
 	private String email;
-	@Column
+	
+	@Field(type = FieldType.Text)
 	private String department;
-	@Column(name = "image")
+	
+	@Field(type = FieldType.Text)
 	private String avatar;
 
-	public Staff() {
-	}
-
-	public Staff(String name, String username, String password) {
-		this.name = name;
-		this.username = username;
-		this.password = password;
-	}
-
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

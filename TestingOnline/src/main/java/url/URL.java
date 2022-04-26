@@ -31,8 +31,8 @@ public class URL {
 	public static final String STAFF_GETALL_QUESTION = "/getallquestion";
 	public static final String STAFF_GET_QUESTION_BY_ID = "/getquestionbyid/{id}";
 	public static final String STAFF_GET_QUESTION_BY_TYPE = "/getquestionbytype/{type}";
-	public static final String STAFF_GET_QUESTION_BY_SUBJECT = "/getquestionbysubject/{subject}";
-	public static final String STAFF_GET_QUESTION_BY_LEVEL = "/getquestionbylevel/{level}";
+	public static final String STAFF_GET_QUESTION_BY_SUBJECT = "/getquestionbysubject";
+	public static final String STAFF_GET_QUESTION_BY_LEVEL = "/getquestionbylevel";
 	public static final String STAFF_GET_QUESTION_BY_TESTID = "/getquestionbytest/{idTest}";
 	public static final String STAFF_ADD_QUESTION = "/addquestion";
 	public static final String STAFF_DELETE_QUESTION = "/deletequestion/{id}";

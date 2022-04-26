@@ -54,9 +54,9 @@ public interface TestService {
 	List<Question> addQuestionInXlsFile(String xlsFilePath) throws IOException;
 
 	Set<DateCandidate> getOutOfDateTest();
+	
+	DateCandidate getTodayTest();
 
-//	DateCandidate getTodayTest();
-//
-//	DateCandidate getUndueTest();
+	Set<DateCandidate> getUndueTest();
 
 }

@@ -27,6 +27,9 @@ public class UploadFileServiceImpl implements UploadFileService {
 	@Override
 	public void upload(MultipartFile file) throws Exception {
 		try {
+			if(file.isEmpty()) {
+				throw new RuntimeException("File must not be empty");
+			}
 			Path destinationFilePath = this.storageFolder.resolve(Paths.get(file.getOriginalFilename())).normalize()
 					.toAbsolutePath();
 			if (!(destinationFilePath.getParent().equals(this.storageFolder.toAbsolutePath()))) {

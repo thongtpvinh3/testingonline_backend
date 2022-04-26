@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import backend.testingonline.model.EssayQuestion;
+import backend.testingonline.model.Levels;
 import backend.testingonline.model.MultipleChoiceQuestion;
 import backend.testingonline.model.Question;
+import backend.testingonline.model.Subject;
 import backend.testingonline.model.Test;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
@@ -85,16 +87,16 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public List<Question> findByType(Integer type) {
-		return questionRepository.findByType(type);
+		return null;
 	}
 
 	@Override
-	public List<Question> findBySubject(Integer subject) {
+	public List<Question> findBySubject(Subject subject) {
 		return questionRepository.findBySubject(subject);
 	}
 
 	@Override
-	public List<Question> findByLevel(Integer level) {
+	public List<Question> findByLevel(Levels level) {
 		return questionRepository.findByLevel(level);
 	}
 

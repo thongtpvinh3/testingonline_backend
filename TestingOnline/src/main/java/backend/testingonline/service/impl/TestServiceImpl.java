@@ -105,24 +105,33 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public Test updateTest(Integer id, Test test) {
-		Test foundTest = testRepository.getById(id);
+		try {
+			Test foundTest = testRepository.getById(id);
 
-		foundTest.setLevel(test.getLevel());
-		foundTest.setName(test.getName());
-		foundTest.setQuestions(test.getQuestions());
-		foundTest.setSubject(test.getSubject());
-		foundTest.setTimes(test.getTimes());
-		foundTest.setCandidates(test.getCandidates());
+			foundTest.setLevel(test.getLevel());
+			foundTest.setName(test.getName());
+			foundTest.setQuestions(test.getQuestions());
+			for(Question q: test.getQuestions()) {
+				for (MultipleChoiceQuestion mc: q.getMultipleChoiceQuestions()) {
+					mc.setQuestion(q);
+				}
+			}
+			foundTest.setSubject(test.getSubject());
+			foundTest.setTimes(test.getTimes());
+			foundTest.setCandidates(test.getCandidates());
+			foundTest.setDisplayCandidate(test.getDisplayCandidate());
 
-		return testRepository.save(foundTest);
-
+			return testRepository.save(foundTest);
+		} catch (Exception e) {
+			throw new RuntimeException("Khong duoc!!");
+		}
 	}
 
 	@Override
 	public ResponseEntity<ResponseObject> addQuestionTotest(Integer idTest, Integer idQuestion) {
 
-		Question newQuestion = questionRepository.getById(idQuestion);
-		Test foundTest = testRepository.getById(idTest);
+		Question newQuestion = questionRepository.findById(idQuestion).get();
+		Test foundTest = testRepository.findById(idTest).get();
 
 		if (foundTest.getQuestions().size() == 0 && newQuestion.getLevel() == foundTest.getLevel()
 				&& newQuestion.getSubject() == foundTest.getSubject()) {
@@ -200,18 +209,6 @@ public class TestServiceImpl implements TestService {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponseObject("OK", "Set test time success!", testRepository.save(foundTest)));
 	}
-
-//	@Override
-//	public ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest) {
-//		Test foundTest = testRepository.getById(idTest);
-//		if (dateTest.isAfter(LocalDateTime.now())) {
-//			return ResponseEntity.status(HttpStatus.OK)
-//					.body(new ResponeObject("FAILED", "Thoi gian khong hop le!", ""));
-//		} else {
-//			return ResponseEntity.status(HttpStatus.OK)
-//					.body(new ResponeObject("OK", "Set date test success!", testRepository.save(foundTest)));
-//		}
-//	}
 
 	@Override
 	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
@@ -313,8 +310,7 @@ public class TestServiceImpl implements TestService {
 		final int COLUMN_INDEX_ANSWER_C = 4;
 		final int COLUMN_INDEX_ANSWER_D = 5;
 		final int COLUMN_INDEX_TRUE = 6;
-		int idSubject = 1;
-		Subject subject = subjectRepository.findById(idSubject).get();
+		Integer idSubject = 1;
 		Levels level = levelRepository.findById(1).get();
 		QuestionType type = questionTypeRepository.findById(1).get();
 		List<Question> presentList = questionRepository.findAll();
@@ -325,6 +321,8 @@ public class TestServiceImpl implements TestService {
 		DataFormatter formatter = new DataFormatter();
 		// sheet
 		while (sheet.hasNext()) {
+			System.out.println(idSubject);
+			Subject subject = subjectRepository.findById(idSubject).get();
 			Iterator<Row> row = sheet.next().iterator();
 			// row
 			while (row.hasNext()) {
@@ -417,7 +415,6 @@ public class TestServiceImpl implements TestService {
 				}
 			}
 			idSubject++;
-			continue;
 		}
 		wb.close();
 		file.close();
@@ -436,6 +433,51 @@ public class TestServiceImpl implements TestService {
 
 	@Override
 	public Set<DateCandidate> getOutOfDateTest() {
+		Set<DateCandidate> foundCandidate = new HashSet<>();
+		Set<LocalDate> dates = new HashSet<>();
+		List<Candidate> allCandidate = candidateRepository.findAll();
+		for (Candidate c : allCandidate) {
+			if (c.getDates().isAfter(LocalDate.now())) {
+				continue;
+			} else {
+				dates.add(c.getDates());
+				System.out.println(dates);
+			}
+		}
+		for (LocalDate d : dates) {
+			foundCandidate.add(new DateCandidate(d));
+			System.out.println(foundCandidate);
+		}
+		for (DateCandidate dc : foundCandidate) {
+			Set<Candidate> can = new HashSet<>();
+			for (Candidate c : allCandidate) {
+				if (c.getDates().equals(dc.getDate())) {
+					can.add(c);
+				}
+			}
+			dc.setCandidates(can);
+		}
+		return foundCandidate;
+	}
+
+	@Override
+	public DateCandidate getTodayTest() {
+		DateCandidate foundCandidate = new DateCandidate();
+		foundCandidate.setDate(LocalDate.now());
+		Set<Candidate> can = new HashSet<>();
+		List<Candidate> allCandidate = candidateRepository.findAll();
+		for (Candidate c : allCandidate) {
+			LocalDate date = c.getDates();
+			if (date.equals(LocalDate.now())) {
+				can.add(c);
+			}
+		}
+		foundCandidate.setCandidates(can);
+		return foundCandidate;
+	}
+
+	@Override
+	public Set<DateCandidate> getUndueTest() {
 		Set<DateCandidate> foundCandidate = new HashSet<>();
 		Set<LocalDate> dates = new HashSet<>();
 		List<Candidate> allCandidate = candidateRepository.findAll();
@@ -462,38 +504,6 @@ public class TestServiceImpl implements TestService {
 		}
 		return foundCandidate;
 	}
-
-//	@Override
-//	public DateCandidate getTodayTest() {
-//		DateCandidate foundCandidate = new DateCandidate();
-//		foundCandidate.setDate(LocalDate.now());
-//		Set<Candidate> can = new HashSet<>();
-//		List<Candidate> allCandidate = candidateRepository.findAll();
-//		for (Candidate c : allCandidate) {
-//			LocalDate date = c.getDates().toLocalDate();
-//			if (date.equals(LocalDate.now())) {
-//				can.add(c);
-//			}
-//		}
-//		foundCandidate.setCandidates(can);
-//		return foundCandidate;
-//	}
-//
-//	@Override
-//	public DateCandidate getUndueTest() {
-//		DateCandidate foundCandidate = new DateCandidate();
-//		foundCandidate.setDate(LocalDate.now());
-//		Set<Candidate> can = new HashSet<>();
-//		List<Candidate> allCandidate = candidateRepository.findAll();
-//		for (Candidate c : allCandidate) {
-//			LocalDate date = c.getDates().toLocalDate();
-//			if (date.isBefore(LocalDate.now())) {
-//				can.add(c);
-//			}
-//		}
-//		foundCandidate.setCandidates(can);
-//		return foundCandidate;
-//	}
 
 //	public static void main(String[] args) throws IOException {
 //		final String filename = "C:/Users/thong/OneDrive/Desktop/a.xlsx";

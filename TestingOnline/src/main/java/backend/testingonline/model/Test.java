@@ -19,6 +19,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,12 +60,27 @@ public class Test implements Serializable {
 	private List<Candidate> candidates = new ArrayList<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade(CascadeType.MERGE)
 	@Fetch(FetchMode.SUBSELECT)
 	@JoinTable(name = "test_question", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
 			@JoinColumn(name = "id_question") })
 	private Set<Question> questions = new HashSet<>();
 
+	@ManyToMany
+	@JoinTable(name = "candidate_Test", joinColumns = { @JoinColumn(name = "id_test") }, inverseJoinColumns = {
+			@JoinColumn(name = "id_candidate") })
+	@Cascade(CascadeType.MERGE)
+	private List<CandidateDisplayTest> displayCandidate = new ArrayList<>();
+
 	public Test() {
+	}
+
+	public List<CandidateDisplayTest> getDisplayCandidate() {
+		return displayCandidate;
+	}
+
+	public void setDisplayCandidate(List<CandidateDisplayTest> displayCandidate) {
+		this.displayCandidate = displayCandidate;
 	}
 
 	public Set<Question> getQuestions() {
