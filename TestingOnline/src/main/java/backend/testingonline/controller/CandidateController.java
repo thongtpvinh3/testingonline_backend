@@ -57,9 +57,9 @@ public class CandidateController {
 	@Autowired
 	private CandidateTestRepository candidateTestRepository;
 
-	private final RedisCandidateDoTestCache valueCache;
+	private final RedisCandidateDoTestCache  valueCache;
 
-	public CandidateController(final RedisCandidateDoTestCache valueCache) {
+	public CandidateController(final RedisCandidateDoTestCache  valueCache) {
 		this.valueCache = valueCache;
 	}
 	
@@ -95,17 +95,18 @@ public class CandidateController {
 		Integer idCandidate = candidate.getId();
 		tempAns.setIdCandidate(idCandidate);
 		tempAns.setAnswer("1");
-		if (questionService.findById(idQuestion).getType().getId() == 0) {
-			tempAns.setType(0);
-		} else {
-			tempAns.setType(1);
-		}
-		valueCache.cache("testtime", LocalTime.now().toSecondOfDay()); 
-		int timenow = (int) valueCache.getCachedValue("testtime");
+		tempAns.setType(questionService.findById(idQuestion).getType().getId());
+//		if (questionService.findById(idQuestion).getType().getId() == 1) {
+//			tempAns.setType(1);
+//		} else {
+//			tempAns.setType(2);
+//		}
+//		valueCache.cache("testtime", LocalTime.now().toSecondOfDay());
+		int timenow = LocalTime.now().toSecondOfDay();
 		int testtime = candidate.CalculatorTotalTime(listTest);
 		int timestart = LocalDateTime.of(candidate.getDates(), candidate.getTimes()).toLocalTime().toSecondOfDay();
 		if (timenow - timestart <= testtime) {
-			if (tempAns.getType() == 0) {
+			if (tempAns.getType() == 1) {
 				valueCache.saveMultiple(tempAns,idCandidate,idQuestion);
 			} else {
 				valueCache.saveEssay(tempAns,idCandidate,idQuestion);
@@ -133,6 +134,12 @@ public class CandidateController {
 	@SuppressWarnings("unchecked")
 	public Map<String, TempResultOfCandidate> getTempAns() {
 		return (Map<String, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+	}
+	
+	@GetMapping("/getcacheans/{idCandidate}")
+	@ResponseBody
+	public Map<Integer, TempResultOfCandidate> getCanTempAns(@PathVariable("idCandidate") Integer idCandidate) {
+		return valueCache.getCandidateCacheAns(idCandidate, "ans");
 	}
 
 	@PostMapping(URL.CANDIDATE_SUBMIT)
@@ -172,6 +179,7 @@ public class CandidateController {
 				break;
 			}
 		}
+		candidateService.setMark(idCandidate);
 		session.setAttribute("test", null);
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("OK", "Nop bai thanh cong", result));
 	}

@@ -28,9 +28,6 @@ public class RedisCandidateDoTestCache {
 	public void saveEssay(TempResultOfCandidate temp, Integer idCandidate, Integer idQuestion) {
 		try {
 			String keyGen = idQuestion.toString()+":"+idCandidate.toString();
-//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-//			String json = ow.writeValueAsString(ct);
-//			int idEQuestion = essayQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
 			hashOps.put("ans", keyGen, temp);
 		} catch (Exception e) {
 			System.out.println("Ko tim thay cau tra loi");
@@ -40,9 +37,6 @@ public class RedisCandidateDoTestCache {
 	public void saveMultiple(TempResultOfCandidate temp, Integer idCandidate, Integer idQuestion) {
 		try {
 			String keyGen = idQuestion.toString()+":"+idCandidate.toString();
-//			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-//			String json = ow.writeValueAsString(ct);
-//			int idQuestion = multipleChoiceQuestionRepository.getById(temp.getIdAnswer()).getQuestion().getId();
 			hashOps.put("ans", keyGen, temp);
 			System.out.println(idQuestion);
 		} catch (Exception e) {
@@ -52,6 +46,19 @@ public class RedisCandidateDoTestCache {
 
 	public Object getHashCacheAns(String key) {
 		return hashOps.entries(key);
+	}
+	
+	public Map<Integer, TempResultOfCandidate> getCandidateCacheAns(Integer idCandidate, String key) {
+		Map<String, TempResultOfCandidate> cacheAns = hashOps.entries(key);
+		Map<Integer, TempResultOfCandidate> thisCandidateCache = new LinkedHashMap<>();
+		for (Map.Entry<String, TempResultOfCandidate> e: cacheAns.entrySet()) {
+			String thisKey = e.getKey();
+			String[] str = thisKey.split(":");
+			if (Integer.parseInt(str[1]) == idCandidate) {
+				thisCandidateCache.put(Integer.parseInt(str[0]), e.getValue());
+			}
+		}
+		return thisCandidateCache;
 	}
 
 	public void delete(String key, Integer idCandidate) {
@@ -64,7 +71,6 @@ public class RedisCandidateDoTestCache {
 //			if (str[1].equals(idCandidate.toString())) {
 //				cacheAns.remove(thisKey);
 //			}
-//			
 //		}
 		Map<String, TempResultOfCandidate> toRemove = new LinkedHashMap<>();
 		for (Map.Entry<String, TempResultOfCandidate> e: cacheAns.entrySet()) {

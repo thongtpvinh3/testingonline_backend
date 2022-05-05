@@ -39,7 +39,7 @@ services:
   testing-online:
     restart: always
     build: ./
-    image: nguyenddthong/testingonline:v1.1
+    image: nguyenddthong/test:v1.2
     ports:
       - "8080:8080"
     depends_on:
@@ -49,6 +49,7 @@ services:
       - ./application.properties:/app/application.properties
     environment:
       - REDIS_URL=redis://redis:6379
+      - TZ=Asia/Ho_Chi_Minh
 
   redis:
     image: redis:6-alpine

@@ -218,4 +218,9 @@ public class CandidateServiceImpl implements CandidateService {
 		return candidateRepository.fixIsDone(idCandidate);
 	}
 
+	@Override
+	public List<Candidate> findByIsDone() {
+		return candidateRepository.findByIsDone(1);
+	}
+
 }

@@ -101,6 +101,12 @@ public class StaffController {
 		model.addAttribute("listcandidate", session.getAttribute("staff"));
 		return candidateService.findAll();
 	}
+	
+	@GetMapping("/candidate/done")
+	public List<Candidate> getCandidateByDone() {
+		return candidateService.findByIsDone();
+	}
+
 
 	// ADD CANDIDATE
 	@PostMapping(value = URL.STAFF_ADD_CANDIDATE)
@@ -153,7 +159,7 @@ public class StaffController {
 	Set<Test> getTestByCandidateId(@PathVariable Integer id) {
 		return testService.findByCandidateId(id);
 	}
-
+	
 	@PostMapping(URL.STAFF_ADD_TEST)
 	public ResponseEntity<ResponseObject> addTest(@RequestBody Test newTest) {
 		return staffService.createTest(newTest);
@@ -191,6 +197,21 @@ public class StaffController {
 	public ResponseEntity<ResponseObject> addTestForCandidate(@PathVariable Integer idTest,
 			@PathVariable Integer idCandidate) {
 		return testService.addTestForCandidate(idTest, idCandidate);
+	}
+	
+	@GetMapping("/candidate/bydate/outofdate")
+	public List<Candidate> getOutOfDateCandidate() {
+		return testService.getOutOfDateCandidate();
+	}
+	
+	@GetMapping("/candidate/bydate/today")
+	public List<Candidate> getTodayCandidate() {
+		return testService.getTodayCandidate();
+	}
+	
+	@GetMapping("/candidate/bydate/undue")
+	public List<Candidate> getUndueCandidate() {
+		return testService.getUndueCandidate();
 	}
 	
 	@GetMapping("/candidate/outofdate")
@@ -297,8 +318,6 @@ public class StaffController {
 		return questionService.addAnswerToQuestion(idAnswer, idQuestion);
 	}
 	
-	
-
 //	@GetMapping("/type/{id}")
 //	String testType(@PathVariable Integer id) {
 //		if (questionService.getType(id) == 0) {
@@ -409,10 +428,10 @@ public class StaffController {
 		Path storageFolder = Paths.get("uploads");
 		uploadFileService.upload(file);
 		String originalName = file.getOriginalFilename();
-		String fileSuffix = FilenameUtils.getExtension(originalName);
-		String generatedFileName = UUID.randomUUID().toString().replace("-","");
-		generatedFileName = generatedFileName+"."+fileSuffix;
-		Path filePath = storageFolder.resolve(Paths.get(generatedFileName)).normalize().toAbsolutePath();
+//		String fileSuffix = FilenameUtils.getExtension(originalName);
+//		String generatedFileName = UUID.randomUUID().toString().replace("-","");
+//		generatedFileName = generatedFileName+"."+fileSuffix;
+		Path filePath = storageFolder.resolve(Paths.get(originalName)).normalize().toAbsolutePath();
 		return testService.addQuestionInXlsFile(filePath.toString());
 	}
 	

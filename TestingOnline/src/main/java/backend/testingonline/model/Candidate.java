@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -75,8 +76,8 @@ public class Candidate implements Serializable {
 	@Column
 	private String avatar;
 	
-//	@Transient
-//	private Integer timeInt;
+	@Transient
+	private Integer timeInt;
 	
 	public int CalculatorTotalTime(Set<Test> tests) {
 		int time = 0;
@@ -207,5 +208,9 @@ public class Candidate implements Serializable {
 
 	public void setIsDone(int isDone) {
 		this.isDone = isDone;
+	}
+
+	public Integer getTimeInt() {
+		return CalculatorTotalTime(this.tests);
 	}
 }

@@ -19,7 +19,7 @@ import backend.testingonline.service.impl.StaffSecurityService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	
 
 	@Autowired
@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/authenticate").permitAll()
+		http.authorizeRequests().antMatchers("/authenticate","/jointest","/testpage/**/**").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.sessionManagement()

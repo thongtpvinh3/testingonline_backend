@@ -32,4 +32,6 @@ public interface CandidateService {
 	void setIsDone(int i);
 
 	ResponseEntity<ResponseObject> fixIsDone(Integer idCandidate);
+
+	List<Candidate> findByIsDone();
 }

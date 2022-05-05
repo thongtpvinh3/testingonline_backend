@@ -59,4 +59,9 @@ public interface TestService {
 
 	Set<DateCandidate> getUndueTest();
 
+	List<Candidate> getOutOfDateCandidate();
+	
+	List<Candidate> getTodayCandidate();
+	
+	List<Candidate> getUndueCandidate();
 }

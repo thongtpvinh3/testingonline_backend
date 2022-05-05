@@ -38,4 +38,7 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
 	@Modifying
 	@org.springframework.data.jpa.repository.Query("UPDATE Candidate c SET c.isDone = 1, c.englishMark = 0, c.codingMark=0, c.knowledgeMark=0 WHERE c.id = :idCandidate")
 	ResponseEntity<ResponseObject> fixIsDone(@Param("idCandidate") Integer idCandidate);
+
+	@Query("SELECT c FROM Candidate c WHERE c.isDone = :done")
+	List<Candidate> findByIsDone(@Param("done") Integer done);
 }

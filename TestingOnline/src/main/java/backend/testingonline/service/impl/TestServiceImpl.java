@@ -214,7 +214,7 @@ public class TestServiceImpl implements TestService {
 	public Double reviewMCQuestion(Integer idTest, Integer idCandidate) {
 		Test foundTest = testRepository.getById(idTest);
 		Set<Question> thisTestQuestion = foundTest.getQuestions();
-		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidateInTest(idCandidate, 0, idTest);
+		List<TempResultOfCandidate> result = tempResultRepository.getAnswerOfCandidateInTest(idCandidate, 1, idTest);
 		int count = 0;
 		int rightResult = 0;
 
@@ -483,6 +483,7 @@ public class TestServiceImpl implements TestService {
 		List<Candidate> allCandidate = candidateRepository.findAll();
 		for (Candidate c : allCandidate) {
 			if (c.getDates().isBefore(LocalDate.now())) {
+				System.out.println(LocalDate.now());
 				continue;
 			} else {
 				dates.add(c.getDates());
@@ -505,8 +506,37 @@ public class TestServiceImpl implements TestService {
 		return foundCandidate;
 	}
 
-//	public static void main(String[] args) throws IOException {
-//		final String filename = "C:/Users/thong/OneDrive/Desktop/a.xlsx";
-//		final List<Question> newList = addQuestionInXlsFile(filename);
-//	}
+	@Override
+	public List<Candidate> getOutOfDateCandidate() {
+		List<Candidate> can = new ArrayList<>();
+		for (Candidate c: candidateRepository.findAll()) {
+			if (c.getDates().isBefore(LocalDate.now())) {
+				can.add(c);
+			}
+		}
+		return can;
+	}
+
+	@Override
+	public List<Candidate> getTodayCandidate() {
+		List<Candidate> can = new ArrayList<>();
+		for (Candidate c: candidateRepository.findAll()) {
+			if (c.getDates().equals(LocalDate.now())) {
+				can.add(c);
+			}
+		}
+		return can;
+	}
+
+	@Override
+	public List<Candidate> getUndueCandidate() {
+		List<Candidate> can = new ArrayList<>();
+		for (Candidate c: candidateRepository.findAll()) {
+			if (c.getDates().isAfter(LocalDate.now())) {
+				can.add(c);
+			}
+		}
+		return can;
+	}
+
 }
