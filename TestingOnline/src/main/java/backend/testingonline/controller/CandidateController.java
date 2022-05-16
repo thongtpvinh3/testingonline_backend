@@ -129,11 +129,19 @@ public class CandidateController {
 		}
 	}
 
+//	@GetMapping("/getcacheans")
+//	@ResponseBody
+//	@SuppressWarnings("unchecked")
+//	public Map<String, TempResultOfCandidate> getTempAns() {
+//		return (Map<String, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+//	}
+	
 	@GetMapping("/getcacheans")
-	@ResponseBody
-	@SuppressWarnings("unchecked")
-	public Map<String, TempResultOfCandidate> getTempAns() {
-		return (Map<String, TempResultOfCandidate>) valueCache.getHashCacheAns("ans");
+	public Map<Integer, TempResultOfCandidate> getCandiTempAns(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Candidate candidate = (Candidate) session.getAttribute("candidate");
+		Integer idCandidate = candidate.getId();
+		return valueCache.getCandidateCacheAns(idCandidate, "ans");
 	}
 	
 	@GetMapping("/getcacheans/{idCandidate}")

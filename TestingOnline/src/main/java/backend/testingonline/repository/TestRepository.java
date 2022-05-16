@@ -22,5 +22,11 @@ public interface TestRepository extends JpaRepository<Test, Integer> {
 	
 	@Query("SELECT test FROM Test test WHERE test.name like %:name%")
 	List<Test> findByName(@Param("name") String name);
+
+	@org.springframework.data.jpa.repository.Query(value = "SELECT * FROM test test WHERE test.subject_id = :subject", nativeQuery = true)
+	public List<Test> getBySubjectId(@Param("subject") Integer subject);
+
+	@org.springframework.data.jpa.repository.Query(value = "SELECT * FROM test test WHERE test.level_id = :level", nativeQuery = true)
+	List<Test> getByLevelId(@Param("level") Integer level);
 	
 }

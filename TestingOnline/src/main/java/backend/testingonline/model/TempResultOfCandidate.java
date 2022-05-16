@@ -24,14 +24,14 @@ public class TempResultOfCandidate implements Serializable {
 	@Column
 	private String answer;
 	@Column(name = "id_candidate")
-	private int idCandidate;
+	private Integer idCandidate;
 	@Column(name = "id_test")
 	private int idTest;
 	
 	public TempResultOfCandidate() {
 	}
 
-	public TempResultOfCandidate(int idAnswer, String answer,int idCandidate) {
+	public TempResultOfCandidate(int idAnswer, String answer,Integer idCandidate) {
 		this.idAnswer = idAnswer;
 		this.answer = answer;
 		this.idCandidate = idCandidate;
@@ -53,11 +53,11 @@ public class TempResultOfCandidate implements Serializable {
 		this.answer = answer;
 	}
 
-	public int getIdCandidate() {
+	public Integer getIdCandidate() {
 		return idCandidate;
 	}
 
-	public void setIdCandidate(int idCandidate) {
+	public void setIdCandidate(Integer idCandidate) {
 		this.idCandidate = idCandidate;
 	}
 

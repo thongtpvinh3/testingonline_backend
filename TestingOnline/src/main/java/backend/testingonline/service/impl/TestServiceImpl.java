@@ -188,7 +188,7 @@ public class TestServiceImpl implements TestService {
 			}
 
 			Set<Test> newList = foundCandidate.getTests();
-			if (foundCandidate.getTests().contains(newTest) == false) {
+			if (!foundCandidate.getTests().contains(newTest)) {
 				newList.add(newTest);
 				foundCandidate.setTests(newList);
 				return ResponseEntity.status(HttpStatus.OK)
@@ -200,14 +200,6 @@ public class TestServiceImpl implements TestService {
 		}
 		return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED)
 				.body(new ResponseObject("FAILED", "Bạn phải add thời gian vào đã chứ !", ""));
-	}
-
-	@Override
-	public ResponseEntity<ResponseObject> setTestTime(Integer idTest, LocalTime time) {
-		Test foundTest = testRepository.getById(idTest);
-		foundTest.setTimes(time);
-		return ResponseEntity.status(HttpStatus.OK)
-				.body(new ResponseObject("OK", "Set test time success!", testRepository.save(foundTest)));
 	}
 
 	@Override
@@ -277,15 +269,6 @@ public class TestServiceImpl implements TestService {
 		}
 	}
 
-	@Override
-	public List<Candidate> getCandidateOfTest(Integer idTest) {
-		return testRepository.getById(idTest).getCandidates();
-	}
-
-	@Override
-	public void setTestIsDone(Integer idTest, Integer idCandidate) {
-
-	}
 
 	@Override
 	public Test addNewQuestion(Integer idTest, Question newQuestion) {

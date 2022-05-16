@@ -9,9 +9,9 @@ import backend.testingonline.model.Staff;
 
 @Repository
 public interface StaffRepository extends JpaRepository<Staff, Integer> {
-	
-	@Query("SELECT staff FROM Staff staff WHERE staff.username = :username AND staff.password = :password")
-	Staff findByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
+
+//	@Query("SELECT staff FROM Staff staff WHERE staff.username = :username AND staff.password = :password")
+//	Staff findByUsernameAndPassword(@Param("username") String username,@Param("password") String password);
 
 	Staff findByUsername(String username);
 

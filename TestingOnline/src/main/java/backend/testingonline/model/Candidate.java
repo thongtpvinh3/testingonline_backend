@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
@@ -32,8 +34,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Candidate implements Serializable {
 
 	@Id
+//	@GenericGenerator(name = "can_id",
+//		parameters = @Parameter(name = "prefix", value = "CD"),
+//		strategy = "backend.testingonline.configuration.CustomIdGen")
+//	@GeneratedValue(generator = "can_id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
+//	private String id;
 	private int id;
 	@Column
 	private String name;
@@ -106,6 +112,14 @@ public class Candidate implements Serializable {
 		super();
 	}
 
+//	public String getId() {
+//		return id;
+//	}
+//
+//	public void setId(String id) {
+//		this.id = id;
+//	}
+	
 	public int getId() {
 		return id;
 	}
@@ -113,6 +127,7 @@ public class Candidate implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
+
 
 	public String getName() {
 		return name;

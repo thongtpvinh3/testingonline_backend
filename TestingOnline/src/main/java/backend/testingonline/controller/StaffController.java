@@ -4,16 +4,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FilenameUtils;
+import backend.testingonline.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,19 +27,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import backend.testingonline.model.Candidate;
-import backend.testingonline.model.DateCandidate;
-import backend.testingonline.model.EssayQuestion;
-import backend.testingonline.model.Levels;
-import backend.testingonline.model.MultipleChoiceQuestion;
-import backend.testingonline.model.Question;
-import backend.testingonline.model.QuestionType;
-import backend.testingonline.model.Subject;
-import backend.testingonline.model.TempResultOfCandidate;
-import backend.testingonline.model.Test;
 import backend.testingonline.repository.EssayQuestionRepository;
 import backend.testingonline.repository.MultipleChoiceQuestionRepository;
 import backend.testingonline.repository.TempResultRepository;
@@ -85,21 +79,44 @@ public class StaffController {
 	@Autowired
 	private UploadFileService uploadFileService;
 
-	@PostMapping(URL.STAFF_LOGOUT)
-	public String logout(HttpServletRequest req, HttpServletResponse resp) {
-		HttpSession session = req.getSession();
-		session.setAttribute("staff", null);
-		return "redirect:/login";
+	@PostMapping("/create")
+	@PreAuthorize("hasRole('ROLE_admin')")
+	public ResponseEntity<ResponseObject> createStaff(@RequestBody Staff newStaff) {
+//		Authentication auth = SecurityContextHolder.getContext().get
+		return staffService.createStaff(newStaff);
 	}
+
+	@GetMapping("/xyz")
+	public String xyz(HttpServletRequest req) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String staff = String.valueOf(req.getUserPrincipal());
+		System.out.println(auth);
+		return staff;
+	}
+
 	
 //----------------------CANDIDATE--------------------------------------------------------
 
 	@GetMapping(URL.STAFF_GET_LIST_CANDIDATE)
-	List<Candidate> getAllCandidate(HttpServletRequest req, Model model) {
-		HttpSession session = req.getSession();
-		session.setAttribute("listcandidate", candidateService.findAll());
-		model.addAttribute("listcandidate", session.getAttribute("staff"));
+	List<Candidate> getAllCandidate(HttpServletRequest req) {
 		return candidateService.findAll();
+	}
+
+	@GetMapping("/candidate/phone={phone}")
+	public List<Candidate> findCandidateByPhone(@PathVariable("phone") String phone) {
+		return candidateService.findByEmail(phone);
+	}
+	
+	@GetMapping("/candidate/avatar/files/{fileName:.+}")
+	ResponseEntity<byte[]> readAvatar(@PathVariable String fileName) {
+		try {
+			byte[] bytes = uploadFileService.readImgContent(fileName);
+			return ResponseEntity.ok()
+					.contentType(MediaType.IMAGE_JPEG)
+					.body(bytes);
+		} catch (Exception e) {
+			return ResponseEntity.noContent().build();
+		}
 	}
 	
 	@GetMapping("/candidate/done")
@@ -112,6 +129,18 @@ public class StaffController {
 	@PostMapping(value = URL.STAFF_ADD_CANDIDATE)
 	ResponseEntity<ResponseObject> addCandidate(@RequestBody Candidate newCandidate) {
 		return candidateService.save(newCandidate);
+	}
+	
+	//Add candidate have avatar
+	@PostMapping(value = "/addcandidate2", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+	Candidate addCandidate2(@RequestPart("candidate") String candidate, @RequestPart("file") MultipartFile file ) throws Exception {
+		Candidate candidateJson = candidateService.getJson(candidate, file);
+		return candidateJson;
+	}
+	
+	@PutMapping("/candidate/update/{id}")
+	ResponseEntity<ResponseObject> updateCandidate(@PathVariable("id") Integer id, @RequestBody Candidate candidate) {
+		return candidateService.updateCandidate(id,candidate);
 	}
 
 	// DELETE A CANDIDATE
@@ -443,5 +472,10 @@ public class StaffController {
 	@DeleteMapping("/deleteresult/{idCandidate}")
 	void deleteResult(@PathVariable("idCandidate") Integer idCandidate) {
 		tempResultRepository.deleteResult(idCandidate);
+	}
+
+	@PostMapping("/search")
+	public Set<Object> resultSearch(@RequestBody ForSearch conditional) {
+		return staffService.search(conditional);
 	}
 }

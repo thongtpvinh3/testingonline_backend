@@ -27,7 +27,7 @@ public class RedisCandidateDoTestCache {
 	
 	public void saveEssay(TempResultOfCandidate temp, Integer idCandidate, Integer idQuestion) {
 		try {
-			String keyGen = idQuestion.toString()+":"+idCandidate.toString();
+			String keyGen = idQuestion.toString()+":"+idCandidate;
 			hashOps.put("ans", keyGen, temp);
 		} catch (Exception e) {
 			System.out.println("Ko tim thay cau tra loi");

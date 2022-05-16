@@ -1,5 +1,6 @@
 package backend.testingonline.service.impl;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import backend.testingonline.model.Candidate;
 import backend.testingonline.model.CandidateTest;
@@ -31,6 +35,9 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Autowired
 	private CandidateTestRepository candidateTestRepository;
+	
+	@Autowired
+	private UploadFileServiceImpl uploadFileService;
 	
 	@Override
 	public List<Candidate> findByEmail(String email) {
@@ -208,7 +215,7 @@ public class CandidateServiceImpl implements CandidateService {
 	}
 
 	@Override
-	public void setIsDone(int idCandidate) {
+	public void setIsDone(Integer idCandidate) {
 		candidateRepository.setIsDone(idCandidate);
 		
 	}
@@ -221,6 +228,41 @@ public class CandidateServiceImpl implements CandidateService {
 	@Override
 	public List<Candidate> findByIsDone() {
 		return candidateRepository.findByIsDone(1);
+	}
+
+	@Override
+	public Candidate getJson(String candidate, MultipartFile file) throws Exception {
+		Candidate candidateJson = new Candidate();
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			candidateJson = objectMapper.readValue(candidate, Candidate.class);
+		} catch (IOException e) {
+			System.out.printf("Error",e.toString());
+		}
+		
+		String img = uploadFileService.uploadAvatar(file);
+		candidateJson.setAvatar(img);
+		
+		return candidateJson;
+	}
+
+	@Override
+	public ResponseEntity<ResponseObject> updateCandidate(Integer id,Candidate candidate) {
+		try {
+			Candidate foundCandidate = candidateRepository.getById(id);
+			
+			foundCandidate.setName(candidate.getName());
+			foundCandidate.setLevel(candidate.getLevel());
+			foundCandidate.setEmail(candidate.getEmail());
+			foundCandidate.setPhone(candidate.getPhone());
+			foundCandidate.setPosition(candidate.getPosition());
+			foundCandidate.setDates(candidate.getDates());
+			foundCandidate.setTimes(candidate.getTimes());
+			
+			return ResponseEntity.ok(new ResponseObject("OK","Update thanh cong",candidateRepository.save(foundCandidate)));
+		} catch (Exception e) {
+			throw new RuntimeException("Khong update dc!",e);
+		}
 	}
 
 }

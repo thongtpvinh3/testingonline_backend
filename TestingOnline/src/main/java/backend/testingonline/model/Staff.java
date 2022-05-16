@@ -29,6 +29,8 @@ public class Staff implements Serializable {
 	private String department;
 	@Column(name = "image")
 	private String avatar;
+	@Column
+	private String role;
 
 	public Staff() {
 	}
@@ -93,5 +95,13 @@ public class Staff implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getRole() {
+		return this.role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 }

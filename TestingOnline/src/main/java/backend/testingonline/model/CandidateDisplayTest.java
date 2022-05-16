@@ -64,10 +64,10 @@ public class CandidateDisplayTest implements Serializable {
 	@Column(name = "is_done", columnDefinition = "INT DEFAULT 0")
 	private int isDone;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-	@JoinTable(name = "candidate_Test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
-				inverseJoinColumns = {@JoinColumn(name = "id_test")})
+	@ManyToMany
+//	@Cascade(org.hibernate.annotations.CascadeType.MERGE)
+//	@JoinTable(name = "candidate_test", joinColumns = {@JoinColumn(name = "id_candidate")}, 
+//				inverseJoinColumns = {@JoinColumn(name = "id_test")})
 	@JsonIgnore
 	private Set<Test> tests = new HashSet<>();
 	

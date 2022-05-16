@@ -37,18 +37,10 @@ public interface TestService {
 
 	ResponseEntity<ResponseObject> addTestForCandidate(Integer idTest, Integer idCandidate);
 
-	void setTestIsDone(Integer idTest, Integer idCandidate);
-
-	ResponseEntity<ResponseObject> setTestTime(Integer idTest,LocalTime time);
-
-//	ResponseEntity<ResponeObject> setDateTest(Integer idTest, LocalDateTime dateTest);
-
 	Double reviewMCQuestion(Integer idTest, Integer idCandidate);
 
 	ResponseEntity<ResponseObject> reviewEssayQuestion(Integer idTest,Integer idCandidate, Double mark);
 	
-	List<Candidate> getCandidateOfTest(Integer idTest);
-
 	Test addNewQuestion(Integer idTest, Question newQuestion);
 
 	List<Question> addQuestionInXlsFile(String xlsFilePath) throws IOException;
