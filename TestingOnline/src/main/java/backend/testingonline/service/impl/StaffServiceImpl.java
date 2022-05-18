@@ -90,7 +90,7 @@ public class StaffServiceImpl implements StaffService {
                     List<Candidate> fCan1 = candidateRepository.findByName(cSearch);
                     result.removeIf(o -> !fCan1.contains(o));
                     continue;
-                case CANDIDATE_BYPOSTION:
+                case CANDIDATE_BYPOSITION:
                     List<Candidate> fCan2 = candidateRepository.findByPosition(cSearch);
                     result.removeIf(o -> !fCan2.contains(o));
                     continue;

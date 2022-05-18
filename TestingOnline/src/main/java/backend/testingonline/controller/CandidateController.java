@@ -170,7 +170,7 @@ public class CandidateController {
 		tempResultService.saveAll(finalRes);
 		candidateService.setIsDone(idCandidate);
 		valueCache.delete("ans",idCandidate);
-		Set<Test> listTest = (Set<Test>) candidate.getTests();
+		Set<Test> listTest = candidate.getTests();
 		Result result = new Result();
 		for (Test t: listTest) {
 			testService.reviewMCQuestion(t.getId(), idCandidate);

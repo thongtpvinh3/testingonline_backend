@@ -2,7 +2,7 @@ package backend.testingonline.model;
 
 public enum SearchCondition {
     CANDIDATE_BYNAME,
-    CANDIDATE_BYPOSTION,
+    CANDIDATE_BYPOSITION,
     CANDIDATE_BYLEVEL,
     CANDIDATE_BYDATE,
     CANDIDATE_BYEMAIL,

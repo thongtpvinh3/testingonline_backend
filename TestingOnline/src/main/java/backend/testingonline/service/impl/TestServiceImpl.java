@@ -6,11 +6,7 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -219,7 +215,7 @@ public class TestServiceImpl implements TestService {
 		for (TempResultOfCandidate res : result) {
 			if (multipleChoiceQuestionRepository.findWithIdAndisTrue(res.getIdAnswer(),
 					Integer.parseInt(res.getAnswer())) != null && res.getIdTest() == idTest
-					&& res.getIdCandidate() == idCandidate) {
+					&& Objects.equals(res.getIdCandidate(), idCandidate)) {
 				rightResult++;
 			}
 		}
@@ -229,7 +225,7 @@ public class TestServiceImpl implements TestService {
 
 		Double oneQuestionMark = 100.0 / count;
 		DecimalFormat df = new DecimalFormat("##.##");
-		Double tmp = Double.parseDouble(df.format(oneQuestionMark));
+		double tmp = Double.parseDouble(df.format(oneQuestionMark));
 		System.out.println("\n" + tmp + "\n");
 
 		Double lastResult = tmp * rightResult;
